@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 
 class NeumorphicContainer extends StatelessWidget {
   final child;
-  const NeumorphicContainer({Key? key, required this.child}) : super(key: key);
+  double padding = 0;
+  double margin = 0;
+  NeumorphicContainer({
+    Key? key,
+    required this.child,
+    this.padding = 0,
+    this.margin = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(padding),
+      margin: EdgeInsets.all(margin),
       child: child,
       decoration: BoxDecoration(
           color: Colors.grey[300],
