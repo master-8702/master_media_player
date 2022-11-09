@@ -17,74 +17,64 @@ class SongCard extends StatelessWidget {
     return NeumorphicContainer(
       padding: 10,
       margin: 10,
-      child: Container(
-        child: Stack(alignment: Alignment.bottomCenter, children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.6,
+      child: Stack(alignment: Alignment.bottomCenter, children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.6,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(15),
+            image: DecorationImage(
+                image: AssetImage(song.coverImageUrl), fit: BoxFit.fill),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            Get.toNamed('songPlaying', arguments: song);
+          },
+          child: Container(
+            margin: const EdgeInsets.only(
+              bottom: 10,
+            ),
+            padding: const EdgeInsets.all(8),
+            height: 50,
+            width: MediaQuery.of(context).size.width * 0.55,
             decoration: BoxDecoration(
-              color: Colors.transparent,
               borderRadius: BorderRadius.circular(15),
-              image: DecorationImage(
-                  image: AssetImage(song.coverImageUrl), fit: BoxFit.fill),
+              color: Colors.lightBlueAccent.withOpacity(0.7),
             ),
-          ),
-          InkWell(
-            onTap: () {
-              Get.toNamed('songPlaying', arguments: song);
-            },
-            child: Container(
-              margin: const EdgeInsets.only(
-                bottom: 10,
-              ),
-              padding: const EdgeInsets.all(8),
-              height: 50,
-              width: MediaQuery.of(context).size.width * 0.55,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.lightBlueAccent.withOpacity(0.7),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // this Sizedbox is added in order to stop the texts from over flowing
-                  // and to that we have to set the width for the text holder widget
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          overflow: TextOverflow.ellipsis,
-                          song.title,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          song.singer,
-                          overflow: TextOverflow.ellipsis,
-                          softWrap: false,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // this Sizedbox is added in order to stop the texts from over flowing
+                // and to that we have to set the width for the text holder widget
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        overflow: TextOverflow.ellipsis,
+                        song.title,
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        song.singer,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
-                  const Icon(Icons.play_circle),
-                ],
-              ),
+                ),
+                const Icon(Icons.play_circle),
+              ],
             ),
           ),
-        ]),
-      ),
+        ),
+      ]),
     );
   }
 }

@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:mastermediaplayer/components/music_seekbar_slider.dart';
+import '../components/PlayerButtons.dart';
+import '../components/PlaylistControlButtons.dart';
+import '../components/neumorphic_container.dart';
+import '../models/song_model.dart';
+import 'package:rxdart/rxdart.dart' as rxdart;
 
 class SongPlayingScreen extends StatefulWidget {
   const SongPlayingScreen({Key? key}) : super(key: key);
@@ -9,6 +16,44 @@ class SongPlayingScreen extends StatefulWidget {
 }
 
 class _SongPlayingScreenState extends State<SongPlayingScreen> {
+  late AudioPlayer audioPlayer;
+  Song song = Get.arguments ?? Song.songs[0];
+  late Stream<Duration> position;
+  late Stream<Duration?> duration;
+  late Stream<bool> shuffleMode;
+  late Stream<LoopMode> loopMode;
+
+  @override
+  void initState() {
+    audioPlayer = AudioPlayer();
+    position = audioPlayer.positionStream;
+    duration = audioPlayer.durationStream;
+    shuffleMode = audioPlayer.shuffleModeEnabledStream;
+    loopMode = audioPlayer.loopModeStream;
+
+    try {
+      audioPlayer.setAsset(song.songUrl);
+    } catch (e) {
+      print("Error loading audio source: $e");
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+// here are gonna use two different streams and we will combine them
+  Stream<MusicSliderPositionData> get _musicSliderDragPositionDataStream =>
+      rxdart.Rx.combineLatest2<Duration, Duration?, MusicSliderPositionData>(
+        audioPlayer.positionStream,
+        audioPlayer.durationStream,
+        (Duration position, Duration? duration) =>
+            MusicSliderPositionData(position, duration ?? Duration.zero),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +62,9 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
+            clipBehavior: Clip.none,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,7 +75,9 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                       width: 60,
                       child: NeumorphicContainer(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.back();
+                          },
                           child: const Icon(
                             Icons.arrow_back_rounded,
                             size: 30,
@@ -36,7 +85,7 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                         ),
                       ),
                     ),
-                    const Text("PLAYLIST"),
+                    const Text("Now Playing"),
                     SizedBox(
                       height: 60,
                       width: 60,
@@ -66,7 +115,7 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
-                            'assets/images/alfu_selat.png',
+                            song.coverImageUrl,
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -76,26 +125,33 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Alfu Selat",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "Fuad Al-burda",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      color: Colors.grey.shade600),
-                                ),
-                              ],
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    song.title,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    song.singer,
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.grey.shade600),
+                                  ),
+                                ],
+                              ),
                             ),
                             const Icon(
                               Icons.favorite,
@@ -118,102 +174,27 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                   height: 25,
                 ),
 
-                // Spacer(),
-
                 // start time , shuffle button, repeat button, end time
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text('4:08'),
-                    TextButton(
-                        onPressed: () {}, child: const Icon(Icons.shuffle)),
-                    TextButton(
-                        onPressed: () {}, child: const Icon(Icons.repeat)),
-                    const Text('16:12')
-                  ],
-                ),
+                PlaylistControlButtons(audioPlayer: audioPlayer),
                 const SizedBox(
-                  height: 5,
+                  height: 25,
                 ),
-                // playing time indicator (progress bar)
-                NeumorphicContainer(
-                  padding: 10,
-                  child: LinearProgressIndicator(
-                    value: 0.3, minHeight: 8,
-                    // backgroundColor: Colors.red,
-                  ),
+
+                MusicSeekbarSlider(
+                  audioPlayer: audioPlayer,
+                  seekBarDataStream: _musicSliderDragPositionDataStream,
                 ),
 
                 const SizedBox(
                   height: 25,
                 ),
-
                 // previous song , ply/pause, next song buttons
 
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: NeumorphicContainer(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Icon(Icons.skip_previous, size: 22),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: NeumorphicContainer(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Icon(Icons.fast_rewind, size: 22),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: NeumorphicContainer(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Icon(
-                            Icons.play_arrow,
-                            size: 45,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: NeumorphicContainer(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Icon(Icons.fast_forward, size: 22),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: NeumorphicContainer(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Icon(Icons.skip_next, size: 22),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
+                PlayerButtons(audioPlayer: audioPlayer),
+                const SizedBox(
+                  height: 60,
+                ),
+                // playing time indicator (progress bar)
               ],
             ),
           ),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class NeumorphicContainer extends StatelessWidget {
   final child;
-  double padding = 0;
-  double margin = 0;
-  NeumorphicContainer({
+  final double padding;
+  final double margin;
+  const NeumorphicContainer({
     Key? key,
     required this.child,
     this.padding = 0,
