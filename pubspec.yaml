@@ -37,7 +37,11 @@ dependencies:
   get: ^4.6.5
   just_audio: ^0.9.30
   rxdart: ^0.27.5
-
+  file_manager: ^1.0.1
+  path: ^1.8.1
+#  path_provider_ex: ^1.0.1
+  path_provider: ^2.0.11
+  flutter_media_metadata: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:

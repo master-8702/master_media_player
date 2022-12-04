@@ -10,7 +10,7 @@ class Song {
       required this.singer,
       required this.description,
       required this.songUrl,
-      required this.coverImageUrl});
+      this.coverImageUrl = 'assets/images/music_icon.png'});
 
   static List<Song> songs = [
     Song(

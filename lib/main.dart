@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
+import 'package:mastermediaplayer/screens/music_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/playlist_screen.dart';
 import 'package:mastermediaplayer/screens/song_playing_screen.dart';
 
@@ -16,8 +17,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      title: 'Master Media Player',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
       home: const HomeScreen(),
       getPages: [
@@ -32,6 +34,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/playlist',
           page: () => const PlaylistScreen(),
+        ),
+        GetPage(
+          name: '/explorer',
+          page: () => const MusicExplorer(),
         ),
       ],
     );

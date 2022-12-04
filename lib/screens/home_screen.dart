@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
 import '../components/my_favorites.dart';
@@ -56,8 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 60,
                       child: NeumorphicContainer(
                         child: TextButton(
-                          onPressed: () {},
-                          child: const Icon(Icons.menu_rounded),
+                          onPressed: () {
+                            Get.toNamed('explorer');
+                          },
+                          child: const Icon(Icons.folder),
                         ),
                       ),
                     ),

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
@@ -32,7 +34,9 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
     loopMode = audioPlayer.loopModeStream;
 
     try {
-      audioPlayer.setAsset(song.songUrl);
+      // audioPlayer.setFilePath(song.songUrl);
+
+      audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(song.songUrl)));
     } catch (e) {
       print("Error loading audio source: $e");
     }
@@ -91,7 +95,11 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                       width: 60,
                       child: NeumorphicContainer(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            audioPlayer.positionStream.listen((event) {
+                              print('from stream listener: $event');
+                            });
+                          },
                           child: const Icon(
                             Icons.menu_rounded,
                             size: 30,
@@ -111,13 +119,15 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 300,
+                        height: 200,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            song.coverImageUrl,
-                            fit: BoxFit.fill,
-                          ),
+                          child: song.coverImageUrl != null
+                              ? Image.asset(
+                                  song.coverImageUrl,
+                                  fit: BoxFit.fill,
+                                )
+                              : Image.memory(song.coverImageUrl as Uint8List),
                         ),
                       ),
                       Padding(
