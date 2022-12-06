@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
@@ -141,15 +142,26 @@ class _MusicExplorerState extends State<MusicExplorer> {
                                       Song song = Song(
                                           title: Utilities.basename(
                                               organizedFiles[index]),
-                                          singer: '',
-                                          description: '',
+                                          artist:
+                                              metadata.trackArtistNames != null
+                                                  ? metadata.trackArtistNames!
+                                                      .toList()
+                                                      .toString()
+                                                  : 'Unknown Artist',
+                                          description:
+                                              metadata.trackArtistNames != null
+                                                  ? metadata.trackArtistNames
+                                                      .toString()
+                                                  : 'No Description',
                                           songUrl: organizedFiles[index].path,
-                                          coverImageUrl:
-                                              metadata.albumArt.toString());
-                                      late FileStat fs;
-                                      organizedFiles[index]
-                                          .stat()
-                                          .then((value) => fs = value);
+                                          coverImageUrl: metadata.albumArt !=
+                                                  null
+                                              ? metadata.albumArt as Uint8List
+                                              : Uint8List(13));
+                                      // late FileStat fs;
+                                      // organizedFiles[index]
+                                      //     .stat()
+                                      //     .then((value) => fs = value);
 
                                       Get.toNamed('songPlaying',
                                           arguments: song);

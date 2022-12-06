@@ -24,7 +24,10 @@ class SongCard extends StatelessWidget {
             color: Colors.transparent,
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
-                image: AssetImage(song.coverImageUrl), fit: BoxFit.fill),
+                image: song.coverImageUrl.length == 13
+                    ? Image.asset('assets/images/music_icon5.png').image
+                    : Image.memory(song.coverImageUrl).image,
+                fit: BoxFit.fill),
           ),
         ),
         InkWell(
@@ -60,7 +63,7 @@ class SongCard extends StatelessWidget {
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        song.singer,
+                        song.artist,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(

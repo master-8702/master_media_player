@@ -1,57 +1,64 @@
+import 'dart:typed_data';
+
 class Song {
   final String title;
-  final String singer;
+  final String artist;
   final String description;
   final String songUrl;
-  final String coverImageUrl;
+  final Uint8List coverImageUrl;
 
-  Song(
-      {required this.title,
-      required this.singer,
-      required this.description,
-      required this.songUrl,
-      this.coverImageUrl = 'assets/images/music_icon.png'});
+  Song({
+    required this.title,
+    required this.artist,
+    required this.description,
+    required this.songUrl,
+    required this.coverImageUrl,
+  });
 
   static List<Song> songs = [
     Song(
       title: "Alfu Selat",
-      singer: 'Fuad Alburda',
+      artist: 'Fuad Alburda',
       description: 'Engurguro + Dibe menzuma',
       songUrl: 'assets/audios/alfuSelat.mp3',
-      coverImageUrl: 'assets/images/alfuSelat.png',
+      coverImageUrl: Uint8List(13),
     ),
     Song(
-        title: 'Arhibu Nebye',
-        singer: 'Anwar Alburda',
-        description: 'Engurguro + Dibe menzuma',
-        songUrl: 'assets/audios/arhibuNebye.mp3',
-        coverImageUrl: 'assets/images/arhibuNebye.png'),
+      title: 'Arhibu Nebye',
+      artist: 'Anwar Alburda',
+      description: 'Engurguro + Dibe menzuma',
+      songUrl: 'assets/audios/arhibuNebye.mp3',
+      coverImageUrl: Uint8List(13),
+    ),
     Song(
-        title: 'Enes Kenahubet',
-        singer:
-            'Husni Sultan, Sualih Muhammed, Ashref Nasir, Abdurezak Tewfik, Selahadin',
-        description: 'Engurguro + Neshida',
-        songUrl: 'assets/audios/enesKenahubet.mp3',
-        coverImageUrl: 'assets/images/enesKenahubet.png'),
+      title: 'Enes Kenahubet',
+      artist:
+          'Husni Sultan, Sualih Muhammed, Ashref Nasir, Abdurezak Tewfik, Selahadin',
+      description: 'Engurguro + Neshida',
+      songUrl: 'assets/audios/enesKenahubet.mp3',
+      coverImageUrl: Uint8List(13),
+    ),
     Song(
       title: "Alfu Selat",
-      singer: 'Fuad Alburda',
+      artist: 'Fuad Alburda',
       description: 'Engurguro + Dibe menzuma',
       songUrl: 'assets/audios/alfuSelat.mp3',
-      coverImageUrl: 'assets/images/alfuSelat.png',
+      coverImageUrl: Uint8List(13),
     ),
     Song(
-        title: 'Arhibu Nebye',
-        singer: 'Anwar Alburda',
-        description: 'Engurguro + Dibe menzuma',
-        songUrl: 'assets/audios/arhibuNebye.mp3',
-        coverImageUrl: 'assets/images/arhibuNebye.png'),
+      title: 'Arhibu Nebye',
+      artist: 'Anwar Alburda',
+      description: 'Engurguro + Dibe menzuma',
+      songUrl: 'assets/audios/arhibuNebye.mp3',
+      coverImageUrl: Uint8List(13),
+    ),
     Song(
-        title: 'Enes Kenahubet',
-        singer:
-            'Husni Sultan, Sualih Muhammed, Ashref Nasir, Abdurezak Tewfik, Selahadin',
-        description: 'Engurguro + Neshida',
-        songUrl: 'assets/audios/enesKenahubet.mp3',
-        coverImageUrl: 'assets/images/enesKenahubet.png'),
+      title: 'Enes Kenahubet',
+      artist:
+          'Husni Sultan, Sualih Muhammed, Ashref Nasir, Abdurezak Tewfik, Selahadin',
+      description: 'Engurguro + Neshida',
+      songUrl: 'assets/audios/enesKenahubet.mp3',
+      coverImageUrl: Uint8List(13),
+    )
   ];
 }

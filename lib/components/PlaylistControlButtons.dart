@@ -29,53 +29,46 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        SizedBox(
-          height: 50,
-          width: 40,
-          child: StreamBuilder(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.06,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          StreamBuilder<Duration>(
               initialData: Duration.zero,
               stream: position,
               builder: (context, snapshot) {
-                return Text(
-                    Utilities.formatDuration(snapshot.data as Duration));
+                return Text(Utilities.formatDuration(snapshot.data));
               }),
-        ),
-        SizedBox(
-          height: 50,
-          width: 40,
-          child: StreamBuilder<bool>(
-            stream: shuffleMode,
-            builder: (context, snapshot) {
-              return _shuffleButton(context, snapshot.data ?? false);
-            },
+          SizedBox(
+            height: 50,
+            width: 40,
+            child: StreamBuilder<bool>(
+              stream: shuffleMode,
+              builder: (context, snapshot) {
+                return _shuffleButton(context, snapshot.data ?? false);
+              },
+            ),
           ),
-        ),
-        SizedBox(
-          height: 50,
-          width: 40,
-          child: StreamBuilder<LoopMode>(
-            stream: loopMode,
-            builder: (context, snapshot) {
-              return _repeatButton(context, snapshot.data ?? LoopMode.off);
-            },
+          SizedBox(
+            height: 50,
+            width: 40,
+            child: StreamBuilder<LoopMode>(
+              stream: loopMode,
+              builder: (context, snapshot) {
+                return _repeatButton(context, snapshot.data ?? LoopMode.off);
+              },
+            ),
           ),
-        ),
-        SizedBox(
-          height: 50,
-          width: 40,
-          child: StreamBuilder(
+          StreamBuilder<Duration?>(
               initialData: Duration.zero,
               stream: duration,
               builder: (context, snapshot) {
-                return Text(
-                    Utilities.formatDuration(snapshot.data as Duration));
+                return Text(Utilities.formatDuration(snapshot.data));
               }),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

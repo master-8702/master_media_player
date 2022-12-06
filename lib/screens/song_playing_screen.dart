@@ -1,6 +1,7 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mastermediaplayer/components/music_seekbar_slider.dart';
@@ -65,12 +66,13 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            clipBehavior: Clip.none,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.1,
+                width: MediaQuery.of(context).size.width,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // menu and back button
@@ -95,11 +97,7 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                       width: 60,
                       child: NeumorphicContainer(
                         child: TextButton(
-                          onPressed: () {
-                            audioPlayer.positionStream.listen((event) {
-                              print('from stream listener: $event');
-                            });
-                          },
+                          onPressed: () {},
                           child: const Icon(
                             Icons.menu_rounded,
                             size: 30,
@@ -109,35 +107,49 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
 
-                // cover art, song name , artist name, album name
-                NeumorphicContainer(
+              // cover art, song name , artist name, album name
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.52,
+                width: MediaQuery.of(context).size.width,
+                child: NeumorphicContainer(
                   padding: 10,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SizedBox(
-                        height: 200,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: song.coverImageUrl != null
-                              ? Image.asset(
-                                  song.coverImageUrl,
-                                  fit: BoxFit.fill,
-                                )
-                              : Image.memory(song.coverImageUrl as Uint8List),
-                        ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: song.coverImageUrl.length == 13
+                            ? Image.asset(
+                                'assets/images/music_icon5.png',
+                                fit: BoxFit.fill,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                width: MediaQuery.of(context).size.width,
+                              )
+                            : Image.memory(
+                                song.coverImageUrl,
+                                fit: BoxFit.fill,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                              ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.6,
+                              height: MediaQuery.of(context).size.height * 0.15,
                               child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
@@ -146,32 +158,92 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 22),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
+                                        fontSize: 20),
                                   ),
                                   Text(
-                                    song.singer,
-                                    maxLines: 3,
+                                    song.artist,
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Colors.grey.shade600),
                                   ),
                                 ],
                               ),
                             ),
-                            const Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                              size: 32,
-                              shadows: [
-                                BoxShadow(
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const Icon(
+                                  Icons.favorite_border_outlined,
                                   color: Colors.red,
-                                  blurRadius: 10,
+                                  size: 32,
+                                  shadows: [
+                                    BoxShadow(
+                                      color: Colors.red,
+                                      blurRadius: 10,
+                                    ),
+                                  ],
                                 ),
+                                IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text('Music Info'),
+                                              content: FutureBuilder<Metadata>(
+                                                future:
+                                                    MetadataRetriever.fromFile(
+                                                        File(song.songUrl)),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.hasData) {
+                                                    Metadata musicInfo =
+                                                        snapshot.data
+                                                            as Metadata;
+                                                    List<String> musicInfo2 =
+                                                        musicInfo
+                                                            .toString()
+                                                            .replaceAll(
+                                                                'null', 'NA')
+                                                            .split(',')
+                                                            .toList();
+                                                    return ListView.builder(
+                                                        itemCount:
+                                                            musicInfo2.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return ListTile(
+                                                              title: Text(
+                                                                  musicInfo2[
+                                                                      index]));
+                                                        });
+                                                    return Text(
+                                                        musicInfo.toString());
+                                                  } else if (snapshot
+                                                      .hasError) {
+                                                    return const Center(
+                                                      child: Text(
+                                                          'Error Occurred! Can not load music info.'),
+                                                    );
+                                                  } else {
+                                                    return const Center(
+                                                      child: Text(
+                                                          'Something Happened!'),
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                            );
+                                          });
+                                    },
+                                    icon: const Icon(
+                                      Icons.info,
+                                      color: Colors.black,
+                                      size: 32,
+                                    )),
                               ],
                             )
                           ],
@@ -180,33 +252,31 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
 
-                // start time , shuffle button, repeat button, end time
-                PlaylistControlButtons(audioPlayer: audioPlayer),
-                const SizedBox(
-                  height: 25,
-                ),
+              // start time , shuffle button, repeat button, end time
+              PlaylistControlButtons(audioPlayer: audioPlayer),
+              const SizedBox(
+                height: 15,
+              ),
 
-                MusicSeekbarSlider(
-                  audioPlayer: audioPlayer,
-                  seekBarDataStream: _musicSliderDragPositionDataStream,
-                ),
+              MusicSeekbarSlider(
+                audioPlayer: audioPlayer,
+                seekBarDataStream: _musicSliderDragPositionDataStream,
+              ),
 
-                const SizedBox(
-                  height: 25,
-                ),
-                // previous song , ply/pause, next song buttons
+              const SizedBox(
+                height: 15,
+              ),
+              // previous song , ply/pause, next song buttons
 
-                PlayerButtons(audioPlayer: audioPlayer),
-                const SizedBox(
-                  height: 60,
-                ),
-                // playing time indicator (progress bar)
-              ],
-            ),
+              PlayerButtons(audioPlayer: audioPlayer),
+
+              // playing time indicator (progress bar)
+            ],
           ),
         ),
       ),
