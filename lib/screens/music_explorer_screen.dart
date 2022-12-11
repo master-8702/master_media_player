@@ -134,34 +134,8 @@ class _MusicExplorerState extends State<MusicExplorer> {
                                       currentDirectory.value =
                                           organizedFiles[index] as Directory;
                                     } else {
-                                      final metadata =
-                                          await MetadataRetriever.fromFile(
-                                              File(organizedFiles[index].path));
-                                      print(metadata);
-
-                                      Song song = Song(
-                                          title: Utilities.basename(
-                                              organizedFiles[index]),
-                                          artist:
-                                              metadata.trackArtistNames != null
-                                                  ? metadata.trackArtistNames!
-                                                      .toList()
-                                                      .toString()
-                                                  : 'Unknown Artist',
-                                          description:
-                                              metadata.trackArtistNames != null
-                                                  ? metadata.trackArtistNames
-                                                      .toString()
-                                                  : 'No Description',
-                                          songUrl: organizedFiles[index].path,
-                                          coverImageUrl: metadata.albumArt !=
-                                                  null
-                                              ? metadata.albumArt as Uint8List
-                                              : Uint8List(13));
-                                      // late FileStat fs;
-                                      // organizedFiles[index]
-                                      //     .stat()
-                                      //     .then((value) => fs = value);
+                                      Song song = await Utilities()
+                                          .getSong(organizedFiles[index].path);
 
                                       Get.toNamed('songPlaying',
                                           arguments: song);

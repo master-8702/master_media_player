@@ -8,8 +8,9 @@ import 'package:mastermediaplayer/components/music_seekbar_slider.dart';
 import '../components/PlayerButtons.dart';
 import '../components/PlaylistControlButtons.dart';
 import '../components/neumorphic_container.dart';
-import '../models/song_model.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
+import '../models/song_model.dart';
+import 'package:get_storage/get_storage.dart';
 
 class SongPlayingScreen extends StatefulWidget {
   const SongPlayingScreen({Key? key}) : super(key: key);
@@ -25,6 +26,8 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
   late Stream<Duration?> duration;
   late Stream<bool> shuffleMode;
   late Stream<LoopMode> loopMode;
+  GetStorage box = GetStorage();
+  late List<dynamic> myFavorites;
 
   @override
   void initState() {
@@ -34,10 +37,12 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
     shuffleMode = audioPlayer.shuffleModeEnabledStream;
     loopMode = audioPlayer.loopModeStream;
 
+    myFavorites = box.read('myFavorites');
+
     try {
       // audioPlayer.setFilePath(song.songUrl);
 
-      audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(song.songUrl)));
+      audioPlayer.setAudioSource(AudioSource.uri(Uri.file(song.songUrl)));
     } catch (e) {
       print("Error loading audio source: $e");
     }
@@ -176,16 +181,36 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                const Icon(
-                                  Icons.favorite_border_outlined,
-                                  color: Colors.red,
-                                  size: 32,
-                                  shadows: [
-                                    BoxShadow(
-                                      color: Colors.red,
-                                      blurRadius: 10,
-                                    ),
-                                  ],
+                                IconButton(
+                                  icon: Icon(
+                                    myFavorites.contains(song.songUrl)
+                                        ? Icons.favorite
+                                        : Icons.favorite_border_outlined,
+                                    color: Colors.red,
+                                    size: 32,
+                                    shadows: const [
+                                      BoxShadow(
+                                        color: Colors.red,
+                                        blurRadius: 10,
+                                      ),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    if (myFavorites.contains(song.songUrl)) {
+                                      setState(() {
+                                        myFavorites.remove(song.songUrl);
+
+                                        box.write('myFavorites', myFavorites);
+                                      });
+                                    } else {
+                                      setState(() {
+                                        myFavorites
+                                            .add(song.songUrl.toString());
+
+                                        box.write('myFavorites', myFavorites);
+                                      });
+                                    }
+                                  },
                                 ),
                                 IconButton(
                                     onPressed: () {

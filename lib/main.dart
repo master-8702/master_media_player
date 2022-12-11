@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/playlist_screen.dart';
 import 'package:mastermediaplayer/screens/song_playing_screen.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 

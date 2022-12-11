@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:mastermediaplayer/models/song_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Utilities {
@@ -9,6 +12,33 @@ class Utilities {
   static void setUp() async {
     storageList = await getStorageList();
     // folderList = getDirectories(storageList[0].path);
+  }
+
+  Future<Metadata> getMetadata(String fileName) async {
+    Metadata metadata = await MetadataRetriever.fromFile(File(fileName));
+
+    return metadata;
+  }
+
+  Future<Song> getSong(String songPath) async {
+    // Song(title: Utilities.basename(File(songPath)),)
+    Metadata metadata = await MetadataRetriever.fromFile(File(songPath));
+
+    Song song = Song(
+        title: Utilities.basename(File(songPath)),
+        artist: metadata.trackArtistNames != null
+            ? metadata.trackArtistNames!.toList().toString()
+            : 'Unknown Artist',
+        description: metadata.trackArtistNames != null
+            ? metadata.trackArtistNames.toString()
+            : 'No Description',
+        songUrl: songPath,
+        coverImageUrl: metadata.albumArt != null
+            ? metadata.albumArt as Uint8List
+            : Uint8List(13));
+    print('from util');
+    print(metadata.trackArtistNames);
+    return song;
   }
 
   static List<FileSystemEntity> getDirectories(

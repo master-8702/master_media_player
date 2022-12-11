@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
+import 'package:mastermediaplayer/components/utilities/utilities.dart';
 import '../components/my_favorites.dart';
 import '../components/music_search_bar.dart';
 import '../components/playlist_card.dart';
@@ -19,6 +21,28 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Song> mySongs = Song.songs;
   List<Playlist> myPlaylist = Playlist.myPlaylists;
+  late List<dynamic> myFavoriteTemp;
+  late List<Song> myFavoriteSongs = [];
+  List<Song> songs = [];
+  void setUp() async {
+    if (GetStorage().read('myFavorites') == null) {
+      GetStorage().write('myFavorites', <String>[]);
+    }
+    myFavoriteTemp = GetStorage().read('myFavorites');
+    if (myFavoriteTemp.isNotEmpty) {
+      for (String s in myFavoriteTemp) {
+        myFavoriteSongs.add(await Utilities().getSong(s));
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    // GetStorage().remove('myFavorites');
+
+    setUp();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                MyFavorites(mySongs: mySongs),
+                MyFavorites(myFavoriteSongs: myFavoriteSongs),
                 const SizedBox(
                   height: 25,
                 ),

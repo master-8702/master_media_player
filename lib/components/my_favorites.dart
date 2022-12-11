@@ -7,11 +7,10 @@ import '../models/song_model.dart';
 class MyFavorites extends StatelessWidget {
   const MyFavorites({
     Key? key,
-    required this.mySongs,
+    required this.myFavoriteSongs,
   }) : super(key: key);
 
-  final List<Song> mySongs;
-
+  final List<Song> myFavoriteSongs;
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -22,10 +21,10 @@ class MyFavorites extends StatelessWidget {
       SizedBox(
         height: MediaQuery.of(context).size.height * 0.27,
         child: ListView.builder(
-            itemCount: mySongs.length,
+            itemCount: myFavoriteSongs.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return SongCard(song: mySongs[index]);
+              return SongCard(song: myFavoriteSongs[index]);
             }),
       )
     ]);
