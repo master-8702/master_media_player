@@ -23,22 +23,13 @@ class SongPlayingScreen extends StatefulWidget {
 class _SongPlayingScreenState extends State<SongPlayingScreen> {
   late AudioPlayer audioPlayer;
   Song song = Get.arguments ?? Song.songs[0];
-  late Stream<Duration> position;
-  late Stream<Duration?> duration;
-  late Stream<bool> shuffleMode;
-  late Stream<LoopMode> loopMode;
+
   GetStorage box = GetStorage();
   late List<dynamic> myFavorites;
-  final FavoritesController favoritesController =
-      Get.put(FavoritesController());
 
   @override
   void initState() {
     audioPlayer = AudioPlayer();
-    position = audioPlayer.positionStream;
-    duration = audioPlayer.durationStream;
-    shuffleMode = audioPlayer.shuffleModeEnabledStream;
-    loopMode = audioPlayer.loopModeStream;
 
     myFavorites = box.read('myFavorites');
 
@@ -184,41 +175,35 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                IconButton(
-                                  icon: Icon(
-                                    myFavorites.contains(song.songUrl)
-                                        ? Icons.favorite
-                                        : Icons.favorite_border_outlined,
-                                    color: Colors.red,
-                                    size: 32,
-                                    shadows: const [
-                                      BoxShadow(
-                                        color: Colors.red,
-                                        blurRadius: 10,
-                                      ),
-                                    ],
-                                  ),
-                                  onPressed: () {
-                                    if (myFavorites.contains(song.songUrl)) {
-                                      favoritesController.removeFavorites(song);
-
-                                      setState(() {
-                                        myFavorites.remove(song.songUrl);
-
-                                        box.write('myFavorites', myFavorites);
-                                      });
-                                    } else {
-                                      favoritesController.addFavorites(song);
-
-                                      setState(() {
-                                        myFavorites
-                                            .add(song.songUrl.toString());
-
-                                        box.write('myFavorites', myFavorites);
-                                      });
-                                    }
-                                  },
-                                ),
+                                GetBuilder<FavoritesController>(
+                                    builder: (favoriteStateController) {
+                                  return IconButton(
+                                    icon: Icon(
+                                      favoriteStateController.myFavorites
+                                              .contains(song.songUrl)
+                                          ? Icons.favorite
+                                          : Icons.favorite_border_outlined,
+                                      color: Colors.red,
+                                      size: 32,
+                                      shadows: const [
+                                        BoxShadow(
+                                          color: Colors.red,
+                                          blurRadius: 10,
+                                        ),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      if (favoriteStateController.myFavorites
+                                          .contains(song.songUrl)) {
+                                        favoriteStateController
+                                            .removeFavorites(song);
+                                      } else {
+                                        favoriteStateController
+                                            .addFavorites(song);
+                                      }
+                                    },
+                                  );
+                                }),
                                 IconButton(
                                     onPressed: () {
                                       showDialog(
@@ -252,8 +237,6 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                                                                   musicInfo2[
                                                                       index]));
                                                         });
-                                                    return Text(
-                                                        musicInfo.toString());
                                                   } else if (snapshot
                                                       .hasError) {
                                                     return const Center(

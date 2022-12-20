@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
 import 'package:mastermediaplayer/controllers/favoritesController.dart';
@@ -83,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 GetBuilder<FavoritesController>(builder: (state) {
                   if (state.myFavoriteSongs.isEmpty) {
-                    return Text('No Favorites yet!');
+                    return const Text('No Favorites yet!');
                   }
                   return MyFavorites(myFavoriteSongs: state.myFavoriteSongs);
                 }),
