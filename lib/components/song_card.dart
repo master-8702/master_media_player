@@ -16,7 +16,7 @@ class SongCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return NeumorphicContainer(
       padding: 10,
-      margin: 10,
+      margin: 5,
       child: Stack(alignment: Alignment.bottomCenter, children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.6,
@@ -45,8 +45,8 @@ class SongCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               color: Colors.lightBlueAccent.withOpacity(0.7),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: Wrap(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // this Sizedbox is added in order to stop the texts from over flowing
                 // and to that we have to set the width for the text holder widget
@@ -65,14 +65,16 @@ class SongCard extends StatelessWidget {
                       Text(
                         song.artist,
                         overflow: TextOverflow.ellipsis,
-                        softWrap: false,
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
-                const Icon(Icons.play_circle),
+                const Icon(
+                  Icons.play_circle,
+                  size: 28,
+                ),
               ],
             ),
           ),

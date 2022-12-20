@@ -9,6 +9,7 @@ import '../components/PlayerButtons.dart';
 import '../components/PlaylistControlButtons.dart';
 import '../components/neumorphic_container.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
+import '../controllers/favoritesController.dart';
 import '../models/song_model.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -28,6 +29,8 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
   late Stream<LoopMode> loopMode;
   GetStorage box = GetStorage();
   late List<dynamic> myFavorites;
+  final FavoritesController favoritesController =
+      Get.put(FavoritesController());
 
   @override
   void initState() {
@@ -197,12 +200,16 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                                   ),
                                   onPressed: () {
                                     if (myFavorites.contains(song.songUrl)) {
+                                      favoritesController.removeFavorites(song);
+
                                       setState(() {
                                         myFavorites.remove(song.songUrl);
 
                                         box.write('myFavorites', myFavorites);
                                       });
                                     } else {
+                                      favoritesController.addFavorites(song);
+
                                       setState(() {
                                         myFavorites
                                             .add(song.songUrl.toString());
