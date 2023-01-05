@@ -43,6 +43,7 @@ dependencies:
   path_provider: ^2.0.11
   flutter_media_metadata: ^1.0.0+1
   get_storage: ^2.0.3
+  text_scroll: ^0.1.2
 
 dev_dependencies:
   flutter_test:

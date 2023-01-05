@@ -5,6 +5,8 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mastermediaplayer/components/music_seekbar_slider.dart';
+import 'package:mastermediaplayer/controllers/playlistsController.dart';
+import 'package:mastermediaplayer/screens/music_explorer_screen2.dart';
 import '../components/PlayerButtons.dart';
 import '../components/PlaylistControlButtons.dart';
 import '../components/neumorphic_container.dart';
@@ -26,6 +28,8 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
 
   GetStorage box = GetStorage();
   late List<dynamic> myFavorites;
+  final PlaylistsController playlistsController =
+      Get.put(PlaylistsController());
 
   @override
   void initState() {
@@ -120,23 +124,104 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: song.coverImageUrl.length == 13
-                            ? Image.asset(
-                                'assets/images/music_icon5.png',
-                                fit: BoxFit.fill,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                                width: MediaQuery.of(context).size.width,
-                              )
-                            : Image.memory(
-                                song.coverImageUrl,
-                                fit: BoxFit.fill,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
+                      Stack(alignment: Alignment.topRight, children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: song.coverImageUrl.length == 13
+                              ? Image.asset(
+                                  'assets/images/music_icon5.png',
+                                  fit: BoxFit.fill,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  width: MediaQuery.of(context).size.width,
+                                )
+                              : Image.memory(
+                                  song.coverImageUrl,
+                                  fit: BoxFit.fill,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                ),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        AlertDialog(
+                                          elevation: 6,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          actionsAlignment:
+                                              MainAxisAlignment.center,
+                                          title: const Text('Add To Playlist'),
+                                          content: playlistsController
+                                                  .myPlaylists.isEmpty
+                                              ? const Center(
+                                                  child:
+                                                      Text('No Playlists Yet!'),
+                                                )
+                                              : GetBuilder<PlaylistsController>(
+                                                  builder: (context) {
+                                                  return ListView.builder(
+                                                    shrinkWrap: true,
+                                                    itemCount:
+                                                        playlistsController
+                                                            .myPlaylists.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return ListTile(
+                                                        onTap: () {
+                                                          // here we will add the music to a playlist
+                                                          playlistsController
+                                                              .addMusicToPlaylist(
+                                                                  playlistsController
+                                                                      .myPlaylists[index],
+                                                                  [
+                                                                song.songUrl
+                                                              ]);
+                                                        },
+                                                        trailing: const Icon(
+                                                          Icons.add_circle,
+                                                          size: 34,
+                                                        ),
+                                                        title: Text(
+                                                            playlistsController
+                                                                .myPlaylists[
+                                                                    index]
+                                                                .title),
+                                                        subtitle: Text(
+                                                            '${playlistsController.myPlaylists[index].songs.length} songs'),
+                                                      );
+                                                    },
+                                                  );
+                                                }),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Get.toNamed('createPlaylist');
+                                                },
+                                                child: const Text(
+                                                    'Create New Playlist'))
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: Container(
+                              decoration: const BoxDecoration(
+                                  color: Colors.black, shape: BoxShape.circle),
+                              child: Icon(
+                                Icons.playlist_add,
+                                color: Colors.grey[200],
                               ),
-                      ),
+                            )),
+                      ]),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
@@ -210,6 +295,10 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
                                               title: const Text('Music Info'),
                                               content: FutureBuilder<Metadata>(
                                                 future:

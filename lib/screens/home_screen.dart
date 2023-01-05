@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
 import 'package:mastermediaplayer/controllers/favoritesController.dart';
+import 'package:mastermediaplayer/controllers/playlistsController.dart';
 import '../components/my_favorites.dart';
 import '../components/music_search_bar.dart';
 import '../components/playlist_card.dart';
@@ -17,14 +17,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Playlist> myPlaylist = Playlist.myPlaylists;
-
   final FavoritesController favoritesController =
       Get.put(FavoritesController());
-
+  final PlaylistsController playlistsController =
+      Get.put(PlaylistsController());
+  late List<Playlist> myPlaylist;
   @override
   void initState() {
+    // GetStorage().remove('myPlaylist');
     favoritesController.getFavoriteMusics();
+    playlistsController.getPlaylists();
+    myPlaylist = playlistsController.myPlaylists;
     super.initState();
   }
 
@@ -93,15 +96,38 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Column(
                   children: [
-                    const SectionHeader(title: "Playlists"),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.only(top: 20),
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: myPlaylist.length,
-                        itemBuilder: (context, index) {
-                          return PlaylistCard(myPlaylist: myPlaylist[index]);
-                        }),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    InkWell(
+                        onTap: () {
+                          Get.toNamed('playlists');
+                        },
+                        child: const SectionHeader(title: "Playlists")),
+                    GetBuilder<PlaylistsController>(builder: (playlistState) {
+                      if (playlistsController.myPlaylists.isEmpty) {
+                        return const Text('No Playlists yet!');
+                      } else {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.only(top: 20),
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: playlistState.myPlaylists.length,
+                            itemBuilder: (context, index) {
+                              return PlaylistCard(
+                                  myPlaylist: playlistState.myPlaylists[index]);
+                            });
+                      }
+                    }),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed('createPlaylist');
+                        },
+                        child: const Text('Create New Playlist'),
+                      ),
+                    )
                   ],
                 )
               ],

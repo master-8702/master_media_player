@@ -14,14 +14,12 @@ class Utilities {
     // folderList = getDirectories(storageList[0].path);
   }
 
-  Future<Metadata> getMetadata(String fileName) async {
+  static Future<Metadata> getMetadata(String fileName) async {
     Metadata metadata = await MetadataRetriever.fromFile(File(fileName));
-
     return metadata;
   }
 
   Future<Song> getSong(String songPath) async {
-    // Song(title: Utilities.basename(File(songPath)),)
     Metadata metadata = await MetadataRetriever.fromFile(File(songPath));
 
     Song song = Song(
@@ -36,8 +34,7 @@ class Utilities {
         coverImageUrl: metadata.albumArt != null
             ? metadata.albumArt as Uint8List
             : Uint8List(13));
-    print('from util');
-    print(metadata.trackArtistNames);
+
     return song;
   }
 
@@ -65,7 +62,6 @@ class Utilities {
 
   static Directory getRootDirectory(FileSystemEntity entity) {
     final Directory parent = entity.parent;
-    print(parent);
     if (parent.path == entity.path) return parent;
     return getRootDirectory(parent);
   }

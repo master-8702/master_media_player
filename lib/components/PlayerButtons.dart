@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
+import '../controllers/playlistsController.dart';
 import 'neumorphic_container.dart';
 
 class PlayerButtons extends StatelessWidget {
-  const PlayerButtons({
+  PlayerButtons({
     Key? key,
     required this.audioPlayer,
   }) : super(key: key);
 
   final AudioPlayer audioPlayer;
+  final PlaylistsController playlistsController =
+      Get.put(PlaylistsController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +45,10 @@ class PlayerButtons extends StatelessWidget {
               child: NeumorphicContainer(
                 child: TextButton(
                   onPressed: () {
+                    // this will rebuild the ui in order to add the play icon on currently playing music list
+                    playlistsController
+                        .justRebuildTheUi(audioPlayer.previousIndex!);
+// this will set the audio player to play the previous song in the playlist if there is any
                     audioPlayer.hasPrevious
                         ? audioPlayer.seekToPrevious()
                         : null;
@@ -144,6 +152,11 @@ class PlayerButtons extends StatelessWidget {
               child: NeumorphicContainer(
                 child: TextButton(
                   onPressed: () {
+                    // this will rebuild the ui in order to add the play icon on currently playing music list
+                    playlistsController
+                        .justRebuildTheUi(audioPlayer.nextIndex!);
+                    // this will set the audio player to play the next song in the playlist if there is any
+
                     audioPlayer.hasNext ? audioPlayer.seekToNext() : null;
                   },
                   child: const Icon(Icons.skip_next, size: 22),

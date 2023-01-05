@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 
@@ -19,25 +21,23 @@ class PlaylistCardMain extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image.asset(
-              myPlaylist.coverImageUrl,
-              height: MediaQuery.of(context).size.height * 0.25,
-              width: MediaQuery.of(context).size.width * 0.6,
-              fit: BoxFit.fill,
-            ),
+            child: myPlaylist.coverImageUrl == 'assets/images/playlist.png'
+                ? Image.asset(
+                    myPlaylist.coverImageUrl,
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    fit: BoxFit.fill,
+                  )
+                : Image.file(
+                    File(myPlaylist.coverImageUrl),
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    fit: BoxFit.fill,
+                  ),
           ),
           const SizedBox(
             height: 15,
           ),
-          Text(
-            myPlaylist.title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall!
-                .copyWith(fontWeight: FontWeight.bold),
-          )
         ],
       ),
     );

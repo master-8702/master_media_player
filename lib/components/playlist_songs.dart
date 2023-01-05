@@ -1,47 +1,72 @@
-import 'package:flutter/material.dart';
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:get/get.dart';
+import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/components/utilities/utilities.dart';
+import 'package:mastermediaplayer/controllers/favoritesController.dart';
+
+import '../controllers/playlistsController.dart';
 import '../models/playlist_model.dart';
 
-class PlaylistSongs extends StatelessWidget {
+class PlaylistSongs extends StatefulWidget {
   const PlaylistSongs({
     Key? key,
-    required this.myPlaylist,
+    required this.playlist,
+    required this.songUrl,
+    required this.indexNumber,
+    required this.playingStatus,
   }) : super(key: key);
 
-  final Playlist myPlaylist;
+  final Playlist playlist;
+  final String songUrl;
+  final int indexNumber;
+  final bool playingStatus;
+
+  @override
+  State<PlaylistSongs> createState() => _PlaylistSongsState();
+}
+
+class _PlaylistSongsState extends State<PlaylistSongs> {
+  final PlaylistsController playlistsController =
+      Get.put(PlaylistsController());
+
+  final FavoritesController favoritesController =
+      Get.put(FavoritesController());
 
   @override
   Widget build(BuildContext context) {
-    return NeumorphicContainer(
-      padding: 10,
-      // margin: 5,
-      child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: myPlaylist.songs.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${index + 1}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: Column(
+    return Column(
+      children: [
+        NeumorphicContainer(
+          padding: 5,
+          // margin: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '${widget.indexNumber}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: FutureBuilder<Metadata>(
+                    future: Utilities.getMetadata(widget.songUrl),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        Metadata? musicMetadata = snapshot.data;
+                        return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              myPlaylist.songs[index].title,
+                              Utilities.basename(File(widget.songUrl)),
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context)
                                   .textTheme
@@ -51,24 +76,84 @@ class PlaylistSongs extends StatelessWidget {
                             const SizedBox(
                               height: 5,
                             ),
-                            Text(
-                              myPlaylist.songs[index].description,
-                              overflow: TextOverflow.ellipsis,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  flex: 4,
+                                  child: Text(
+                                    musicMetadata!.albumName ?? 'Unknown album',
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    Utilities.formatDuration(
+                                      Duration(
+                                          milliseconds:
+                                              musicMetadata.trackDuration ??
+                                                  0000),
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                if (widget.playingStatus)
+                                  const Icon(Icons.play_circle),
+                              ],
                             ),
                           ],
-                        ),
-                      ),
-                      IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.more_vert)),
-                    ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                          child: Text('Error Happened while Fetching Data!'),
+                        );
+                      } else {
+                        return Center(
+                          child: Column(
+                            children: [
+                              const CircularProgressIndicator(),
+                              Text(widget.songUrl),
+                              const Text('Fetching Music Data ...'),
+                            ],
+                          ),
+                        );
+                      }
+                    },
                   ),
-                  const Divider(
-                    height: 5,
-                  ),
-                ],
-              ),
-            );
-          }),
+                ),
+                PopupMenuButton(itemBuilder: (context) {
+                  return const [
+                    PopupMenuItem(
+                      value: 'Remove from Playlist',
+                      child: Text('Remove from Playlist'),
+                    ),
+                    PopupMenuItem(
+                      value: 'Add to My Favorites',
+                      child: Text('Add to My Favorites'),
+                    ),
+                  ];
+                }, onSelected: (String value) async {
+                  // here in the pop up menu options we will remove the selected song from the playlist
+                  // or add it to the favorites list based on the user's selection
+
+                  if (value == 'Remove from Playlist') {
+                    playlistsController.removeSongFromPlaylist(widget.playlist,
+                        await Utilities().getSong(widget.songUrl));
+                  }
+                  if (value == 'Add to My Favorites') {
+                    favoritesController.addFavorites(
+                        await Utilities().getSong(widget.songUrl));
+                  }
+                }),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        )
+      ],
     );
   }
 }

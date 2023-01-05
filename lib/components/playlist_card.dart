@@ -1,23 +1,27 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/controllers/playlistsController.dart';
 
 import '../models/playlist_model.dart';
 
 class PlaylistCard extends StatelessWidget {
-  const PlaylistCard({
+  PlaylistCard({
     Key? key,
     required this.myPlaylist,
   }) : super(key: key);
 
   final Playlist myPlaylist;
+  final PlaylistsController playlistsController =
+      Get.put(PlaylistsController());
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed('/playlist', arguments: myPlaylist);
+        Get.toNamed('playlist', arguments: myPlaylist);
       },
       child: NeumorphicContainer(
         padding: 10,
@@ -27,12 +31,19 @@ class PlaylistCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: Image.asset(
-                myPlaylist.coverImageUrl,
-                height: 50,
-                width: 50,
-                fit: BoxFit.cover,
-              ),
+              child: myPlaylist.coverImageUrl == 'assets/images/playlist.png'
+                  ? Image.asset(
+                      myPlaylist.coverImageUrl,
+                      height: 50,
+                      width: 50,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.file(
+                      File(myPlaylist.coverImageUrl),
+                      height: 50,
+                      width: 50,
+                      fit: BoxFit.cover,
+                    ),
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.45,
@@ -53,13 +64,18 @@ class PlaylistCard extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.play_circle,
-                size: 35,
-              ),
-            ),
+            PopupMenuButton(onSelected: ((selectedValue) {
+              if (selectedValue == 'Delete  Playlist') {
+                playlistsController.removePlaylist(myPlaylist);
+              }
+            }), itemBuilder: (context) {
+              return const [
+                PopupMenuItem(
+                  value: 'Delete  Playlist',
+                  child: Text('Delete  Playlist'),
+                ),
+              ];
+            })
           ],
         ),
       ),

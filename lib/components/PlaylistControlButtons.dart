@@ -75,8 +75,8 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
   Widget _shuffleButton(BuildContext context, bool isEnabled) {
     return IconButton(
       icon: isEnabled
-          ? Icon(Icons.shuffle, color: Theme.of(context).colorScheme.secondary)
-          : const Icon(Icons.shuffle),
+          ? const Icon(Icons.shuffle)
+          : Icon(Icons.shuffle, color: Theme.of(context).colorScheme.secondary),
       onPressed: () async {
         final enable = !isEnabled;
         if (enable) {
@@ -89,9 +89,9 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
 
   Widget _repeatButton(BuildContext context, LoopMode loopMode) {
     final icons = [
-      const Icon(Icons.repeat),
       Icon(Icons.repeat, color: Theme.of(context).colorScheme.secondary),
-      Icon(Icons.repeat_one, color: Theme.of(context).colorScheme.secondary),
+      const Icon(Icons.repeat),
+      const Icon(Icons.repeat_one),
     ];
     const cycleModes = [
       LoopMode.off,
