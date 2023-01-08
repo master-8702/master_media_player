@@ -27,6 +27,8 @@ class _MusicExplorerState3 extends State<MusicExplorer3> {
 
   @override
   void initState() {
+    Utilities().requestPermission();
+
     Utilities.getStorageList().then((value) {
       currentDirectory.value = value[0];
       rootDirectory.value = value[0];

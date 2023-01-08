@@ -35,6 +35,8 @@ class _MusicExplorerState extends State<MusicExplorer> {
 
   @override
   void initState() {
+    Utilities().requestPermission();
+
     Utilities.getStorageList().then((value) {
       currentDirectory.value = value[0];
       rootDirectory.value = value[0];
@@ -61,12 +63,12 @@ class _MusicExplorerState extends State<MusicExplorer> {
               onPressed: () {
                 Get.back();
               },
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
             ),
             actions: [
               IconButton(
                   onPressed: () => selectStorage(),
-                  icon: Icon(Icons.sd_storage)),
+                  icon: const Icon(Icons.sd_storage)),
             ]),
         body: ValueListenableBuilder<Directory>(
             valueListenable: currentDirectory,

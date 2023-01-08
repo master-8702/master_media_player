@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
+import 'package:mastermediaplayer/components/utilities/utilities.dart';
 import 'package:mastermediaplayer/controllers/favoritesController.dart';
 import 'package:mastermediaplayer/controllers/playlistsController.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../components/my_favorites.dart';
 import '../components/music_search_bar.dart';
 import '../components/playlist_card.dart';
@@ -22,8 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final PlaylistsController playlistsController =
       Get.put(PlaylistsController());
   late List<Playlist> myPlaylist;
+
   @override
   void initState() {
+    Utilities().requestPermission();
     // GetStorage().remove('myPlaylist');
     favoritesController.getFavoriteMusics();
     playlistsController.getPlaylists();
@@ -69,7 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 60,
                       child: NeumorphicContainer(
                         child: TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            Utilities().requestPermission();
+
                             Get.toNamed('explorer');
                           },
                           child: const Icon(Icons.folder),

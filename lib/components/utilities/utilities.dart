@@ -4,10 +4,18 @@ import 'dart:typed_data';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Utilities {
   static List<Directory> storageList = [];
   static late List<FileSystemEntity> folderList;
+
+  void requestPermission() async {
+    var status = await Permission.storage.status;
+    if (status.isDenied) {
+      Permission.storage.request();
+    }
+  }
 
   static void setUp() async {
     storageList = await getStorageList();
