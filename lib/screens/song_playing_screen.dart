@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,8 +6,9 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mastermediaplayer/components/music_seekbar_slider.dart';
+import 'package:mastermediaplayer/components/utilities/utilities.dart';
 import 'package:mastermediaplayer/controllers/playlistsController.dart';
-import 'package:mastermediaplayer/screens/music_explorer_screen2.dart';
+import 'package:mastermediaplayer/controllers/timerController.dart';
 import '../components/PlayerButtons.dart';
 import '../components/PlaylistControlButtons.dart';
 import '../components/neumorphic_container.dart';
@@ -30,6 +32,9 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
   late List<dynamic> myFavorites;
   final PlaylistsController playlistsController =
       Get.put(PlaylistsController());
+  final TextEditingController timerTextEditingController =
+      TextEditingController();
+  TimerController timerController = TimerController();
 
   @override
   void initState() {
@@ -65,6 +70,8 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset:
+          false, // to avoid bottom Overflowed error while the keyboard pops up
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Padding(
@@ -96,15 +103,262 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                     ),
                     const Text("Now Playing"),
                     SizedBox(
-                      height: 60,
                       width: 60,
+                      height: 60,
                       child: NeumorphicContainer(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Icon(
+                        child: PopupMenuButton(
+                          color: Colors.grey[300],
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          elevation: 10,
+                          icon: Icon(
                             Icons.menu_rounded,
+                            color: Colors.grey[500],
                             size: 30,
                           ),
+                          position: PopupMenuPosition.under,
+                          itemBuilder: (context) {
+                            return const [
+                              PopupMenuItem(
+                                value: 'Add To Playlist',
+                                child: ListTile(
+                                  leading: Icon(Icons.add_circle),
+                                  title: Text('Add To Playlist'),
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 'Sleep Timer',
+                                child: ListTile(
+                                  leading: Icon(Icons.timer_rounded),
+                                  title: Text('Sleep Timer'),
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 'Music Info',
+                                child: ListTile(
+                                  leading: Icon(Icons.info_rounded),
+                                  title: Text('Music Info'),
+                                ),
+                              )
+                            ];
+                          },
+                          onSelected: (selectedValue) {
+                            // this future .delayed is added in order to fix the
+                            // showdialog and AlertDialog not handling onTap event properly
+
+                            Future.delayed(const Duration(seconds: 0), () {
+                              if (selectedValue == 'Add To Playlist') {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          AlertDialog(
+                                            backgroundColor: Colors.grey[300],
+                                            elevation: 6,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            actionsAlignment:
+                                                MainAxisAlignment.center,
+                                            title:
+                                                const Text('Add To Playlist'),
+                                            content: playlistsController
+                                                    .myPlaylists.isEmpty
+                                                ? const Center(
+                                                    child: Text(
+                                                        'No Playlists Yet!'),
+                                                  )
+                                                : GetBuilder<
+                                                        PlaylistsController>(
+                                                    builder: (context) {
+                                                    return ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount:
+                                                          playlistsController
+                                                              .myPlaylists
+                                                              .length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return ListTile(
+                                                          onTap: () {
+                                                            // here we will add the music to a playlist
+                                                            playlistsController
+                                                                .addMusicToPlaylist(
+                                                                    playlistsController
+                                                                        .myPlaylists[index],
+                                                                    [
+                                                                  song.songUrl
+                                                                ]);
+                                                          },
+                                                          trailing: const Icon(
+                                                            Icons.add_circle,
+                                                            size: 34,
+                                                          ),
+                                                          title: Text(
+                                                              playlistsController
+                                                                  .myPlaylists[
+                                                                      index]
+                                                                  .title),
+                                                          subtitle: Text(
+                                                              '${playlistsController.myPlaylists[index].songs.length} songs'),
+                                                        );
+                                                      },
+                                                    );
+                                                  }),
+                                            actions: [
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    Get.toNamed(
+                                                        'createPlaylist');
+                                                  },
+                                                  child: const Text(
+                                                      'Create New Playlist'))
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              } else if (selectedValue == 'Sleep Timer') {
+                                return showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      timerTextEditingController.text = '';
+
+                                      final formKey = GlobalKey<FormState>();
+
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        backgroundColor: Colors.grey[300],
+                                        title: const Text('Set Sleep Timer'),
+                                        content: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Flexible(
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: Form(
+                                                  key: formKey,
+                                                  child: TextFormField(
+                                                    autofocus: true,
+                                                    controller:
+                                                        timerTextEditingController,
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      counterText: '',
+                                                    ),
+                                                    maxLength: 2,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value == '') {
+                                                        return 'minute can\'t be empty';
+                                                      } else if (!value
+                                                          .isNumericOnly) {
+                                                        return 'please insert numbers only';
+                                                      }
+                                                      timerController
+                                                          .setDuration(Duration(
+                                                              minutes:
+                                                                  int.parse(
+                                                                      value)));
+                                                      return null;
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const Text('Minutes')
+                                          ],
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              // here we will validate the user's input for sleep timer
+                                              final isTheFormValid = formKey
+                                                  .currentState!
+                                                  .validate();
+                                              if (isTheFormValid) {
+                                                // here if the user input is fine (all numeric) we will close the dialog
+                                                // and start the sleep timer
+
+                                                Get.back();
+
+                                                timerController
+                                                    .startTimer(audioPlayer);
+                                              }
+                                            },
+                                            child: const Text('Start'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Get.back();
+                                              timerController.stopTimer();
+                                            },
+                                            child: const Text('Stop'),
+                                          ),
+                                        ],
+                                        actionsAlignment:
+                                            MainAxisAlignment.center,
+                                      );
+                                    });
+                              } else if (selectedValue == 'Music Info') {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        backgroundColor: Colors.grey[300],
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        title: const Text('Music Info'),
+                                        content: FutureBuilder<Metadata>(
+                                          future: MetadataRetriever.fromFile(
+                                              File(song.songUrl)),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.hasData) {
+                                              Metadata musicInfo =
+                                                  snapshot.data as Metadata;
+                                              List<String> musicInfo2 =
+                                                  musicInfo
+                                                      .toString()
+                                                      .replaceAll('null', 'NA')
+                                                      .split(',')
+                                                      .toList();
+                                              return ListView.builder(
+                                                  itemCount: musicInfo2.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                        title: Text(
+                                                            musicInfo2[index]));
+                                                  });
+                                            } else if (snapshot.hasError) {
+                                              return const Center(
+                                                child: Text(
+                                                    'Error Occurred! Can not load music info.'),
+                                              );
+                                            } else {
+                                              return const Center(
+                                                child:
+                                                    Text('Something Happened!'),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      );
+                                    });
+                              }
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -142,85 +396,59 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                                       MediaQuery.of(context).size.height * 0.3,
                                 ),
                         ),
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        AlertDialog(
-                                          elevation: 6,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          actionsAlignment:
-                                              MainAxisAlignment.center,
-                                          title: const Text('Add To Playlist'),
-                                          content: playlistsController
-                                                  .myPlaylists.isEmpty
-                                              ? const Center(
-                                                  child:
-                                                      Text('No Playlists Yet!'),
-                                                )
-                                              : GetBuilder<PlaylistsController>(
-                                                  builder: (context) {
-                                                  return ListView.builder(
-                                                    shrinkWrap: true,
-                                                    itemCount:
-                                                        playlistsController
-                                                            .myPlaylists.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return ListTile(
-                                                        onTap: () {
-                                                          // here we will add the music to a playlist
-                                                          playlistsController
-                                                              .addMusicToPlaylist(
-                                                                  playlistsController
-                                                                      .myPlaylists[index],
-                                                                  [
-                                                                song.songUrl
-                                                              ]);
-                                                        },
-                                                        trailing: const Icon(
-                                                          Icons.add_circle,
-                                                          size: 34,
-                                                        ),
-                                                        title: Text(
-                                                            playlistsController
-                                                                .myPlaylists[
-                                                                    index]
-                                                                .title),
-                                                        subtitle: Text(
-                                                            '${playlistsController.myPlaylists[index].songs.length} songs'),
-                                                      );
-                                                    },
-                                                  );
-                                                }),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Get.toNamed('createPlaylist');
-                                                },
-                                                child: const Text(
-                                                    'Create New Playlist'))
-                                          ],
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                            icon: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.black, shape: BoxShape.circle),
-                              child: Icon(
-                                Icons.playlist_add,
-                                color: Colors.grey[200],
-                              ),
-                            )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Obx(() {
+                              if (timerController.duration.value >
+                                  Duration.zero) {
+                                return Container(
+                                  padding: const EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                        bottomRight: Radius.circular(12),
+                                        topRight: Radius.circular(12)),
+                                    color: Colors.grey[300],
+                                  ),
+                                  child: Text(
+                                    '⏱ ${Utilities.formatDuration(timerController.duration.value)}',
+                                    style: const TextStyle(fontSize: 18),
+                                  ),
+                                );
+                              } else {
+                                return const Text('');
+                              }
+                            }),
+                            GetBuilder<FavoritesController>(
+                                builder: (favoriteStateController) {
+                              return IconButton(
+                                icon: Icon(
+                                  favoriteStateController.myFavorites
+                                          .contains(song.songUrl)
+                                      ? Icons.favorite
+                                      : Icons.favorite_border_outlined,
+                                  color: Colors.red,
+                                  size: 32,
+                                  shadows: const [
+                                    BoxShadow(
+                                      color: Colors.red,
+                                      blurRadius: 10,
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  if (favoriteStateController.myFavorites
+                                      .contains(song.songUrl)) {
+                                    favoriteStateController
+                                        .removeFavorites(song);
+                                  } else {
+                                    favoriteStateController.addFavorites(song);
+                                  }
+                                },
+                              );
+                            })
+                          ],
+                        ),
                       ]),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -229,7 +457,7 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
+                              width: MediaQuery.of(context).size.width * 0.75,
                               height: MediaQuery.of(context).size.height * 0.15,
                               child: Column(
                                 mainAxisAlignment:
@@ -256,100 +484,6 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                                 ],
                               ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                GetBuilder<FavoritesController>(
-                                    builder: (favoriteStateController) {
-                                  return IconButton(
-                                    icon: Icon(
-                                      favoriteStateController.myFavorites
-                                              .contains(song.songUrl)
-                                          ? Icons.favorite
-                                          : Icons.favorite_border_outlined,
-                                      color: Colors.red,
-                                      size: 32,
-                                      shadows: const [
-                                        BoxShadow(
-                                          color: Colors.red,
-                                          blurRadius: 10,
-                                        ),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      if (favoriteStateController.myFavorites
-                                          .contains(song.songUrl)) {
-                                        favoriteStateController
-                                            .removeFavorites(song);
-                                      } else {
-                                        favoriteStateController
-                                            .addFavorites(song);
-                                      }
-                                    },
-                                  );
-                                }),
-                                IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              title: const Text('Music Info'),
-                                              content: FutureBuilder<Metadata>(
-                                                future:
-                                                    MetadataRetriever.fromFile(
-                                                        File(song.songUrl)),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot.hasData) {
-                                                    Metadata musicInfo =
-                                                        snapshot.data
-                                                            as Metadata;
-                                                    List<String> musicInfo2 =
-                                                        musicInfo
-                                                            .toString()
-                                                            .replaceAll(
-                                                                'null', 'NA')
-                                                            .split(',')
-                                                            .toList();
-                                                    return ListView.builder(
-                                                        itemCount:
-                                                            musicInfo2.length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          return ListTile(
-                                                              title: Text(
-                                                                  musicInfo2[
-                                                                      index]));
-                                                        });
-                                                  } else if (snapshot
-                                                      .hasError) {
-                                                    return const Center(
-                                                      child: Text(
-                                                          'Error Occurred! Can not load music info.'),
-                                                    );
-                                                  } else {
-                                                    return const Center(
-                                                      child: Text(
-                                                          'Something Happened!'),
-                                                    );
-                                                  }
-                                                },
-                                              ),
-                                            );
-                                          });
-                                    },
-                                    icon: const Icon(
-                                      Icons.info,
-                                      color: Colors.black,
-                                      size: 32,
-                                    )),
-                              ],
-                            )
                           ],
                         ),
                       )
