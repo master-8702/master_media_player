@@ -9,6 +9,7 @@ import 'package:mastermediaplayer/components/music_seekbar_slider.dart';
 import 'package:mastermediaplayer/components/utilities/utilities.dart';
 import 'package:mastermediaplayer/controllers/playlistsController.dart';
 import 'package:mastermediaplayer/controllers/timerController.dart';
+import 'package:text_scroll/text_scroll.dart';
 import '../components/PlayerButtons.dart';
 import '../components/PlaylistControlButtons.dart';
 import '../components/neumorphic_container.dart';
@@ -17,6 +18,8 @@ import '../controllers/favoritesController.dart';
 import '../models/song_model.dart';
 import 'package:get_storage/get_storage.dart';
 
+// this class is going to build the UI for a SOngPlayingScreen that is going to open when we select
+// a single music using the music explorer option
 class SongPlayingScreen extends StatefulWidget {
   const SongPlayingScreen({Key? key}) : super(key: key);
 
@@ -101,7 +104,11 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                         ),
                       ),
                     ),
-                    const Text("Now Playing"),
+                    const Text(
+                      "Now Playing",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
                     SizedBox(
                       width: 60,
                       height: 60,
@@ -144,7 +151,7 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                           },
                           onSelected: (selectedValue) {
                             // this future .delayed is added in order to fix the
-                            // showdialog and AlertDialog not handling onTap event properly
+                            // showDialog and AlertDialog not handling onTap event properly
 
                             Future.delayed(const Duration(seconds: 0), () {
                               if (selectedValue == 'Add To Playlist') {
@@ -378,113 +385,123 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Stack(alignment: Alignment.topRight, children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: song.coverImageUrl.length == 13
-                              ? Image.asset(
-                                  'assets/images/music_icon5.png',
-                                  fit: BoxFit.fill,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.3,
-                                  width: MediaQuery.of(context).size.width,
-                                )
-                              : Image.memory(
-                                  song.coverImageUrl,
-                                  fit: BoxFit.fill,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.3,
-                                ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Obx(() {
-                              if (timerController.duration.value >
-                                  Duration.zero) {
-                                return Container(
-                                  padding: const EdgeInsets.all(3),
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                        bottomRight: Radius.circular(12),
-                                        topRight: Radius.circular(12)),
-                                    color: Colors.grey[300],
+                      Expanded(
+                        child: Stack(alignment: Alignment.topCenter, children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: song.coverImageUrl.length == 13
+                                ? Image.asset(
+                                    'assets/images/music_icon5.png',
+                                    fit: BoxFit.fill,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.3,
+                                    width: MediaQuery.of(context).size.width,
+                                  )
+                                : Image.memory(
+                                    song.coverImageUrl,
+                                    fit: BoxFit.fill,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.3,
                                   ),
-                                  child: Text(
-                                    '⏱ ${Utilities.formatDuration(timerController.duration.value)}',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                );
-                              } else {
-                                return const Text('');
-                              }
-                            }),
-                            GetBuilder<FavoritesController>(
-                                builder: (favoriteStateController) {
-                              return IconButton(
-                                icon: Icon(
-                                  favoriteStateController.myFavorites
-                                          .contains(song.songUrl)
-                                      ? Icons.favorite
-                                      : Icons.favorite_border_outlined,
-                                  color: Colors.red,
-                                  size: 32,
-                                  shadows: const [
-                                    BoxShadow(
-                                      color: Colors.red,
-                                      blurRadius: 10,
-                                    ),
-                                  ],
-                                ),
-                                onPressed: () {
-                                  if (favoriteStateController.myFavorites
-                                      .contains(song.songUrl)) {
-                                    favoriteStateController
-                                        .removeFavorites(song);
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Obx(() {
+                                  if (timerController.duration.value >
+                                      Duration.zero) {
+                                    return Container(
+                                      padding: const EdgeInsets.all(3),
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            bottomRight: Radius.circular(12),
+                                            topRight: Radius.circular(12)),
+                                        color: Colors.grey[300],
+                                      ),
+                                      child: Text(
+                                        '⏱ ${Utilities.formatDuration(timerController.duration.value)}',
+                                        style: const TextStyle(fontSize: 18),
+                                      ),
+                                    );
                                   } else {
-                                    favoriteStateController.addFavorites(song);
+                                    return const Text('');
                                   }
-                                },
-                              );
-                            })
-                          ],
-                        ),
-                      ]),
+                                }),
+                              ],
+                            ),
+                          ),
+                        ]),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.75,
-                              height: MediaQuery.of(context).size.height * 0.15,
-                              child: Column(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          height: MediaQuery.of(context).size.height * 0.15,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextScroll(
+                                velocity: const Velocity(
+                                    pixelsPerSecond: Offset(30, 30)),
+                                song.title,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                              Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    song.title,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
+                                  Expanded(
+                                    child: TextScroll(
+                                      velocity: const Velocity(
+                                          pixelsPerSecond: Offset(30, 30)),
+                                      song.artist,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.grey.shade600),
+                                    ),
                                   ),
-                                  Text(
-                                    song.artist,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        color: Colors.grey.shade600),
-                                  ),
+                                  GetBuilder<FavoritesController>(
+                                      builder: (favoriteStateController) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (favoriteStateController
+                                              .myFavorites
+                                              .contains(song.songUrl)) {
+                                            favoriteStateController
+                                                .removeFavorites(song);
+                                          } else {
+                                            favoriteStateController
+                                                .addFavorites(song);
+                                          }
+                                        },
+                                        child: Icon(
+                                          favoriteStateController.myFavorites
+                                                  .contains(song.songUrl)
+                                              ? Icons.favorite
+                                              : Icons.favorite_border_outlined,
+                                          color: Colors.red,
+                                          size: 32,
+                                          shadows: const [
+                                            BoxShadow(
+                                              color: Colors.red,
+                                              blurRadius: 10,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  })
                                 ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       )
                     ],
@@ -510,6 +527,7 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                 height: 15,
               ),
               // previous song , ply/pause, next song buttons
+              // this music player app is developed by master
 
               PlayerButtons(audioPlayer: audioPlayer),
 

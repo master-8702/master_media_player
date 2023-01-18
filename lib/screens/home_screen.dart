@@ -5,12 +5,12 @@ import 'package:mastermediaplayer/components/section_header.dart';
 import 'package:mastermediaplayer/components/utilities/utilities.dart';
 import 'package:mastermediaplayer/controllers/favoritesController.dart';
 import 'package:mastermediaplayer/controllers/playlistsController.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../components/my_favorites.dart';
 import '../components/music_search_bar.dart';
 import '../components/playlist_card.dart';
 import '../models/playlist_model.dart';
 
+// this class will be our landing screen (home page) for our app
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    // here we will request storage permission in case it was not allowed during installation
     Utilities().requestPermission();
     // GetStorage().remove('myPlaylist');
     favoritesController.getFavoriteMusics();
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onPressed: () {},
                           child: const Icon(
                             Icons.arrow_back_rounded,
-                            size: 18,
+                            size: 30,
                           ),
                         ),
                       ),
@@ -78,7 +79,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             Get.toNamed('explorer');
                           },
-                          child: const Icon(Icons.folder),
+                          child: const Icon(
+                            Icons.folder,
+                            size: 30,
+                          ),
                         ),
                       ),
                     ),
@@ -93,7 +97,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 GetBuilder<FavoritesController>(builder: (state) {
                   if (state.myFavoriteSongs.isEmpty) {
-                    return const Text('No Favorites yet!');
+                    return Column(
+                      children: const [
+                        SectionHeader(title: 'Favorites'),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text('No Favorites yet!'),
+                      ],
+                    );
                   }
                   return MyFavorites(myFavoriteSongs: state.myFavoriteSongs);
                 }),
@@ -112,7 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: const SectionHeader(title: "Playlists")),
                     GetBuilder<PlaylistsController>(builder: (playlistState) {
                       if (playlistsController.myPlaylists.isEmpty) {
-                        return const Text('No Playlists yet!');
+                        return Column(
+                          children: const [
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text('No Playlists yet!'),
+                          ],
+                        );
                       } else {
                         return ListView.builder(
                             shrinkWrap: true,
@@ -125,15 +144,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
                       }
                     }),
+                    // this music player app is developed by master
                     Padding(
                       padding: const EdgeInsets.all(15.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Get.toNamed('createPlaylist');
-                        },
-                        child: const Text('Create New Playlist'),
+                      child: NeumorphicContainer(
+                        child: TextButton(
+                          onPressed: () {
+                            Get.toNamed('createPlaylist');
+                          },
+                          child: const Text(
+                            'Create New Playlist',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 )
               ],

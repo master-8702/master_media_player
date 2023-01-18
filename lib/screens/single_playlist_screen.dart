@@ -15,6 +15,7 @@ import '../components/playlist_songs.dart';
 import '../controllers/playlistsController.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 
+// this class is going to be used for displaying a single playlist page UI with a list of songs from that playlist
 class SinglePlaylistScreen extends StatefulWidget {
   const SinglePlaylistScreen({Key? key}) : super(key: key);
 
@@ -153,12 +154,16 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                     child: Column(
                       children: [
                         const Text('Now Playing:'),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         TextScroll(
                           Utilities.basename(
                             File(myPlaylist.songs[playlistsController
                                 .currentAudioPlayerIndex.value]),
                           ),
-                          style: const TextStyle(fontSize: 22),
+                          style: const TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.bold),
                           velocity:
                               const Velocity(pixelsPerSecond: Offset(30, 30)),
                         ),
@@ -215,6 +220,8 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                               songUrl: myPlaylist.songs[index]),
                         );
                       });
+                  // this music player app is developed by master
+
                   //
                 }),
               ],
