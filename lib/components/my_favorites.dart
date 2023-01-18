@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
 import 'package:mastermediaplayer/components/song_card.dart';
 
@@ -14,14 +16,18 @@ class MyFavorites extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      const SectionHeader(title: "My Favorites"),
+      InkWell(
+          onTap: () {
+            Get.toNamed('favorites');
+          },
+          child: const SectionHeader(title: "My Favorites")),
       const SizedBox(
         height: 25,
       ),
       SizedBox(
         height: MediaQuery.of(context).size.height * 0.27,
         child: ListView.builder(
-            itemCount: myFavoriteSongs.length,
+            itemCount: myFavoriteSongs.length <= 5 ? myFavoriteSongs.length : 5,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return SongCard(song: myFavoriteSongs[index]);

@@ -3,6 +3,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mastermediaplayer/screens/create_playlist_screen.dart';
+import 'package:mastermediaplayer/screens/favorites_screen.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen2.dart';
@@ -60,6 +61,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/createPlaylist',
           page: () => CreatePlaylistScreen(),
+        ),
+        GetPage(
+          name: '/favorites',
+          page: () => const FavoritesScreen(),
         ),
       ],
     );

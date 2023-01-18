@@ -98,12 +98,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 GetBuilder<FavoritesController>(builder: (state) {
                   if (state.myFavoriteSongs.isEmpty) {
                     return Column(
-                      children: const [
-                        SectionHeader(title: 'Favorites'),
-                        SizedBox(
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Get.toNamed('favorites');
+                            },
+                            child: const SectionHeader(title: 'Favorites')),
+                        const SizedBox(
                           height: 15,
                         ),
-                        Text('No Favorites yet!'),
+                        const Text('No Favorites yet!'),
                       ],
                     );
                   }
