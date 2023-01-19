@@ -138,7 +138,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 // or a little funny 'no result found' message
                 child: Obx(() {
                   if (textEditingController.text.isNotEmpty &&
-                      foundSongs.isEmpty) {
+                      foundSongs.isEmpty &&
+                      foundPlaylist.isEmpty) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -158,81 +159,91 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       ],
                     );
-                  }
+                  } else if (foundSongs.isNotEmpty) {
+                    // here by using the builder constructor of ListView we will normally display the search results that are only
+                    // music related (foundSongs) and when the the builder is at the last iteration then we will add the 'playlist related'
+                    // search results (foundPlaylist)s to the end of the existing list (in the column) after adding the last item from foundSongs
 
-                  // here by using the builder constructor of ListView we will normally display the search results that are only
-                  // music related (foundSongs) and when the the builder is at the last iteration then we will add the 'playlist related'
-                  // search results (foundPlaylist)s to the end of the existing list (in the column) after adding the last item from foundSongs
+                    return ListView.builder(
+                        itemCount: foundSongs.length,
+                        itemBuilder: (context, index) {
+                          var temp = foundSongs[index];
 
-                  return ListView.builder(
-                      itemCount: foundSongs.length,
-                      itemBuilder: (context, index) {
-                        var temp = foundSongs[index];
-
-                        // the below code will be displayed if the builder is on the last iteration
-                        if (index == foundSongs.length - 1) {
-                          return Column(
-                            children: [
-                              GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () {
-                                  Get.toNamed('playlist', arguments: {
-                                    'playlist': playlistsController.myPlaylists[
-                                        foundSongs[index].playlistIndex],
-                                    'selectedIndex': foundSongs[index].songIndex
-                                  });
-                                },
-                                child: IgnorePointer(
-                                  child: SongCard2(
-                                      song: Song(
-                                          title: temp.songTitle,
-                                          artist: temp.artistName,
-                                          albumTitle: temp.albumTitle,
-                                          songUrl: '',
-                                          coverImageUrl: Uint8List(13))),
+                          // the below code will be displayed if the builder is on the last iteration
+                          if (index == foundSongs.length - 1) {
+                            return Column(
+                              children: [
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    Get.toNamed('playlist', arguments: {
+                                      'playlist':
+                                          playlistsController.myPlaylists[
+                                              foundSongs[index].playlistIndex],
+                                      'selectedIndex':
+                                          foundSongs[index].songIndex
+                                    });
+                                  },
+                                  child: IgnorePointer(
+                                    child: SongCard2(
+                                        song: Song(
+                                            title: temp.songTitle,
+                                            artist: temp.artistName,
+                                            albumTitle: temp.albumTitle,
+                                            songUrl: '',
+                                            coverImageUrl: Uint8List(13))),
+                                  ),
                                 ),
-                              ),
-                              // here we are adding the 'foundPlaylists' list at the end of the 'foundSongs' list
-                              // and since we set the listView setting to NeverScroll it wont be another list
-                              // it will just use the above list's scrolling function and they will just act like a single list
-                              ListView(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                children: foundPlaylist
-                                    .map((element) =>
-                                        PlaylistCard(myPlaylist: element))
-                                    .toList(),
-                              ),
-                            ],
+                                // here we are adding the 'foundPlaylists' list at the end of the 'foundSongs' list
+                                // and since we set the listView setting to NeverScroll it wont be another list
+                                // it will just use the above list's scrolling function and they will just act like a single list
+                                ListView(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  children: foundPlaylist
+                                      .map((element) =>
+                                          PlaylistCard(myPlaylist: element))
+                                      .toList(),
+                                ),
+                              ],
+                            );
+                          }
+                          // the below code will be executed when the builder starts building lists and is not on the last
+                          // iteration (normal condition) .. but when it hits it's last index only the above code will be executed.
+                          return GestureDetector(
+                            // here setting behavior property of GestureDetector to 'HitTestBehavior.opaque' will allow us
+                            // to override the child's onTap or onPressed methods with the help of IgnorePointer widget
+                            // so to do that just wrap the child widget with IgnorePointer and wrap IgnorePointer with a GestureDetector
+                            // after that we can handle any event we want from the 'onTap' method of the GestureDetector
+                            // without worrying about any Gesture Handling from the child widget
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              Get.toNamed('playlist', arguments: {
+                                'playlist': playlistsController.myPlaylists[
+                                    foundSongs[index].playlistIndex],
+                                'selectedIndex': foundSongs[index].songIndex
+                              });
+                            },
+                            child: IgnorePointer(
+                              child: SongCard2(
+                                  song: Song(
+                                      title: temp.songTitle,
+                                      artist: temp.artistName,
+                                      albumTitle: temp.albumTitle,
+                                      songUrl: '',
+                                      coverImageUrl: Uint8List(13))),
+                            ),
                           );
-                        }
-                        // the below code will be executed when the builder starts building lists and is not on the last
-                        // iteration (normal condition) .. but when it hits it's last index only the above code will be executed.
-                        return GestureDetector(
-                          // here setting behavior property of GestureDetector to 'HitTestBehavior.opaque' will allow us
-                          // to override the child's onTap or onPressed methods with the help of IgnorePointer widget
-                          // so to do that just wrap the child widget with IgnorePointer and wrap IgnorePointer with a GestureDetector
-                          // after that we can handle any event we want from the 'onTap' method of the GestureDetector
-                          // without worrying about any Gesture Handling from the child widget
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () {
-                            Get.toNamed('playlist', arguments: {
-                              'playlist': playlistsController
-                                  .myPlaylists[foundSongs[index].playlistIndex],
-                              'selectedIndex': foundSongs[index].songIndex
-                            });
-                          },
-                          child: IgnorePointer(
-                            child: SongCard2(
-                                song: Song(
-                                    title: temp.songTitle,
-                                    artist: temp.artistName,
-                                    albumTitle: temp.albumTitle,
-                                    songUrl: '',
-                                    coverImageUrl: Uint8List(13))),
-                          ),
-                        );
-                      });
+                        });
+                  } else {
+                    // here 'else' means when foundSongs is empty we don't need to append the foundPlaylist to the foundSongs
+                    // so we will just display it as a normal independent list with it's own scrolling function and lazyLoad behavior
+                    return ListView(
+                      children: foundPlaylist
+                          .map((element) => PlaylistCard(myPlaylist: element))
+                          .toList(),
+                    );
+                  }
                 }),
               ),
             ],
