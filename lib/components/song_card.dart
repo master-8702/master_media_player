@@ -43,13 +43,14 @@ class SongCard extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Colors.lightBlueAccent.withOpacity(0.7),
+              color: Colors.grey[300]?.withOpacity(0.7),
             ),
             child: Wrap(
               // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // this Sizedbox is added in order to stop the texts from over flowing
+                // this SizedBox is added in order to stop the texts from over flowing
                 // and to that we have to set the width for the text holder widget
+                // this music player app is developed by master
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.4,
                   child: Column(
@@ -60,13 +61,14 @@ class SongCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         song.title,
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                            color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                       Text(
                         song.artist,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Colors.black, fontWeight: FontWeight.bold),
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

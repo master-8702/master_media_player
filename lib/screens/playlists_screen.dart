@@ -10,6 +10,7 @@ class PlaylistsScreen extends StatelessWidget {
   PlaylistsScreen({Key? key}) : super(key: key);
   final PlaylistsController playlistsController =
       Get.put(PlaylistsController());
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +86,7 @@ class PlaylistsScreen extends StatelessWidget {
                       Flexible(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            clipBehavior: Clip.none,
+                            clipBehavior: Clip.antiAlias,
                             itemCount: playlistState.myPlaylists.length,
                             itemBuilder: (context, index) {
                               return PlaylistCard(

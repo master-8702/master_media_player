@@ -3,14 +3,14 @@ import 'dart:typed_data';
 class Song {
   final String title;
   final String artist;
-  final String description;
+  final String albumTitle;
   final String songUrl;
   final Uint8List coverImageUrl;
 
   Song({
     required this.title,
     required this.artist,
-    required this.description,
+    required this.albumTitle,
     required this.songUrl,
     required this.coverImageUrl,
   });
@@ -19,14 +19,14 @@ class Song {
     Song(
       title: "Alfu Selat",
       artist: 'Fuad Alburda',
-      description: 'Engurguro + Dibe menzuma',
+      albumTitle: 'Engurguro + Dibe menzuma',
       songUrl: 'assets/audios/alfuSelat.mp3',
       coverImageUrl: Uint8List(13),
     ),
     Song(
       title: 'Arhibu Nebye',
       artist: 'Anwar Alburda',
-      description: 'Engurguro + Dibe menzuma',
+      albumTitle: 'Engurguro + Dibe menzuma',
       songUrl: 'assets/audios/arhibuNebye.mp3',
       coverImageUrl: Uint8List(13),
     ),
@@ -34,21 +34,21 @@ class Song {
       title: 'Enes Kenahubet',
       artist:
           'Husni Sultan, Sualih Muhammed, Ashref Nasir, Abdurezak Tewfik, Selahadin',
-      description: 'Engurguro + Neshida',
+      albumTitle: 'Engurguro + Neshida',
       songUrl: 'assets/audios/enesKenahubet.mp3',
       coverImageUrl: Uint8List(13),
     ),
     Song(
       title: "Alfu Selat",
       artist: 'Fuad Alburda',
-      description: 'Engurguro + Dibe menzuma',
+      albumTitle: 'Engurguro + Dibe menzuma',
       songUrl: 'assets/audios/alfuSelat.mp3',
       coverImageUrl: Uint8List(13),
     ),
     Song(
       title: 'Arhibu Nebye',
       artist: 'Anwar Alburda',
-      description: 'Engurguro + Dibe menzuma',
+      albumTitle: 'Engurguro + Dibe menzuma',
       songUrl: 'assets/audios/arhibuNebye.mp3',
       coverImageUrl: Uint8List(13),
     ),
@@ -56,7 +56,7 @@ class Song {
       title: 'Enes Kenahubet',
       artist:
           'Husni Sultan, Sualih Muhammed, Ashref Nasir, Abdurezak Tewfik, Selahadin',
-      description: 'Engurguro + Neshida',
+      albumTitle: 'Engurguro + Neshida',
       songUrl: 'assets/audios/enesKenahubet.mp3',
       coverImageUrl: Uint8List(13),
     )

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mastermediaplayer/components/song_card2.dart';
 import 'package:mastermediaplayer/controllers/favoritesController.dart';
 import '../components/neumorphic_container.dart';
 
+// this class is going to build the Ui for the favorites screen that will display all the list of favorite musics
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({Key? key}) : super(key: key);
 
@@ -57,52 +59,17 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               const SizedBox(
                 height: 15,
               ),
-              Expanded(
-                  child: NeumorphicContainer(
-                child: ListView.builder(
-                    clipBehavior: Clip.antiAlias,
-                    itemCount: favoritesController.myFavorites.length,
-                    itemBuilder: (context, index) {
-                      var currentMusic =
-                          favoritesController.myFavoriteSongs[index];
-                      return Card(
-                        elevation: 5,
-                        color: Colors.grey[300],
-                        child: ListTile(
-                          leading: currentMusic.coverImageUrl.length != 13
-                              ? SizedBox(
-                                  width: 80,
-                                  height: 60,
-                                  child:
-                                      Image.memory(currentMusic.coverImageUrl))
-                              : SizedBox(
-                                  width: 80,
-                                  height: 60,
-                                  child: Image.asset(
-                                      'assets/images/music_icon5.png')),
-                          title: Text(
-                            currentMusic.title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          subtitle: Text(
-                            currentMusic.artist,
-                            maxLines: 2,
-                          ),
-                          trailing: IconButton(
-                            onPressed: () {
-                              Get.toNamed('songPlaying',
-                                  arguments: currentMusic);
-                            },
-                            icon: const Icon(
-                              Icons.play_circle_rounded,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ))
+              GetBuilder<FavoritesController>(builder: (context) {
+                return Expanded(
+                    child: ListView.builder(
+                        clipBehavior: Clip.antiAlias,
+                        itemCount: favoritesController.myFavorites.length,
+                        itemBuilder: (context, index) {
+                          var currentMusic =
+                              favoritesController.myFavoriteSongs[index];
+                          return SongCard2(song: currentMusic);
+                        }));
+              }),
             ],
           ),
         ),

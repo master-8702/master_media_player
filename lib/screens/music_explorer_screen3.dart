@@ -182,7 +182,7 @@ class _MusicExplorerState3 extends State<MusicExplorer3> {
                       valueListenable: currentDirectory,
                       builder: (context, currentDir, child) {
                         // here we will clear the search text field when the user opens a new (another) folder
-                        textEditingController.clear();
+                        textEditingController.text = '';
                         return FutureBuilder<List<FileSystemEntity>>(
                             future: currentDir.list().toList(),
                             builder: (context, snapshot) {

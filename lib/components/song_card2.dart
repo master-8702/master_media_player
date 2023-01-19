@@ -1,28 +1,25 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/controllers/playlistsController.dart';
+import 'package:mastermediaplayer/controllers/favoritesController.dart';
 
-import '../models/playlist_model.dart';
+import '../models/song_model.dart';
 
-class PlaylistCard extends StatelessWidget {
-  PlaylistCard({
+class SongCard2 extends StatelessWidget {
+  SongCard2({
     Key? key,
-    required this.myPlaylist,
+    required this.song,
   }) : super(key: key);
 
-  final Playlist myPlaylist;
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
+  final Song song;
+  final FavoritesController favoritesController =
+      Get.put(FavoritesController());
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed('playlist',
-            arguments: {'playlist': myPlaylist, 'selectedIndex': 0});
+        Get.toNamed('songPlaying', arguments: song);
       },
       child: NeumorphicContainer(
         padding: 10,
@@ -32,21 +29,20 @@ class PlaylistCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: myPlaylist.coverImageUrl == 'assets/images/playlist.png'
+              child: song.coverImageUrl.length == 13
                   ? Image.asset(
-                      myPlaylist.coverImageUrl,
+                      'assets/images/music_icon5.png',
                       height: 50,
                       width: 50,
                       fit: BoxFit.cover,
                     )
-                  : Image.file(
-                      File(myPlaylist.coverImageUrl),
+                  : Image.memory(
+                      song.coverImageUrl,
                       height: 50,
                       width: 50,
                       fit: BoxFit.cover,
                     ),
             ),
-            // this music player app is developed by master
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.45,
               child: Column(
@@ -54,27 +50,30 @@ class PlaylistCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    myPlaylist.title,
+                    song.title,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  Text('${myPlaylist.songs.length} Songs',
-                      style: Theme.of(context).textTheme.bodySmall!)
+                  Text(song.artist,
+                      style: Theme.of(context).textTheme.bodySmall!),
+                  Text(song.albumTitle,
+                      style: Theme.of(context).textTheme.bodySmall!),
                 ],
               ),
             ),
             PopupMenuButton(onSelected: ((selectedValue) {
-              if (selectedValue == 'Delete  Playlist') {
-                playlistsController.removePlaylist(myPlaylist);
+              // this music player app is developed by master
+              if (selectedValue == 'Remove  from favorites') {
+                favoritesController.removeFavorites(song);
               }
             }), itemBuilder: (context) {
               return const [
                 PopupMenuItem(
-                  value: 'Delete  Playlist',
-                  child: Text('Delete  Playlist'),
+                  value: 'Remove  from favorites',
+                  child: Text('Remove  from favorites'),
                 ),
               ];
             })

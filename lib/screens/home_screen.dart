@@ -141,7 +141,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             shrinkWrap: true,
                             padding: const EdgeInsets.only(top: 20),
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: playlistState.myPlaylists.length,
+                            itemCount: playlistState.myPlaylists.length <= 5
+                                ? playlistState.myPlaylists.length
+                                : 5,
                             itemBuilder: (context, index) {
                               return PlaylistCard(
                                   myPlaylist: playlistState.myPlaylists[index]);

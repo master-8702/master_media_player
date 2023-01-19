@@ -9,6 +9,7 @@ import 'package:mastermediaplayer/screens/music_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen2.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen3.dart';
 import 'package:mastermediaplayer/screens/playlists_screen.dart';
+import 'package:mastermediaplayer/screens/searchScreen.dart';
 import 'package:mastermediaplayer/screens/single_playlist_screen.dart';
 import 'package:mastermediaplayer/screens/song_playing_screen.dart';
 
@@ -20,7 +21,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  // This widget is the root of our application. that will handle the route and everything.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -65,6 +66,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/favorites',
           page: () => const FavoritesScreen(),
+        ),
+        GetPage(
+          name: '/search',
+          page: () => const SearchScreen(),
         ),
       ],
     );

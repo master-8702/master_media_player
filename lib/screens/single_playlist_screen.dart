@@ -24,7 +24,10 @@ class SinglePlaylistScreen extends StatefulWidget {
 }
 
 class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
-  Playlist myPlaylist = Get.arguments;
+  Playlist myPlaylist = Get.arguments['playlist'];
+  // if the selected index is passed as an argument we will take that otherwise we will just initialize it to zero
+  int selectedSongIndex = Get.arguments['selectedIndex'] ?? 0;
+
   AudioPlayer audioPlayer = AudioPlayer();
   late var selectedSongs = <String>[].obs;
 
@@ -35,7 +38,10 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
   void initState() {
     // here we will initialize the index to zero cause the last playlist's index might not be found on the new one
     // so we will avoid range error (index out of range error)
-    playlistsController.currentAudioPlayerIndex.value = 0;
+    // on the other hand if we came from the search page the index might not be zero so using selectedSongIndex variable
+    // we will check if we came from the playlists page or search page (if we came from the search page probably it won't be a zero)
+    // and assign the initial index number for the playlist audio source.
+    playlistsController.currentAudioPlayerIndex.value = selectedSongIndex;
     // here we will concatenate audio sources to the player from the playlist song's file
     List<AudioSource> audioSources = [];
     for (String songPath in myPlaylist.songs) {
@@ -45,9 +51,8 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
         children: audioSources,
         shuffleOrder: DefaultShuffleOrder(),
         useLazyPreparation: true);
-    audioPlayer.setAudioSource(
-      playlist,
-    );
+    audioPlayer.setAudioSource(playlist,
+        initialIndex: selectedSongIndex, initialPosition: Duration.zero);
 
     super.initState();
   }

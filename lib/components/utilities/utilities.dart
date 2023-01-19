@@ -35,9 +35,9 @@ class Utilities {
         artist: metadata.trackArtistNames != null
             ? metadata.trackArtistNames!.toList().toString()
             : 'Unknown Artist',
-        description: metadata.trackArtistNames != null
-            ? metadata.trackArtistNames.toString()
-            : 'No Description',
+        albumTitle: metadata.albumName != null
+            ? metadata.albumName.toString()
+            : 'Unknown Album',
         songUrl: songPath,
         coverImageUrl: metadata.albumArt != null
             ? metadata.albumArt as Uint8List

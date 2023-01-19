@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 
 class MusicSearchBar extends StatelessWidget {
@@ -25,7 +26,7 @@ class MusicSearchBar extends StatelessWidget {
             height: 5,
           ),
           Text(
-            "Enjoy Your Favorite",
+            "Enjoy Your Musics",
             style: Theme.of(context)
                 .textTheme
                 .headline6!
@@ -36,19 +37,22 @@ class MusicSearchBar extends StatelessWidget {
           ),
           NeumorphicContainer(
             padding: 5,
-            child: TextFormField(
-              decoration: InputDecoration(
-                filled: true,
-                hintText: 'Search',
-                isDense: true,
-                fillColor: Colors.lightBlue[100],
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none),
+            child: TextButton(
+              onPressed: () {
+                Get.toNamed('search');
+              },
+              child: Row(
+                children: const [
+                  Icon(Icons.search),
+                  SizedBox(
+                    width: 25,
+                  ),
+                  Text('search your playlists')
+                ],
               ),
             ),
           )
+          // this music player app is developed by master
         ],
       ),
     );
