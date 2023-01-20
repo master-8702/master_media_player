@@ -3,17 +3,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:mastermediaplayer/components/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/models/playlist_model.dart';
 import 'package:text_scroll/text_scroll.dart';
 import '../components/PlayerButtons.dart';
 import '../components/PlaylistControlButtons.dart';
 import '../components/music_seekbar_slider.dart';
 import '../components/neumorphic_container.dart';
-import '../components/playlist_card_main.dart';
 import '../components/playlist_songs.dart';
 import '../controllers/playlistsController.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
+
+import '../controllers/timerController.dart';
 
 // this class is going to be used for displaying a single playlist page UI with a list of songs from that playlist
 class SinglePlaylistScreen extends StatefulWidget {
@@ -33,6 +34,10 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
 
   final PlaylistsController playlistsController =
       Get.put(PlaylistsController());
+
+  final TextEditingController timerTextEditingController =
+      TextEditingController();
+  TimerController timerController = TimerController();
 
   @override
   void initState() {
@@ -76,7 +81,6 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
   Widget build(BuildContext context) {
     audioPlayer.play();
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -98,8 +102,6 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                           },
                           child: const Icon(
                             Icons.arrow_back_rounded,
-                            size: 30,
-                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -114,8 +116,10 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                             textAlign: TextAlign.center,
                             myPlaylist.title,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(fontSize: 18),
                           ),
                         ),
                       ),
@@ -125,19 +129,112 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                       width: 60,
                       child: NeumorphicContainer(
                         child: PopupMenuButton(
+                          position: PopupMenuPosition.under,
                           onSelected: (selectedValue) async {
-                            if (selectedValue == 'add music to this Playlist') {
+                            if (selectedValue == 'Add Music(s)') {
                               selectedSongs =
                                   await Get.toNamed('songExplorer2');
                               playlistsController.addMusicToPlaylist(
                                   myPlaylist, selectedSongs);
+                            } else if (selectedValue == 'Sleep Timer') {
+                              return showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    timerTextEditingController.text = '';
+
+                                    final formKey = GlobalKey<FormState>();
+
+                                    return AlertDialog(
+                                      title: const Text('Set Sleep Timer'),
+                                      content: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Flexible(
+                                            child: SizedBox(
+                                              width: 200,
+                                              child: Form(
+                                                key: formKey,
+                                                child: TextFormField(
+                                                  autofocus: true,
+                                                  controller:
+                                                      timerTextEditingController,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    counterText: '',
+                                                  ),
+                                                  maxLength: 2,
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value == '') {
+                                                      return 'minute can\'t be empty';
+                                                    } else if (!value
+                                                        .isNumericOnly) {
+                                                      return 'please insert numbers only';
+                                                    }
+                                                    timerController.setDuration(
+                                                        Duration(
+                                                            minutes: int.parse(
+                                                                value)));
+                                                    return null;
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const Text('Minutes')
+                                        ],
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            // here we will validate the user's input for sleep timer
+                                            final isTheFormValid = formKey
+                                                .currentState!
+                                                .validate();
+                                            if (isTheFormValid) {
+                                              // here if the user input is fine (all numeric) we will close the dialog
+                                              // and start the sleep timer
+
+                                              Get.back();
+
+                                              timerController
+                                                  .startTimer(audioPlayer);
+                                            }
+                                          },
+                                          child: const Text('Start'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Get.back();
+                                            timerController.stopTimer();
+                                          },
+                                          child: const Text('Stop'),
+                                        ),
+                                      ],
+                                      actionsAlignment:
+                                          MainAxisAlignment.center,
+                                    );
+                                  });
                             }
                           },
                           itemBuilder: (context) {
                             return const [
                               PopupMenuItem(
-                                value: 'add music to this Playlist',
-                                child: Text('add music to this Playlist'),
+                                value: 'Add Music(s)',
+                                child: ListTile(
+                                  leading: Icon(Icons.add),
+                                  title: Text('Add Music(s)'),
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 'Sleep Timer',
+                                child: ListTile(
+                                  leading: Icon(Icons.timer_rounded),
+                                  title: Text('Sleep Timer'),
+                                ),
                               )
                             ];
                           },
@@ -149,7 +246,66 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                PlaylistCardMain(myPlaylist: myPlaylist),
+                Stack(alignment: Alignment.topCenter, children: [
+                  NeumorphicContainer(
+                    padding: 10,
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: myPlaylist.coverImageUrl ==
+                                  'assets/images/playlist.png'
+                              ? Image.asset(
+                                  myPlaylist.coverImageUrl,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.30,
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.fill,
+                                )
+                              : Expanded(
+                                  child: Image.file(
+                                    File(myPlaylist.coverImageUrl),
+                                    height: MediaQuery.of(context).size.height *
+                                        0.30,
+                                    width: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Obx(() {
+                          if (timerController.duration.value > Duration.zero) {
+                            return Container(
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                    bottomRight: Radius.circular(12),
+                                    topRight: Radius.circular(12)),
+                                color: Theme.of(context).backgroundColor,
+                              ),
+                              child: Text(
+                                '⏱ ${Utilities.formatDuration(timerController.duration.value)}',
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                            );
+                          } else {
+                            return const Text('');
+                          }
+                        }),
+                      ],
+                    ),
+                  ),
+                ]),
                 const SizedBox(
                   height: 15,
                 ),

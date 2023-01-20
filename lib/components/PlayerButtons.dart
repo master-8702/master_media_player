@@ -29,8 +29,13 @@ class PlayerButtons extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   final currentPosition = audioPlayer.position;
-                  audioPlayer
-                      .seek(currentPosition - const Duration(seconds: 10));
+                  if ((currentPosition - const Duration(seconds: 10)) >
+                      Duration.zero) {
+                    audioPlayer
+                        .seek(currentPosition - const Duration(seconds: 10));
+                  } else {
+                    audioPlayer.seek(Duration.zero);
+                  }
                 },
                 child: const Icon(Icons.fast_rewind, size: 22),
               ),
@@ -39,25 +44,26 @@ class PlayerButtons extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          StreamBuilder<SequenceState>(builder: (context, index) {
-            return Expanded(
-              flex: 2,
-              child: NeumorphicContainer(
-                child: TextButton(
-                  onPressed: () {
-                    // this will rebuild the ui in order to add the play icon on currently playing music list
-                    playlistsController
-                        .justRebuildTheUi(audioPlayer.previousIndex!);
+          if (audioPlayer.sequence!.length > 1)
+            StreamBuilder<SequenceState>(builder: (context, index) {
+              return Expanded(
+                flex: 2,
+                child: NeumorphicContainer(
+                  child: TextButton(
+                    onPressed: () {
+                      // this will rebuild the ui in order to add the play icon on currently playing music list
+                      playlistsController
+                          .justRebuildTheUi(audioPlayer.previousIndex!);
 // this will set the audio player to play the previous song in the playlist if there is any
-                    audioPlayer.hasPrevious
-                        ? audioPlayer.seekToPrevious()
-                        : null;
-                  },
-                  child: const Icon(Icons.skip_previous, size: 22),
+                      audioPlayer.hasPrevious
+                          ? audioPlayer.seekToPrevious()
+                          : null;
+                    },
+                    child: const Icon(Icons.skip_previous, size: 22),
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
           const SizedBox(
             width: 10,
           ),
@@ -146,24 +152,25 @@ class PlayerButtons extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          StreamBuilder<SequenceState>(builder: (context, index) {
-            return Expanded(
-              flex: 2,
-              child: NeumorphicContainer(
-                child: TextButton(
-                  onPressed: () {
-                    // this will rebuild the ui in order to add the play icon on currently playing music list
-                    playlistsController
-                        .justRebuildTheUi(audioPlayer.nextIndex!);
-                    // this will set the audio player to play the next song in the playlist if there is any
+          if (audioPlayer.sequence!.length > 1)
+            StreamBuilder<SequenceState>(builder: (context, index) {
+              return Expanded(
+                flex: 2,
+                child: NeumorphicContainer(
+                  child: TextButton(
+                    onPressed: () {
+                      // this will rebuild the ui in order to add the play icon on currently playing music list
+                      playlistsController
+                          .justRebuildTheUi(audioPlayer.nextIndex!);
+                      // this will set the audio player to play the next song in the playlist if there is any
 
-                    audioPlayer.hasNext ? audioPlayer.seekToNext() : null;
-                  },
-                  child: const Icon(Icons.skip_next, size: 22),
+                      audioPlayer.hasNext ? audioPlayer.seekToNext() : null;
+                    },
+                    child: const Icon(Icons.skip_next, size: 22),
+                  ),
                 ),
-              ),
-            );
-          }),
+              );
+            }),
           const SizedBox(
             width: 10,
           ),

@@ -32,7 +32,7 @@ class _MusicSeekbarSliderState extends State<MusicSeekbarSlider> {
             return SliderTheme(
               data: SliderThemeData(
                 trackHeight: 8,
-                inactiveTrackColor: Colors.grey.shade400,
+                inactiveTrackColor: Theme.of(context).colorScheme.onPrimary,
               ),
               child: NeumorphicContainer(
                 child: Slider(

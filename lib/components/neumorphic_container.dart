@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class NeumorphicContainer extends StatelessWidget {
-  final child;
+  final Widget child;
   final double padding;
   final double margin;
   const NeumorphicContainer({
@@ -13,27 +14,42 @@ class NeumorphicContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkModeOn = GetStorage().read('isDarkModeOn') ?? false;
     return Container(
       padding: EdgeInsets.all(padding),
       margin: EdgeInsets.all(margin),
-      child: child,
       decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            //darker shadow on the bottom right
-            BoxShadow(
-              color: Colors.grey.shade500,
-              blurRadius: 15,
-              offset: const Offset(5, 5),
-            ),
-            // lighter shadow on the top left
-            const BoxShadow(
-              color: Colors.white,
-              blurRadius: 15,
-              offset: Offset(-5, -5),
-            ),
-          ]),
+          boxShadow: isDarkModeOn
+              ? [
+                  BoxShadow(
+                    color: Colors.grey.shade500,
+                    blurRadius: 1,
+                    offset: const Offset(2, 2),
+                  ),
+                  // lighter shadow on the top left
+                  const BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 1,
+                    offset: Offset(-2, -2),
+                  ),
+                ]
+              : [
+                  //darker shadow on the bottom right
+                  BoxShadow(
+                    color: Colors.grey.shade500,
+                    blurRadius: 15,
+                    offset: const Offset(5, 5),
+                  ),
+                  // lighter shadow on the top left
+                  const BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 15,
+                    offset: Offset(-5, -5),
+                  ),
+                ]),
+      child: child,
     );
   }
 }

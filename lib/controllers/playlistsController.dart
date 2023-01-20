@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mastermediaplayer/models/playlist_model.dart';
 
-import '../components/utilities/utilities.dart';
 import '../models/song_model.dart';
 
 // this class is going to be used as state manager (controller) for playlists

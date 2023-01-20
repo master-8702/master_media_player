@@ -53,31 +53,35 @@ class PlaylistCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    myPlaylist.title,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontWeight: FontWeight.bold),
+                  Text(myPlaylist.title,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall!
+                          .copyWith(fontSize: 16)),
+                  const SizedBox(
+                    height: 3,
                   ),
                   Text('${myPlaylist.songs.length} Songs',
-                      style: Theme.of(context).textTheme.bodySmall!)
+                      style: Theme.of(context).textTheme.bodySmall)
                 ],
               ),
             ),
-            PopupMenuButton(onSelected: ((selectedValue) {
-              if (selectedValue == 'Delete  Playlist') {
-                playlistsController.removePlaylist(myPlaylist);
-              }
-            }), itemBuilder: (context) {
-              return const [
-                PopupMenuItem(
-                  value: 'Delete  Playlist',
-                  child: Text('Delete  Playlist'),
-                ),
-              ];
-            })
+            PopupMenuButton(
+                position: PopupMenuPosition.under,
+                onSelected: ((selectedValue) {
+                  if (selectedValue == 'Delete  Playlist') {
+                    playlistsController.removePlaylist(myPlaylist);
+                  }
+                }),
+                itemBuilder: (context) {
+                  return const [
+                    PopupMenuItem(
+                      value: 'Delete  Playlist',
+                      child: Text('Delete  Playlist'),
+                    ),
+                  ];
+                })
           ],
         ),
       ),

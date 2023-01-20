@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:mastermediaplayer/components/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class PlaylistControlButtons extends StatefulWidget {
   const PlaylistControlButtons({Key? key, required this.audioPlayer})
@@ -31,43 +31,51 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.06,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          StreamBuilder<Duration>(
-              initialData: Duration.zero,
-              stream: position,
-              builder: (context, snapshot) {
-                return Text(Utilities.formatDuration(snapshot.data));
-              }),
-          SizedBox(
-            height: 50,
-            width: 40,
-            child: StreamBuilder<bool>(
-              stream: shuffleMode,
-              builder: (context, snapshot) {
-                return _shuffleButton(context, snapshot.data ?? false);
-              },
-            ),
-          ),
-          SizedBox(
-            height: 50,
-            width: 40,
-            child: StreamBuilder<LoopMode>(
-              stream: loopMode,
-              builder: (context, snapshot) {
-                return _repeatButton(context, snapshot.data ?? LoopMode.off);
-              },
-            ),
-          ),
-          StreamBuilder<Duration?>(
-              initialData: Duration.zero,
-              stream: duration,
-              builder: (context, snapshot) {
-                return Text(Utilities.formatDuration(snapshot.data));
-              }),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: widget.audioPlayer.hasNext
+              ? MainAxisAlignment.spaceEvenly
+              : MainAxisAlignment.spaceBetween,
+          children: [
+            StreamBuilder<Duration>(
+                initialData: Duration.zero,
+                stream: position,
+                builder: (context, snapshot) {
+                  return Text(Utilities.formatDuration(snapshot.data));
+                }),
+            if (widget.audioPlayer.sequence!.length > 1)
+              SizedBox(
+                height: 50,
+                width: 40,
+                child: StreamBuilder<bool>(
+                  stream: shuffleMode,
+                  builder: (context, snapshot) {
+                    return _shuffleButton(context, snapshot.data ?? false);
+                  },
+                ),
+              ),
+            if (widget.audioPlayer.sequence!.length > 1)
+              SizedBox(
+                height: 50,
+                width: 40,
+                child: StreamBuilder<LoopMode>(
+                  stream: loopMode,
+                  builder: (context, snapshot) {
+                    return _repeatButton(
+                        context, snapshot.data ?? LoopMode.off);
+                  },
+                ),
+              ),
+            StreamBuilder<Duration?>(
+                initialData: Duration.zero,
+                stream: duration,
+                builder: (context, snapshot) {
+                  return Text(Utilities.formatDuration(snapshot.data));
+                }),
+          ],
+        ),
       ),
     );
   }
@@ -75,8 +83,11 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
   Widget _shuffleButton(BuildContext context, bool isEnabled) {
     return IconButton(
       icon: isEnabled
-          ? const Icon(Icons.shuffle)
-          : Icon(Icons.shuffle, color: Theme.of(context).colorScheme.secondary),
+          ? Icon(
+              Icons.shuffle,
+              color: Theme.of(context).colorScheme.secondary,
+            )
+          : const Icon(Icons.shuffle),
       onPressed: () async {
         final enable = !isEnabled;
         if (enable) {
@@ -89,9 +100,9 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
 
   Widget _repeatButton(BuildContext context, LoopMode loopMode) {
     final icons = [
+      Icon(Icons.repeat, color: Theme.of(context).colorScheme.primary),
       Icon(Icons.repeat, color: Theme.of(context).colorScheme.secondary),
-      const Icon(Icons.repeat),
-      const Icon(Icons.repeat_one),
+      Icon(Icons.repeat_one, color: Theme.of(context).colorScheme.secondary),
     ];
     const cycleModes = [
       LoopMode.off,

@@ -43,7 +43,7 @@ class SongCard extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.55,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: Colors.grey[300]?.withOpacity(0.7),
+              color: Theme.of(context).colorScheme.surface,
             ),
             child: Wrap(
               // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -58,18 +58,12 @@ class SongCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        overflow: TextOverflow.ellipsis,
-                        song.title,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Colors.black, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        song.artist,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Colors.grey[700],
-                            fontWeight: FontWeight.bold),
-                      ),
+                          overflow: TextOverflow.ellipsis,
+                          song.title,
+                          style: Theme.of(context).textTheme.titleSmall),
+                      Text(song.artist,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyLarge),
                     ],
                   ),
                 ),

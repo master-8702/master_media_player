@@ -8,7 +8,7 @@ import 'package:mastermediaplayer/components/song_card2.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 
 import '../components/neumorphic_container.dart';
-import '../components/utilities/utilities.dart';
+import '../utilities/utilities.dart';
 import '../controllers/playlistsController.dart';
 import '../models/playlist_model.dart';
 import '../models/searchable_playlist_model.dart';
@@ -81,7 +81,6 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -101,7 +100,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         },
                         child: const Icon(
                           Icons.arrow_back_rounded,
-                          size: 30,
                         ),
                       ),
                     ),
@@ -116,6 +114,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           autofocus: true,
                           controller: textEditingController,
                           decoration: InputDecoration(
+                              hintText: 'search your playlists',
                               border: InputBorder.none,
                               suffixIcon: IconButton(
                                   onPressed: () {
@@ -150,9 +149,17 @@ class _SearchScreenState extends State<SearchScreen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Flexible(
                             child: Image.asset(
-                                'assets/images/you are not drunk.png')),
+                                height: 150,
+                                width: 150,
+                                'assets/images/you_are_not_drunk.png')),
+                        const SizedBox(
+                          height: 15,
+                        ),
                         const Text(
                           'You are not drunk, right?',
                           style: TextStyle(fontSize: 20),

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../components/utilities/utilities.dart';
+import '../utilities/utilities.dart';
 import '../models/song_model.dart';
 
 // this class is going to be used as state manager (controller) for favorite musics
@@ -33,21 +33,28 @@ class FavoritesController extends GetxController {
   // this method is used for adding new favorite music to the already existing list
   // and update the UI accordingly using the 'update' method of GetX state management (update will force the rebuilding of the UI)
   void addFavorites(Song music) {
-    myFavoriteSongs.add(music);
-    myFavorites.add(music.songUrl);
+    if (myFavorites.contains(music.songUrl)) {
+      // do nothing
 
-    box.write('myFavorites', myFavorites);
-
-    update();
+    } else {
+      myFavoriteSongs.add(music);
+      myFavorites.add(music.songUrl);
+      box.write('myFavorites', myFavorites);
+      update();
+    }
   }
 
   // this method is used for removing favorite music from the already existing list
   // and update the UI accordingly using the 'update' method of GetX state management (update will force the rebuilding of the UI)
   void removeFavorites(Song music) {
-    myFavoriteSongs.remove(music);
-    myFavorites.remove(music.songUrl);
+    if (myFavorites.contains(music.songUrl)) {
+      myFavoriteSongs.remove(music);
+      myFavorites.remove(music.songUrl);
 
-    box.write('myFavorites', myFavorites);
-    update();
+      box.write('myFavorites', myFavorites);
+      update();
+    } else {
+      // do nothing
+    }
   }
 }

@@ -52,10 +52,7 @@ class SongCard2 extends StatelessWidget {
                   Text(
                     song.title,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                   Text(song.artist,
                       style: Theme.of(context).textTheme.bodySmall!),
@@ -64,19 +61,22 @@ class SongCard2 extends StatelessWidget {
                 ],
               ),
             ),
-            PopupMenuButton(onSelected: ((selectedValue) {
-              // this music player app is developed by master
-              if (selectedValue == 'Remove  from favorites') {
-                favoritesController.removeFavorites(song);
-              }
-            }), itemBuilder: (context) {
-              return const [
-                PopupMenuItem(
-                  value: 'Remove  from favorites',
-                  child: Text('Remove  from favorites'),
-                ),
-              ];
-            })
+            PopupMenuButton(
+                position: PopupMenuPosition.under,
+                onSelected: ((selectedValue) {
+                  // this music player app is developed by master
+                  if (selectedValue == 'Remove  from favorites') {
+                    favoritesController.removeFavorites(song);
+                  }
+                }),
+                itemBuilder: (context) {
+                  return const [
+                    PopupMenuItem(
+                      value: 'Remove  from favorites',
+                      child: Text('Remove  from favorites'),
+                    ),
+                  ];
+                })
           ],
         ),
       ),

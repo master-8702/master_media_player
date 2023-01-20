@@ -15,7 +15,6 @@ class PlaylistsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -42,12 +41,9 @@ class PlaylistsScreen extends StatelessWidget {
                   const SizedBox(
                     width: 50,
                   ),
-                  const Expanded(
-                    child: Text(
-                      "My Playlists",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                    ),
+                  Expanded(
+                    child: Text("My Playlists",
+                        style: Theme.of(context).textTheme.headlineSmall),
                   ),
                 ],
               ),

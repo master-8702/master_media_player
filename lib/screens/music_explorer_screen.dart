@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/components/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 import 'package:text_scroll/text_scroll.dart';
 
@@ -79,7 +79,6 @@ class _MusicExplorerState extends State<MusicExplorer> {
           }
         },
         child: Scaffold(
-          backgroundColor: Colors.grey[300],
           body: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -113,14 +112,15 @@ class _MusicExplorerState extends State<MusicExplorer> {
                             valueListenable: currentDirectory,
                             builder: (context, currentDir, child) {
                               return TextScroll(
-                                velocity: const Velocity(
-                                    pixelsPerSecond: Offset(30, 30)),
-                                Utilities.basename(currentDir) != '0'
-                                    ? Utilities.basename(currentDir)
-                                    : 'Local Storage',
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              );
+                                  velocity: const Velocity(
+                                      pixelsPerSecond: Offset(30, 30)),
+                                  Utilities.basename(currentDir) != '0'
+                                      ? Utilities.basename(currentDir)
+                                      : 'Local Storage',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall!
+                                      .copyWith(fontSize: 20));
                             }),
                       ),
                       const SizedBox(
@@ -213,10 +213,10 @@ class _MusicExplorerState extends State<MusicExplorer> {
                                       const SizedBox(
                                         height: 15,
                                       ),
-                                      const Text(
-                                        'No Music Files in This Folder',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
+                                      Text('No Music Files in This Folder',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge),
                                     ],
                                   );
                                 }
@@ -250,7 +250,6 @@ class _MusicExplorerState extends State<MusicExplorer> {
                                         itemCount: foundFiles.length,
                                         itemBuilder: (context, index) {
                                           return Card(
-                                            color: Colors.grey[300],
                                             child: ListTile(
                                                 leading: foundFiles[index]
                                                         is File
@@ -325,7 +324,6 @@ class _MusicExplorerState extends State<MusicExplorer> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[300],
         content: FutureBuilder<List<Directory>>(
           future: Utilities.getStorageList(),
           builder: (context, snapshot) {
@@ -339,14 +337,16 @@ class _MusicExplorerState extends State<MusicExplorer> {
                         .map((e) => Row(
                               children: [
                                 Expanded(
-                                  child: TextButton(
-                                    child: Text(
-                                      Utilities.basename(e),
+                                  child: Card(
+                                    child: TextButton(
+                                      child: Text(
+                                        Utilities.basename(e),
+                                      ),
+                                      onPressed: () {
+                                        currentDirectory.value = e as Directory;
+                                        Get.back();
+                                      },
                                     ),
-                                    onPressed: () {
-                                      currentDirectory.value = e as Directory;
-                                      Get.back();
-                                    },
                                   ),
                                 ),
                               ],

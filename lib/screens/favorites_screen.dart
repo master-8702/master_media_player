@@ -20,7 +20,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -39,7 +38,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         },
                         child: const Icon(
                           Icons.arrow_back_rounded,
-                          size: 30,
                         ),
                       ),
                     ),
@@ -47,12 +45,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   const SizedBox(
                     width: 50,
                   ),
-                  const Expanded(
-                    child: Text(
-                      "My Favorites",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                    ),
+                  Expanded(
+                    child: Text("My Favorites",
+                        style: Theme.of(context).textTheme.headlineSmall),
                   ),
                 ],
               ),

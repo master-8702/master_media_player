@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
-import 'package:mastermediaplayer/components/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/controllers/favoritesController.dart';
 import 'package:mastermediaplayer/controllers/playlistsController.dart';
 import '../components/my_favorites.dart';
-import '../components/music_search_bar.dart';
+import '../components/playlists_search_bar.dart';
 import '../components/playlist_card.dart';
 import '../models/playlist_model.dart';
 
@@ -39,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -51,23 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // menu and back button
-                    SizedBox(
-                      height: 60,
-                      width: 60,
-                      child: NeumorphicContainer(
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Icon(
-                            Icons.arrow_back_rounded,
-                            size: 30,
-                          ),
-                        ),
+
+                    Expanded(
+                      child: Center(
+                        child: Text("Master Player",
+                            style: Theme.of(context).textTheme.headlineSmall),
                       ),
-                    ),
-                    const Text(
-                      "Master Player",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                     ),
                     SizedBox(
                       height: 60,
@@ -75,13 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: NeumorphicContainer(
                         child: TextButton(
                           onPressed: () async {
-                            Utilities().requestPermission();
-
-                            Get.toNamed('explorer');
+                            Get.toNamed('settings');
                           },
                           child: const Icon(
-                            Icons.folder,
-                            size: 30,
+                            Icons.settings,
                           ),
                         ),
                       ),
@@ -154,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: NeumorphicContainer(
+                        padding: 5,
                         child: TextButton(
                           onPressed: () {
                             Get.toNamed('createPlaylist');

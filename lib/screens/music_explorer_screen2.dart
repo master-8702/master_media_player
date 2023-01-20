@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/components/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../controllers/playlistsController.dart';
@@ -84,7 +84,6 @@ class _MusicExplorer2State extends State<MusicExplorer2> {
           }
         },
         child: Scaffold(
-          backgroundColor: Colors.grey[300],
           body: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -104,7 +103,6 @@ class _MusicExplorer2State extends State<MusicExplorer2> {
                             },
                             child: const Icon(
                               Icons.arrow_back_rounded,
-                              size: 30,
                             ),
                           ),
                         ),
@@ -125,8 +123,10 @@ class _MusicExplorer2State extends State<MusicExplorer2> {
                                 Utilities.basename(currentDir) != '0'
                                     ? Utilities.basename(currentDir)
                                     : 'Local Storage',
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(fontSize: 20),
                               );
                             }),
                       ),
@@ -140,13 +140,9 @@ class _MusicExplorer2State extends State<MusicExplorer2> {
                         height: 60,
                         child: NeumorphicContainer(
                           child: PopupMenuButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12)),
-                              color: Colors.grey[300],
-                              icon: Icon(
+                              position: PopupMenuPosition.under,
+                              icon: const Icon(
                                 Icons.more_vert,
-                                size: 30,
-                                color: Colors.grey[600],
                               ),
                               onSelected: (selectedValue) {
                                 if (selectedValue == 'Select Songs') {
@@ -284,7 +280,6 @@ class _MusicExplorer2State extends State<MusicExplorer2> {
                                                     foundFiles[index].path);
                                               },
                                               child: Card(
-                                                color: Colors.grey[300],
                                                 child: Obx(() {
                                                   return CheckboxListTile(
                                                       value: selectedSongs
@@ -368,7 +363,6 @@ class _MusicExplorer2State extends State<MusicExplorer2> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.grey[300],
         content: FutureBuilder<List<Directory>>(
           future: Utilities.getStorageList(),
           builder: (context, snapshot) {
@@ -382,14 +376,16 @@ class _MusicExplorer2State extends State<MusicExplorer2> {
                         .map((e) => Row(
                               children: [
                                 Expanded(
-                                  child: TextButton(
-                                    child: Text(
-                                      Utilities.basename(e),
+                                  child: Card(
+                                    child: TextButton(
+                                      child: Text(
+                                        Utilities.basename(e),
+                                      ),
+                                      onPressed: () {
+                                        currentDirectory.value = e as Directory;
+                                        Get.back();
+                                      },
                                     ),
-                                    onPressed: () {
-                                      currentDirectory.value = e as Directory;
-                                      Get.back();
-                                    },
                                   ),
                                 ),
                               ],

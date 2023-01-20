@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/components/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/models/playlist_model.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen3.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,7 +23,6 @@ class CreatePlaylistScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -104,7 +103,6 @@ class CreatePlaylistScreen extends StatelessWidget {
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.75,
                               child: Card(
-                                color: Colors.grey[300],
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(

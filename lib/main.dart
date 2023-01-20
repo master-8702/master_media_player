@@ -10,8 +10,10 @@ import 'package:mastermediaplayer/screens/music_explorer_screen2.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen3.dart';
 import 'package:mastermediaplayer/screens/playlists_screen.dart';
 import 'package:mastermediaplayer/screens/searchScreen.dart';
+import 'package:mastermediaplayer/screens/settings_screen.dart';
 import 'package:mastermediaplayer/screens/single_playlist_screen.dart';
 import 'package:mastermediaplayer/screens/song_playing_screen.dart';
+import 'package:mastermediaplayer/utilities/configurations.dart';
 
 void main() async {
   await GetStorage.init();
@@ -24,11 +26,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of our application. that will handle the route and everything.
   @override
   Widget build(BuildContext context) {
+    // here we will check the user's chosen theme mode from persistent local storage
+    // and assign a proper theme accordingly, when starting the app
+    var isDarkModeOn = GetStorage().read('isDarkModeOn') ?? false;
+
     return GetMaterialApp(
       title: 'Master Media Player',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
+      theme: isDarkModeOn ? darkTheme : lightTheme,
       home: const HomeScreen(),
       getPages: [
         GetPage(
@@ -70,6 +74,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/search',
           page: () => const SearchScreen(),
+        ),
+        GetPage(
+          name: '/settings',
+          page: () => SettingsScreen(),
         ),
       ],
     );

@@ -15,20 +15,8 @@ class SectionHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headline6!.copyWith(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        Text(
-          action,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(color: Colors.black),
-        ),
+        Text(title, style: Theme.of(context).textTheme.titleLarge),
+        Text(action, style: Theme.of(context).textTheme.titleSmall),
       ],
     );
   }

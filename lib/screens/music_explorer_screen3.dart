@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/components/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 // this class is going to help us in basic file(Picture) exploring from the available storage devices in the phone
@@ -76,7 +76,6 @@ class _MusicExplorerState3 extends State<MusicExplorer3> {
           }
         },
         child: Scaffold(
-          backgroundColor: Colors.grey[300],
           body: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -95,7 +94,6 @@ class _MusicExplorerState3 extends State<MusicExplorer3> {
                             },
                             child: const Icon(
                               Icons.arrow_back_rounded,
-                              size: 30,
                             ),
                           ),
                         ),
@@ -116,8 +114,10 @@ class _MusicExplorerState3 extends State<MusicExplorer3> {
                                 Utilities.basename(currentDir) != '0'
                                     ? Utilities.basename(currentDir)
                                     : 'Local Storage',
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(fontSize: 20),
                               );
                             }),
                       ),
@@ -134,7 +134,6 @@ class _MusicExplorerState3 extends State<MusicExplorer3> {
                             },
                             child: const Icon(
                               Icons.sd_storage,
-                              size: 30,
                             ),
                           ),
                         ),
@@ -250,7 +249,6 @@ class _MusicExplorerState3 extends State<MusicExplorer3> {
                                           itemCount: foundFiles.length,
                                           itemBuilder: (context, index) {
                                             return Card(
-                                              color: Colors.grey[300],
                                               child: ListTile(
                                                   leading: foundFiles[index]
                                                           is File
@@ -341,14 +339,16 @@ class _MusicExplorerState3 extends State<MusicExplorer3> {
                         .map((e) => Row(
                               children: [
                                 Expanded(
-                                  child: TextButton(
-                                    child: Text(
-                                      Utilities.basename(e),
+                                  child: Card(
+                                    child: TextButton(
+                                      child: Text(
+                                        Utilities.basename(e),
+                                      ),
+                                      onPressed: () {
+                                        currentDirectory.value = e as Directory;
+                                        Get.back();
+                                      },
                                     ),
-                                    onPressed: () {
-                                      currentDirectory.value = e as Directory;
-                                      Get.back();
-                                    },
                                   ),
                                 ),
                               ],

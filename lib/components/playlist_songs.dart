@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/components/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/controllers/favoritesController.dart';
 
 import '../controllers/playlistsController.dart';
@@ -122,30 +122,34 @@ class _PlaylistSongsState extends State<PlaylistSongs> {
                     },
                   ),
                 ),
-                PopupMenuButton(itemBuilder: (context) {
-                  return const [
-                    PopupMenuItem(
-                      value: 'Remove from Playlist',
-                      child: Text('Remove from Playlist'),
-                    ),
-                    PopupMenuItem(
-                      value: 'Add to My Favorites',
-                      child: Text('Add to My Favorites'),
-                    ),
-                  ];
-                }, onSelected: (String value) async {
-                  // here in the pop up menu options we will remove the selected song from the playlist
-                  // or add it to the favorites list based on the user's selection
+                PopupMenuButton(
+                    position: PopupMenuPosition.under,
+                    itemBuilder: (context) {
+                      return const [
+                        PopupMenuItem(
+                          value: 'Remove from Playlist',
+                          child: Text('Remove from Playlist'),
+                        ),
+                        PopupMenuItem(
+                          value: 'Add to My Favorites',
+                          child: Text('Add to My Favorites'),
+                        ),
+                      ];
+                    },
+                    onSelected: (String value) async {
+                      // here in the pop up menu options we will remove the selected song from the playlist
+                      // or add it to the favorites list based on the user's selection
 
-                  if (value == 'Remove from Playlist') {
-                    playlistsController.removeSongFromPlaylist(widget.playlist,
-                        await Utilities().getSong(widget.songUrl));
-                  }
-                  if (value == 'Add to My Favorites') {
-                    favoritesController.addFavorites(
-                        await Utilities().getSong(widget.songUrl));
-                  }
-                }),
+                      if (value == 'Remove from Playlist') {
+                        playlistsController.removeSongFromPlaylist(
+                            widget.playlist,
+                            await Utilities().getSong(widget.songUrl));
+                      }
+                      if (value == 'Add to My Favorites') {
+                        favoritesController.addFavorites(
+                            await Utilities().getSong(widget.songUrl));
+                      }
+                    }),
               ],
             ),
           ),
