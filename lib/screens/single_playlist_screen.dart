@@ -246,66 +246,72 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                Stack(alignment: Alignment.topCenter, children: [
-                  NeumorphicContainer(
-                    padding: 10,
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: myPlaylist.coverImageUrl ==
-                                  'assets/images/playlist.png'
-                              ? Image.asset(
-                                  myPlaylist.coverImageUrl,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.30,
-                                  width: MediaQuery.of(context).size.width,
-                                  fit: BoxFit.fill,
-                                )
-                              : Expanded(
-                                  child: Image.file(
-                                    File(myPlaylist.coverImageUrl),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.33,
+                  width: MediaQuery.of(context).size.width,
+                  child: Stack(alignment: Alignment.topCenter, children: [
+                    NeumorphicContainer(
+                      padding: 10,
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: myPlaylist.coverImageUrl ==
+                                    'assets/images/playlist.png'
+                                ? Image.asset(
+                                    myPlaylist.coverImageUrl,
                                     height: MediaQuery.of(context).size.height *
-                                        0.30,
+                                        0.3,
                                     width: MediaQuery.of(context).size.width,
                                     fit: BoxFit.fill,
+                                  )
+                                : Expanded(
+                                    child: Image.file(
+                                      File(myPlaylist.coverImageUrl),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.3,
+                                      width: MediaQuery.of(context).size.width,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(() {
+                            if (timerController.duration.value >
+                                Duration.zero) {
+                              return Container(
+                                padding: const EdgeInsets.all(3),
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                      bottomRight: Radius.circular(12),
+                                      topRight: Radius.circular(12)),
+                                  color: Theme.of(context).backgroundColor,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    '⏱ ${Utilities.formatDuration(timerController.duration.value)}',
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                 ),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                      ],
+                              );
+                            } else {
+                              return const Text('');
+                            }
+                          }),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(() {
-                          if (timerController.duration.value > Duration.zero) {
-                            return Container(
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                    bottomRight: Radius.circular(12),
-                                    topRight: Radius.circular(12)),
-                                color: Theme.of(context).backgroundColor,
-                              ),
-                              child: Text(
-                                '⏱ ${Utilities.formatDuration(timerController.duration.value)}',
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            );
-                          } else {
-                            return const Text('');
-                          }
-                        }),
-                      ],
-                    ),
-                  ),
-                ]),
+                  ]),
+                ),
                 const SizedBox(
                   height: 15,
                 ),
