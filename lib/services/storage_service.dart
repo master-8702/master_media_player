@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mastermediaplayer/Constants/local_storage_keys.dart';
+import 'package:mastermediaplayer/Constants/constants.dart';
 import 'package:mastermediaplayer/utilities/configurations.dart';
 
 class StorageService extends GetxService {
