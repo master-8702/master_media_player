@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:get/get.dart';
+import 'package:mastermediaplayer/controllers/theme_controller.dart';
 
 class NeumorphicContainer extends StatelessWidget {
   final Widget child;
@@ -14,14 +15,15 @@ class NeumorphicContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkModeOn = GetStorage().read('isDarkModeOn') ?? false;
+    final themeController = Get.find<ThemeController>();
+
     return Container(
       padding: EdgeInsets.all(padding),
       margin: EdgeInsets.all(margin),
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: isDarkModeOn
+          boxShadow: themeController.isDarkModeOn()
               ? [
                   BoxShadow(
                     color: Colors.grey.shade500,

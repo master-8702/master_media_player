@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/utilities/configurations.dart';
+import 'package:mastermediaplayer/controllers/theme_controller.dart';
 
 // this class will build our settings page screen
 
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({Key? key}) : super(key: key);
-  final GetStorage box = GetStorage();
-  var isDarkModeOn = false.obs;
+  final themeController = Get.find<ThemeController>();
 
   @override
   Widget build(BuildContext context) {
-    isDarkModeOn.value = box.read('isDarkModeOn') ?? false;
-
     return Scaffold(
         body: SafeArea(
       child: Padding(
@@ -51,33 +48,27 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(
               height: 25,
             ),
-            Obx(
-              () => NeumorphicContainer(
-                padding: 5,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'DarkMode',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    Switch(
-                        activeColor: Colors.white,
-                        value: isDarkModeOn.value,
-                        onChanged: (themeStatus) {
-                          isDarkModeOn.value = !isDarkModeOn.value;
-                          if (isDarkModeOn.value) {
-                            Get.changeTheme(darkTheme);
-                            box.write('isDarkModeOn', true);
-                          } else {
-                            Get.changeTheme(lightTheme);
-                            box.write('isDarkModeOn', false);
-                          }
-
-                          // Get.changeThemeMode();
-                        }),
-                  ],
-                ),
+            NeumorphicContainer(
+              padding: 5,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'DarkMode',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Switch(
+                    activeColor: Colors.white,
+                    value: themeController.isDarkModeOn(),
+                    onChanged: (darkMode) {
+                      if (darkMode) {
+                        themeController.changeThemeMode(ThemeMode.dark);
+                      } else {
+                        themeController.changeThemeMode(ThemeMode.light);
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
             const SizedBox(
