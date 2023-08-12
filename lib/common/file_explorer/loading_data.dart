@@ -8,11 +8,13 @@ class LoadingData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      const CircularProgressIndicator(),
-      Center(
-          child: Text('Loading Data ...',
-              style: Theme.of(context).textTheme.titleLarge)),
-    ]);
+    return Center(
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        const CircularProgressIndicator(),
+        Center(
+            child: Text('Loading Data ...',
+                style: Theme.of(context).textTheme.titleLarge)),
+      ]),
+    );
   }
 }
