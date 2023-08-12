@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get_storage/get_storage.dart';
+
 import 'package:mastermediaplayer/controllers/theme_controller.dart';
 import 'package:mastermediaplayer/screens/create_playlist_screen.dart';
 import 'package:mastermediaplayer/screens/favorites_screen.dart';
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
           page: () => const SinglePlaylistScreen(),
         ),
         GetPage(
-          name: '/explorer',
+          name: '/fileExplorer',
           page: () => const MusicExplorerScreen(),
         ),
         GetPage(
@@ -84,6 +84,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/settings',
+          // this is for testing purposes we will return the correct page
           page: () => const MusicExplorerScreen(),
         ),
       ],

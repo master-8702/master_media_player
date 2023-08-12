@@ -1,11 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:rxdart/rxdart.dart';
+
+import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class FileExplorerController extends GetxController {
   FileExplorerController({required this.fileTypes});

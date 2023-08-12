@@ -39,7 +39,7 @@ class MusicSearchBar extends StatelessWidget {
                   onPressed: () async {
                     Utilities().requestPermission();
 
-                    Get.toNamed('explorer');
+                    Get.toNamed('fileExplorer');
                   },
                   child: const Icon(
                     Icons.folder,
