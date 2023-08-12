@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rxdart/rxdart.dart';
 
 class FileExplorerController extends GetxController {
   FileExplorerController({required this.fileTypes});
@@ -19,6 +20,9 @@ class FileExplorerController extends GetxController {
   final RxList<FileSystemEntity> _organizedFiles = <FileSystemEntity>[].obs;
   RxList<FileSystemEntity> foundFiles = <FileSystemEntity>[].obs;
   TextEditingController textEditingController = TextEditingController();
+  // flag variables - errorHappened is false and isLoading is true by default
+  var errorHappened = false.obs;
+  var isLoading = true.obs;
 
   @override
   void onInit() async {
@@ -27,7 +31,16 @@ class FileExplorerController extends GetxController {
   }
 
   @override
+  void onReady() {
+    // here we are setting a get worker [ever], that will call [getDirFiles] every time
+    // the current directory [currentDir] changes
+    ever(currentDir, (callback) => getDirFiles(filetypes: fileTypes));
+    super.onReady();
+  }
+
+  @override
   onClose() {
+    // disposing controller when deleting the widget
     textEditingController.dispose();
   }
 
@@ -74,34 +87,41 @@ class FileExplorerController extends GetxController {
 
   Future<List<FileSystemEntity>> getDirFiles(
       {Directory? directory, required List<String> filetypes}) async {
+    isLoading.value =
+        true; // when we start listing the directory file we will set it to true
     // if directory is passed we will use that, otherwise we will use
     // the currentDir of the controller
-    final allFiles = await (directory ?? (currentDir.value)).list().toList();
-  
+    final allFiles = await (directory ?? (currentDir.value))
+        .list()
+        .doOnError((Object o, StackTrace st) {
+      errorHappened.value = true; // since error happened we will set it to true
+      isLoading.value = false; // error happened so, we will set it to false
+    }).toList();
+
+// and if there is no error or (after the error happened) we will switch back
+// the error flag (if we arrive here means no error, so we will set it to false)
+    errorHappened.value = false;
 
     // filter folders and files that has no name and starts with '.'
     final filteredFiles = allFiles.where((element) {
-    
       if (Utilities.basename(element).startsWith('.') ||
           (Utilities.basename(element) == "") ||
           (element is File &&
               !filetypes.contains(Utilities.getFileExtension(element)))) {
-
         return false;
       } else {
-
         return true;
       }
-      
     }).toList();
 
 // if there is no any files and folders after filtering, we will return empty list
     if (filteredFiles.isEmpty) {
-
       foundFiles.value = filteredFiles;
+
+      // if error didn't happen and we are about to return empty list then we will set it to false
+      isLoading.value = false;
       return foundFiles;
     } else {
-
       // making list of only files
       final dirs = filteredFiles.whereType<Directory>().toList();
       // sorting folder list by name.
@@ -117,7 +137,8 @@ class FileExplorerController extends GetxController {
       // first folders will go to list (if available) then files will go to list.
       _organizedFiles.value = [...dirs, ...files];
       foundFiles.value = List.from(_organizedFiles);
-      
+      isLoading.value =
+          false; // we finished listing the directory files so, we will set it to false;
       return foundFiles;
     }
   }
@@ -141,27 +162,23 @@ class FileExplorerController extends GetxController {
   }
 
   Future<bool> onWillPopCallBack() async {
-    // here by using willPopScope widget we will override the back button
-    // and while pressing back if we didn't reach the root folder we will block the back button handler from
-    // popping the page from the stack  by returning "Future false"
-    // but if we reach the root folder we will allow the handler to pop the page and take us back to the
+    // Here while pressing back if we didn't reach the root folder we will block the back button handler from
+    // popping the page from the stack  by returning "Future false", and return the user to the parent directory.
+    // But if we reach the root folder we will allow the handler to pop the page and take us back to the
     // previous page by returning "Future true";
-   
 
     if (currentDir.value.path != rootDirectory.value.path) {
-
-      currentDir.value = currentDir.value.parent;
-      await getDirFiles(directory: currentDir.value, filetypes: fileTypes);
+      changeCurrentDirectory(currentDir.value.parent);
       // changeCurrentDirectory(currentDir.value.parent);
       return Future.value(false);
     } else {
-
       return Future.value(true);
     }
   }
 
   void changeCurrentDirectory(Directory dir) async {
+    // change current directory and clear the search bar if it was not empty
     currentDir.value = dir;
-    await getDirFiles(directory: currentDir.value, filetypes: fileTypes);
+    textEditingController.text = '';
   }
 }
