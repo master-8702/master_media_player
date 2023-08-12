@@ -1,363 +1,102 @@
-import 'dart:core';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+
+import 'package:get/get.dart';
+
+import 'package:mastermediaplayer/Constants/constants.dart';
+import 'package:mastermediaplayer/common/file_explorer/can_not_load_data.dart';
+import 'package:mastermediaplayer/common/file_explorer/file_explorer_header.dart.dart';
+import 'package:mastermediaplayer/common/file_explorer/file_search_text_field.dart';
+import 'package:mastermediaplayer/common/file_explorer/loading_data.dart';
+import 'package:mastermediaplayer/common/file_explorer/no_files_in_this_folder.dart';
+import 'package:mastermediaplayer/controllers/file_explorer_controller.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
-import 'package:text_scroll/text_scroll.dart';
 
-// this class is going to help us in basic file(music) exploring from the available storage devices in the phone
-// and it will only be used to open (play) a certain music file from the storage.
-class MusicExplorer extends StatefulWidget {
-  const MusicExplorer({Key? key}) : super(key: key);
+class MusicExplorerScreen extends StatefulWidget {
+  /// This class is going to help us in basic file(music) exploring from the available storage devices in the phone
+  /// and it will only be used to open (play) a certain music file from the storage.
+  const MusicExplorerScreen({Key? key}) : super(key: key);
 
   @override
-  State<MusicExplorer> createState() => _MusicExplorerState();
+  State<MusicExplorerScreen> createState() => _MusicExplorerScreenState();
 }
 
-class _MusicExplorerState extends State<MusicExplorer> {
-  // here we will declare the following change notifier variables in order to update our UI
-  // base on the new changes
-  ValueNotifier<Directory> currentDirectory = ValueNotifier(Directory(''));
-  ValueNotifier<Directory> rootDirectory = ValueNotifier(Directory(''));
-  ValueNotifier<List<Directory>> storageList = ValueNotifier([]);
-  ValueNotifier<Directory> selectedStorage = ValueNotifier(Directory(''));
-  List<String> supportedFormats = [
-    'mp4',
-    'm4a',
-    'fmp4',
-    'webM',
-    'mp3',
-    'ogg',
-    'wav',
-    'aac'
-  ];
-
-  List<FileSystemEntity> _organizedFiles = [];
-  final ValueNotifier<List<FileSystemEntity>> _foundFiles = ValueNotifier([]);
-  TextEditingController textEditingController = TextEditingController();
-  @override
-  void initState() {
-    // here we will ask permission in case it is not already given while starting the app
-    Utilities().requestPermission();
-    // and here we will initialize currentDirectory and current Storage list by using Future Values
-    Utilities.getStorageList().then((value) {
-      currentDirectory.value = value[0];
-      rootDirectory.value = value[0];
-      storageList.value = value;
-    });
-    // currentDirectory.value = storageList[0];
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    textEditingController.dispose();
-    super.dispose();
-  }
+class _MusicExplorerScreenState extends State<MusicExplorerScreen> {
+  FileExplorerController controller =
+      Get.put(FileExplorerController(fileTypes: kSupportedAudioFormats));
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      // overriding the back button using [WillPopScope]
       child: WillPopScope(
-        onWillPop: () {
-          // here by using willPopScope widget we will override the back button
-          // and while pressing back if we didn't reach the root folder we will block the back button handler from
-          // popping the page from the stack  by returning "Future false"
-          // but if we reach the root folder we will allow the handler to pop the page and take us back to the
-          // previous page by returning "Future true";
-
-          if (currentDirectory.value.path != rootDirectory.value.path) {
-            currentDirectory.value = currentDirectory.value.parent;
-            return Future.value(false);
-          } else {
-            return Future.value(true);
-          }
-        },
+        onWillPop: controller.onWillPopCallBack,
         child: Scaffold(
           body: Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // menu and back button
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: NeumorphicContainer(
-                          child: TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: const Icon(
-                              Icons.arrow_back_rounded,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      // here by listening to the changes from currentDirectory value notifier
-                      // we will update the current Directory or folder name in the title of the page
-                      Expanded(
-                        child: ValueListenableBuilder(
-                            valueListenable: currentDirectory,
-                            builder: (context, currentDir, child) {
-                              return TextScroll(
-                                  velocity: const Velocity(
-                                      pixelsPerSecond: Offset(30, 30)),
-                                  Utilities.basename(currentDir) != '0'
-                                      ? Utilities.basename(currentDir)
-                                      : 'Local Storage',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall!
-                                      .copyWith(fontSize: 20));
-                            }),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: NeumorphicContainer(
-                          child: TextButton(
-                            onPressed: () {
-                              selectStorage();
-                            },
-                            child: const Icon(
-                              Icons.sd_storage,
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]),
-                const SizedBox(
-                  height: 15,
-                ),
-                // here we will have a search TextField to be able to search the current folder
-                NeumorphicContainer(
-                  padding: 10,
-                  child: TextField(
-                    controller: textEditingController,
-                    decoration: const InputDecoration(
-                      hintText: 'Search Current Folder',
-                      border: InputBorder.none,
-                      suffixIcon: Icon(Icons.search),
-                    ),
-                    onChanged: (enteredValue) {
-                      // here on every key stoke we will search (filter) the list and return found musics(files) or the result
-                      List<FileSystemEntity> searchResult = [];
-                      if (enteredValue.isEmpty) {
-                        searchResult = _organizedFiles;
-                      } else {
-                        searchResult = _organizedFiles
-                            .where((file) =>
-                                Utilities.basename(file).toLowerCase().contains(
-                                      enteredValue.toLowerCase(),
-                                    ))
-                            .toList();
-                      }
+            child: Column(children: [
+              FileExplorerHeader(controller: controller),
+              const SizedBox(
+                height: 15,
+              ),
+              // here we will have a search TextField to be able to search the current folder
+              FileSearchTextField(controller: controller),
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: Obx(() {
+                  if (controller.isLoading.value) {
+                    return const LoadingData();
+                  } else if (controller.foundFiles.isEmpty) {
+                    return const NoFilesInThisFolder(
+                        message: 'No Music Files in This Folder');
+                  } else if (controller.errorHappened.value) {
+                    return const CanNotLoadData(message: 'Can Not Load Data!');
+                  } else {
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        key: const PageStorageKey<String>('file_list'),
+                        itemCount: controller.foundFiles.length,
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                                leading: controller.foundFiles[index] is File
+                                    ? const Icon(Icons.music_note)
+                                    : const Icon(Icons.folder),
+                                title: Text(
+                                    Utilities.basename(
+                                        controller.foundFiles[index]),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis),
+                                onTap: () async {
+                                  // dismissing the keyboard when taping on search results
+                                  FocusScope.of(context).unfocus();
 
-                      _foundFiles.value = searchResult;
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                // here by listening to the changes from currentDirectory value notifier we will make a new list of
-                // files and folder from the selected folder and update the UI accordingly
-                Expanded(
-                  child: ValueListenableBuilder<Directory>(
-                      valueListenable: currentDirectory,
-                      builder: (context, currentDir, child) {
-                        // here we will clear the search text field when the user opens a new (another) folder
-                        textEditingController.text = '';
-                        return FutureBuilder<List<FileSystemEntity>>(
-                            future: currentDir.list().toList(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                List<FileSystemEntity> allFiles =
-                                    snapshot.data as List<FileSystemEntity>;
-                                allFiles = allFiles.where((element) {
-                                  if (Utilities.basename(element)
-                                          .startsWith('.') ||
-                                      (Utilities.basename(element) == "") ||
-                                      (element is File &&
-                                          !supportedFormats.contains(
-                                              Utilities.getFileExtension(
-                                                  element)))) {
-                                    return false;
+                                  if (controller.foundFiles[index]
+                                      is Directory) {
+                                    // when tap on a directory we will change the current directory
+                                    // and load the new current directory's data
+                                    controller.changeCurrentDirectory(Directory(
+                                        controller.foundFiles[index].path));
                                   } else {
-                                    return true;
+                                    // when tap on audio files we will pass the audio to the SongPlaying Screen
+                                    Song song = await Utilities().getSong(
+                                        controller.foundFiles[index].path);
+
+                                    Get.toNamed('songPlaying', arguments: song);
                                   }
-                                }).toList();
-
-                                if (allFiles.isEmpty) {
-                                  return Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                          'assets/images/who cares emoji.png'),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      Text('No Music Files in This Folder',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge),
-                                    ],
-                                  );
-                                }
-                                // making list of only files
-                                final dirs =
-                                    allFiles.whereType<Directory>().toList();
-                                // sorting folder list by name.
-                                dirs.sort((a, b) => a.path
-                                    .toLowerCase()
-                                    .compareTo(b.path.toLowerCase()));
-
-                                // making list of only flies.
-                                List<File> files =
-                                    allFiles.whereType<File>().toList();
-
-                                // sorting files list by name.
-                                files.sort((a, b) => a.path
-                                    .toLowerCase()
-                                    .compareTo(b.path.toLowerCase()));
-
-                                // first folders will go to list (if available) then files will go to list.
-                                _organizedFiles = [...dirs, ...files];
-                                _foundFiles.value = List.from(_organizedFiles);
-                                // and here by listening to the _foundFiles value notifier (if the change query changes)
-                                // we will update the list based on the search result and Update the UI as well
-                                return ValueListenableBuilder<
-                                    List<FileSystemEntity>>(
-                                  valueListenable: _foundFiles,
-                                  builder: (context, foundFiles, child) {
-                                    return ListView.builder(
-                                        itemCount: foundFiles.length,
-                                        itemBuilder: (context, index) {
-                                          return Card(
-                                            child: ListTile(
-                                                leading: foundFiles[index]
-                                                        is File
-                                                    ? const Icon(
-                                                        Icons.music_note)
-                                                    : const Icon(Icons.folder),
-                                                title: Text(
-                                                    Utilities.basename(
-                                                        foundFiles[index]),
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis),
-                                                onTap: () async {
-                                                  if (foundFiles[index]
-                                                      is Directory) {
-                                                    currentDirectory.value =
-                                                        foundFiles[index]
-                                                            as Directory;
-                                                  } else {
-                                                    Song song =
-                                                        await Utilities()
-                                                            .getSong(foundFiles[
-                                                                    index]
-                                                                .path);
-
-                                                    Get.toNamed('songPlaying',
-                                                        arguments: song);
-                                                  }
-                                                }),
-                                          );
-                                        });
-                                  },
-                                );
-                              } else if (snapshot.hasError) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                        'assets/images/who cares emoji.png'),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      'Can Not Load Data!',
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                  ],
-                                );
-                              } else {
-                                return Column(
-                                  children: const [
-                                    CircularProgressIndicator(),
-                                    Center(child: Text('Loading Data ...')),
-                                  ],
-                                );
-                              }
-                            });
-                      }),
-                ),
-              ],
-            ),
-            // this music player app is developed by master
+                                }),
+                          );
+                        });
+                  }
+                }),
+              ),
+            ]),
           ),
-        ),
-      ),
-    );
-  }
-
-  // this method will show us a dialog with a list of available storage devices (memories) in the device
-  // and by selecting one we can update the current Directory List and surf the new selected storage devices
-  void selectStorage() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: FutureBuilder<List<Directory>>(
-          future: Utilities.getStorageList(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              final List<FileSystemEntity> storageList = snapshot.data!;
-              return Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: storageList
-                        .map((e) => Row(
-                              children: [
-                                Expanded(
-                                  child: Card(
-                                    child: TextButton(
-                                      child: Text(
-                                        Utilities.basename(e),
-                                      ),
-                                      onPressed: () {
-                                        currentDirectory.value = e as Directory;
-                                        Get.back();
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ))
-                        .toList()),
-              );
-            }
-            return const AlertDialog(
-              content: CircularProgressIndicator(),
-            );
-          },
         ),
       ),
     );
