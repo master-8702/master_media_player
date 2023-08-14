@@ -133,7 +133,7 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                           onSelected: (selectedValue) async {
                             if (selectedValue == 'Add Music(s)') {
                               selectedSongs =
-                                  await Get.toNamed('songExplorer2');
+                                  await Get.toNamed('selectableSongExplorer');
                               playlistsController.addMusicToPlaylist(
                                   myPlaylist, selectedSongs);
                             } else if (selectedValue == 'Sleep Timer') {

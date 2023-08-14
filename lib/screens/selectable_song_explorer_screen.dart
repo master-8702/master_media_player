@@ -11,9 +11,8 @@ import 'package:mastermediaplayer/common/file_explorer/loading_data.dart';
 import 'package:mastermediaplayer/common/file_explorer/no_files_in_this_folder.dart';
 import 'package:mastermediaplayer/common/file_explorer/song_explorer_header.dart';
 import 'package:mastermediaplayer/controllers/file_explorer_controller.dart';
+import 'package:mastermediaplayer/models/song_model.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
-
-
 
 // this class is going to help us in basic file(music) exploring from the available storage devices in the phone
 // and it will be used to select single and/or multiple audio files from the storage in order to add them to our playlists.
@@ -27,10 +26,9 @@ class SelectableSongExplorerScreen extends StatefulWidget {
 
 class _SelectableSongExplorerScreenState
     extends State<SelectableSongExplorerScreen> {
+  // instantiate controller instance
   FileExplorerController controller =
       Get.put(FileExplorerController(fileTypes: kSupportedAudioFormats));
-  var selectedSongs = <String>[].obs;
- 
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +39,9 @@ class _SelectableSongExplorerScreenState
           body: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(children: [
-              SongExplorerHeader(controller: controller, selectedSongs: selectedSongs),
+              SongExplorerHeader(
+                  controller: controller,
+                  selectedSongs: controller.selectedSongs),
               const SizedBox(
                 height: 15,
               ),
@@ -67,47 +67,76 @@ class _SelectableSongExplorerScreenState
                           message: 'Can Not Load Data!');
                     } else {
                       return ListView.builder(
-                        itemCount: controller.foundFiles.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onLongPress: () {
-                              selectedSongs
-                                  .add(controller.foundFiles[index].path);
-                            },
-                            child: Card(
-                              child: Obx(
-                                () {
-                                  return CheckboxListTile(
-                                    value: selectedSongs.contains(
-                                        controller.foundFiles[index].path),
-                                    title: Text(
-                                        Utilities.basename(
-                                            controller.foundFiles[index]),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis),
-                                    onChanged: (value) async {
-                                      if (controller.foundFiles[index]
-                                          is Directory) {
-                                        controller.currentDir.value = controller
-                                            .foundFiles[index] as Directory;
-                                      } else {
-                                        if (selectedSongs.contains(controller
-                                            .foundFiles[index].path)) {
-                                          selectedSongs.remove(controller
-                                              .foundFiles[index].path);
+                          shrinkWrap: true,
+                          key: const PageStorageKey<String>('file_list'),
+                          itemCount: controller.foundFiles.length,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          itemBuilder: (context, index) {
+                            var currentFile = controller.foundFiles[index];
+                            return Obx(
+                              () => Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: controller.selectedSongs
+                                          .contains(currentFile.path)
+                                      ? Colors.grey[600]
+                                      : Colors.transparent,
+                                ),
+                                child: Card(
+                                  child: ListTile(
+                                      leading: currentFile is File
+                                          ? const Icon(Icons.music_note)
+                                          : const Icon(Icons.folder),
+                                      title: Text(
+                                          Utilities.basename(currentFile),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis),
+                                      onLongPress: () {
+                                        if (currentFile is Directory) {
+                                          // do nothing
                                         } else {
-                                          selectedSongs.add(controller
-                                              .foundFiles[index].path);
+                                          // long press on audio files will trigger selection mode
+                                          // and add the long pressed object in to the selectedSongs list
+                                          controller.setIsSelectionMode = true;
+                                          controller.addOrRemoveSelectedSong(
+                                              currentFile.path);
                                         }
-                                      }
-                                    },
-                                  );
-                                },
+                                      },
+                                      onTap: () async {
+                                        // dismissing the keyboard when taping on search results
+                                        FocusScope.of(context).unfocus();
+                                        // if selectedSong is empty then set selection mode to false
+                                        if (controller.selectedSongs.isEmpty) {
+                                          controller.setIsSelectionMode = false;
+                                        }
+
+                                        if (currentFile is Directory) {
+                                          // when tap on a directory we will change the current directory
+                                          // and load the new current directory's data
+                                          controller.changeCurrentDirectory(
+                                              Directory(currentFile.path));
+                                        } else {
+                                          // in selection mode we will add(remove) the selected files to selectedSongs
+                                          if (controller
+                                              .isSelectionMode.value) {
+                                            controller.addOrRemoveSelectedSong(
+                                                currentFile.path);
+                                          } else {
+                                            // getting song instance from the selected file
+                                            Song song = await Utilities()
+                                                .getSong(currentFile.path);
+
+                                            // when tap on audio files we will pass the audio to the SongPlaying Screen
+                                            Get.toNamed('songPlaying',
+                                                arguments: song);
+                                          }
+                                        }
+                                      }),
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
+                            );
+                          });
                     }
                   },
                 ),
@@ -119,4 +148,3 @@ class _SelectableSongExplorerScreenState
     );
   }
 }
-

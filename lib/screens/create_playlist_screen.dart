@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mastermediaplayer/screens/selectable_song_explorer_screen.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/models/playlist_model.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen3.dart';
@@ -81,7 +82,7 @@ class CreatePlaylistScreen extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    selectedSongs.value = await Get.to(const MusicExplorer2());
+                    selectedSongs.value = await Get.to(const SelectableSongExplorerScreen());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

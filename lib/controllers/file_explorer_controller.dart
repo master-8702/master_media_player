@@ -25,6 +25,10 @@ class FileExplorerController extends GetxController {
   var errorHappened = false.obs;
   var isLoading = true.obs;
 
+  // song explorer related
+  var selectedSongs = <String>[].obs;
+  var isSelectionMode = false.obs;
+
   @override
   void onInit() async {
     await initializeFileExplorer();
@@ -181,5 +185,17 @@ class FileExplorerController extends GetxController {
     // change current directory and clear the search bar if it was not empty
     currentDir.value = dir;
     textEditingController.text = '';
+  }
+
+  set setIsSelectionMode(bool value) {
+    isSelectionMode.value = value;
+  }
+
+  void addOrRemoveSelectedSong(String songUrl) {
+    if (selectedSongs.contains(songUrl)) {
+      selectedSongs.remove(songUrl);
+    } else {
+      selectedSongs.add(songUrl);
+    }
   }
 }

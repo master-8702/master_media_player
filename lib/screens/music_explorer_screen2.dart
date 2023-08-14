@@ -7,7 +7,7 @@ import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:text_scroll/text_scroll.dart';
 
-import '../controllers/playlistsController.dart';
+/// This class will be removed after refactoring is complete
 
 // this class is going to help us in basic file(music) exploring from the available storage devices in the phone
 // and it will be used to select single and/or multiple audio files from the storage in order to add them to our playlists.
@@ -26,8 +26,8 @@ class _MusicExplorer2State extends State<MusicExplorer2> {
   ValueNotifier<List<Directory>> storageList = ValueNotifier([]);
   ValueNotifier<Directory> selectedStorage = ValueNotifier(Directory(''));
   var selectedSongs = <String>[].obs;
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
+  // final PlaylistsController playlistsController =
+  //     Get.put(PlaylistsController());
   List<String> supportedFormats = [
     'mp4',
     'm4a',
