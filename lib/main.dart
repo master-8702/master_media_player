@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:mastermediaplayer/controllers/theme_controller.dart';
 import 'package:mastermediaplayer/screens/create_playlist_screen.dart';
 import 'package:mastermediaplayer/screens/favorites_screen.dart';
+import 'package:mastermediaplayer/screens/image_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen3.dart';
@@ -63,8 +64,8 @@ class MyApp extends StatelessWidget {
           page: () => const SelectableSongExplorerScreen(),
         ),
         GetPage(
-          name: '/pictureExplorer3',
-          page: () => const MusicExplorer3(),
+          name: '/imageExplorer',
+          page: () =>  ImageExplorerScreen(),
         ),
         GetPage(
           name: '/playlists',
@@ -85,7 +86,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/settings',
           // this is for testing purposes we will return the correct page
-          page: () => const SelectableSongExplorerScreen(),
+          page: () => ImageExplorerScreen(),
         ),
       ],
     );

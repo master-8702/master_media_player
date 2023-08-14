@@ -8,6 +8,8 @@ import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:text_scroll/text_scroll.dart';
 
+/// This class will be removed after refactoring is complete
+
 // this class is going to help us in basic file(Picture) exploring from the available storage devices in the phone
 // and it will be used to select singe image file from the storage in order to assign it as a cover image for our playlists.
 // it will also allow us to preview the images without opening them (as a prefix icon in the listTie)

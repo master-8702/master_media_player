@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mastermediaplayer/screens/image_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/selectable_song_explorer_screen.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/models/playlist_model.dart';
@@ -82,7 +83,8 @@ class CreatePlaylistScreen extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    selectedSongs.value = await Get.to(const SelectableSongExplorerScreen());
+                    selectedSongs.value =
+                        await Get.to(const SelectableSongExplorerScreen());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,7 +125,7 @@ class CreatePlaylistScreen extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     selectedCoverImage.value =
-                        await Get.to(const MusicExplorer3());
+                        await Get.to(ImageExplorerScreen());
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
