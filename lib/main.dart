@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get_storage/get_storage.dart';
+
 import 'package:mastermediaplayer/controllers/theme_controller.dart';
 import 'package:mastermediaplayer/screens/create_playlist_screen.dart';
 import 'package:mastermediaplayer/screens/favorites_screen.dart';
-import 'package:mastermediaplayer/screens/home_screen.dart';
+import 'package:mastermediaplayer/screens/image_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen.dart';
-import 'package:mastermediaplayer/screens/music_explorer_screen2.dart';
+import 'package:mastermediaplayer/screens/home_screen.dart';
 import 'package:mastermediaplayer/screens/music_explorer_screen3.dart';
 import 'package:mastermediaplayer/screens/playlists_screen.dart';
 import 'package:mastermediaplayer/screens/searchScreen.dart';
-import 'package:mastermediaplayer/screens/settings_screen.dart';
+import 'package:mastermediaplayer/screens/selectable_song_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/single_playlist_screen.dart';
 import 'package:mastermediaplayer/screens/song_playing_screen.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
@@ -25,19 +25,17 @@ void main() async {
 
   // initialize local storages and inject it into MyApp
   await Get.putAsync(() => StorageService().init());
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   final themeController = Get.put(ThemeController());
 
   // This widget is the root of our application. that will handle the route and everything.
   @override
   Widget build(BuildContext context) {
-   
-
     return GetMaterialApp(
       title: 'Master Media Player',
       theme: lightTheme,
@@ -58,16 +56,16 @@ class MyApp extends StatelessWidget {
           page: () => const SinglePlaylistScreen(),
         ),
         GetPage(
-          name: '/explorer',
-          page: () => const MusicExplorer(),
+          name: '/fileExplorer',
+          page: () => const MusicExplorerScreen(),
         ),
         GetPage(
-          name: '/songExplorer2',
-          page: () => const MusicExplorer2(),
+          name: '/selectableSongExplorer',
+          page: () => const SelectableSongExplorerScreen(),
         ),
         GetPage(
-          name: '/pictureExplorer3',
-          page: () => const MusicExplorer3(),
+          name: '/imageExplorer',
+          page: () =>  ImageExplorerScreen(),
         ),
         GetPage(
           name: '/playlists',
@@ -87,7 +85,8 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/settings',
-          page: () => SettingsScreen(),
+          // this is for testing purposes we will return the correct page
+          page: () => ImageExplorerScreen(),
         ),
       ],
     );
