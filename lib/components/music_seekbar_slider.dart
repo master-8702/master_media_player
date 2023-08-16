@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'PlaylistControlButtons.dart';
+import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
 
 class MusicSeekbarSlider extends StatefulWidget {
   final AudioPlayer audioPlayer;

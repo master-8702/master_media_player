@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/models/playlist_model.dart';
 import 'package:text_scroll/text_scroll.dart';
