@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/Constants/constants.dart';
-import 'package:mastermediaplayer/common/file_explorer/can_not_load_data.dart';
-import 'package:mastermediaplayer/common/file_explorer/file_search_text_field.dart';
-import 'package:mastermediaplayer/common/file_explorer/loading_data.dart';
-import 'package:mastermediaplayer/common/file_explorer/no_files_in_this_folder.dart';
-import 'package:mastermediaplayer/common/file_explorer/song_explorer_header.dart';
-import 'package:mastermediaplayer/controllers/file_explorer_controller.dart';
+import 'package:mastermediaplayer/features/file_explorer/common/can_not_load_data.dart';
+import 'package:mastermediaplayer/features/file_explorer/common/file_search_text_field.dart';
+import 'package:mastermediaplayer/features/file_explorer/common/loading_data.dart';
+import 'package:mastermediaplayer/features/file_explorer/common/no_files_in_this_folder.dart';
+import 'package:mastermediaplayer/features/file_explorer/common/song_explorer_header.dart';
+import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 

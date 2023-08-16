@@ -4,17 +4,16 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:mastermediaplayer/controllers/theme_controller.dart';
+import 'package:mastermediaplayer/features/file_explorer/presentation/image_explorer_screen.dart';
+import 'package:mastermediaplayer/features/file_explorer/presentation/music_explorer_screen.dart';
+import 'package:mastermediaplayer/features/player/presentation/song_playing_screen.dart';
 import 'package:mastermediaplayer/screens/create_playlist_screen.dart';
 import 'package:mastermediaplayer/screens/favorites_screen.dart';
-import 'package:mastermediaplayer/screens/image_explorer_screen.dart';
-import 'package:mastermediaplayer/screens/music_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
-import 'package:mastermediaplayer/screens/music_explorer_screen3.dart';
 import 'package:mastermediaplayer/screens/playlists_screen.dart';
 import 'package:mastermediaplayer/screens/searchScreen.dart';
 import 'package:mastermediaplayer/screens/selectable_song_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/single_playlist_screen.dart';
-import 'package:mastermediaplayer/screens/song_playing_screen.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
 import 'package:mastermediaplayer/utilities/configurations.dart';
 
@@ -49,7 +48,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/songPlaying',
-          page: () => const SongPlayingScreen(),
+          page: () => SongPlayingScreen(),
         ),
         GetPage(
           name: '/playlist',
@@ -86,7 +85,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/settings',
           // this is for testing purposes we will return the correct page
-          page: () => ImageExplorerScreen(),
+          page: () => SongPlayingScreen(),
         ),
       ],
     );
