@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/controllers/file_explorer_controller.dart';
+import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 
 void selectStorage(BuildContext context, FileExplorerController controller) {

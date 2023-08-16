@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/controllers/file_explorer_controller.dart';
+import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
 
 class FileSearchTextField extends StatelessWidget {
   /// This custom widget will be used as a search bar (search text field) for all 

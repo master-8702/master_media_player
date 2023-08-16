@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:text_scroll/text_scroll.dart';
 
-import 'package:mastermediaplayer/common/file_explorer/select_storage.dart';
+import 'package:mastermediaplayer/features/file_explorer/common/select_storage.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/controllers/file_explorer_controller.dart';
+import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class FileExplorerHeader extends StatelessWidget {
