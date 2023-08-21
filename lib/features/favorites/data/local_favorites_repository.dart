@@ -1,48 +1,45 @@
+import 'package:get/get.dart';
+
 import 'package:mastermediaplayer/Constants/constants.dart';
 import 'package:mastermediaplayer/features/favorites/data/favorites_repository.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
 
 class LocalFavoritesRepository extends FavoritesRepository {
+  /// This is a local repository for our favorites list 
+  
   List<Song> myFavoriteSongs = [];
-  final ss = StorageService();
-  @override
-  Future<bool> addFavorite(Song song) async {
-    if (!myFavoriteSongs.contains(song)) {
-      myFavoriteSongs.add(song);
-      List<Map<String, dynamic>> tempSongs = [];
-      for (Song s in myFavoriteSongs) {
-        tempSongs.add(s.toMap());
-      }
-      ss.write(kfavoritesKey, tempSongs);
-    }
-    return true;
-  }
+  final ss = Get.find<StorageService>();
 
   @override
-  Future<List<Song>> getFavoritesList() {
-    final myFavorites = ss.read(kfavoritesKey);
-    if (myFavorites.isNotEmpty) {
-      for (String s in myFavorites) {
+  List<Song> getFavoritesList() {
+    final favoritesJson = ss.read(kfavoritesKey);
+
+    if (favoritesJson != null && favoritesJson.isNotEmpty) {
+      for (var s in favoritesJson) {
         myFavoriteSongs.add(Song.fromJson(s));
       }
 
-      return Future.value(myFavoriteSongs);
+      return myFavoriteSongs;
     }
-    return Future.value([]);
+
+    return [];
   }
 
   @override
-  Future<bool> removeFavorite(Song song) async {
+  List<Song> addOrRemoveFavorites(Song song) {
+    // counter++;
+
     if (myFavoriteSongs.contains(song)) {
       myFavoriteSongs.remove(song);
-      List<Map<String, dynamic>> tempSongs = [];
-      for (Song s in myFavoriteSongs) {
-        tempSongs.add(s.toMap());
-      }
-      ss.write(kfavoritesKey, tempSongs);
-
+    } else {
+      myFavoriteSongs.add(song);
     }
-    return true;
+    var jsonSongs = [];
+    for (Song s in myFavoriteSongs) {
+      jsonSongs.add(s.toJson());
+    }
+    ss.write(kfavoritesKey, jsonSongs);
+    return myFavoriteSongs;
   }
 }

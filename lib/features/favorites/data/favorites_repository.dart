@@ -1,7 +1,8 @@
 import 'package:mastermediaplayer/models/song_model.dart';
 
 abstract class FavoritesRepository {
-  Future<List<Song>> getFavoritesList();
-  Future<bool> addFavorite(Song song);
-  Future<bool> removeFavorite(Song song);
+  /// This is an abstract class for our favorites list repository
+
+  List<Song> getFavoritesList();
+  addOrRemoveFavorites(Song song);
 }
