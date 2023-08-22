@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/image_explorer_screen.dart';
-import 'package:mastermediaplayer/screens/selectable_song_explorer_screen.dart';
+import 'package:mastermediaplayer/features/file_explorer/presentation/selectable_song_explorer_screen.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/models/playlist_model.dart';
 import 'package:path_provider/path_provider.dart';

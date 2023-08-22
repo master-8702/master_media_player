@@ -13,7 +13,7 @@ import 'package:mastermediaplayer/screens/create_playlist_screen.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
 import 'package:mastermediaplayer/screens/playlists_screen.dart';
 import 'package:mastermediaplayer/screens/searchScreen.dart';
-import 'package:mastermediaplayer/screens/selectable_song_explorer_screen.dart';
+import 'package:mastermediaplayer/features/file_explorer/presentation/selectable_song_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/settings_screen.dart';
 import 'package:mastermediaplayer/screens/single_playlist_screen.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
