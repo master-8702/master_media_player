@@ -5,7 +5,7 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
-import 'package:mastermediaplayer/controllers/favoritesController.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 
 import '../controllers/playlistsController.dart';
 import '../models/playlist_model.dart';
@@ -32,8 +32,7 @@ class _PlaylistSongsState extends State<PlaylistSongs> {
   final PlaylistsController playlistsController =
       Get.put(PlaylistsController());
 
-  final FavoritesController favoritesController =
-      Get.put(FavoritesController());
+  final favoritesController = Get.find<FavoritesController>();
 
   @override
   Widget build(BuildContext context) {
@@ -146,8 +145,8 @@ class _PlaylistSongsState extends State<PlaylistSongs> {
                             await Utilities().getSong(widget.songUrl));
                       }
                       if (value == 'Add to My Favorites') {
-                        favoritesController.addFavorites(
-                            await Utilities().getSong(widget.songUrl));
+                        // favoritesController.addFavorites(
+                        //     await Utilities().getSong(widget.songUrl));
                       }
                     }),
               ],

@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
-import 'package:mastermediaplayer/controllers/favoritesController.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/controllers/playlistsController.dart';
-import '../components/my_favorites.dart';
+import '../features/favorites/presentation/my_favorites.dart';
 import '../components/playlists_search_bar.dart';
 import '../components/playlist_card.dart';
 import '../models/playlist_model.dart';
@@ -19,8 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final FavoritesController favoritesController =
-      Get.put(FavoritesController());
+  final favoritesController = Get.find<FavoritesController>();
   final PlaylistsController playlistsController =
       Get.put(PlaylistsController());
   late List<Playlist> myPlaylist;
@@ -30,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // here we will request storage permission in case it was not allowed during installation
     Utilities().requestPermission();
     // GetStorage().remove('myPlaylist');
-    favoritesController.getFavoriteMusics();
+    // favoritesController.getFavoriteMusics();
     playlistsController.getPlaylists();
     myPlaylist = playlistsController.myPlaylists;
     super.initState();
@@ -80,8 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                GetBuilder<FavoritesController>(builder: (state) {
-                  if (state.myFavoriteSongs.isEmpty) {
+                Obx(() {
+                  if (favoritesController.myFavoritesSongs.isEmpty) {
                     return Column(
                       children: [
                         InkWell(
@@ -95,8 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         const Text('No Favorites yet!'),
                       ],
                     );
+                  } else {
+                    return MyFavorites(
+                        myFavoriteSongs: favoritesController.myFavoritesSongs);
                   }
-                  return MyFavorites(myFavoriteSongs: state.myFavoriteSongs);
                 }),
                 const SizedBox(
                   height: 25,

@@ -1,9 +1,12 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/controllers/favoritesController.dart';
 
-import '../models/song_model.dart';
+import 'package:get/get.dart';
+
+import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
+
+import '../../../models/song_model.dart';
 
 class SongCard2 extends StatelessWidget {
   SongCard2({
@@ -12,8 +15,7 @@ class SongCard2 extends StatelessWidget {
   }) : super(key: key);
 
   final Song song;
-  final FavoritesController favoritesController =
-      Get.put(FavoritesController());
+  final favoritesController = Get.find<FavoritesController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class SongCard2 extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: song.coverImageUrl.length == 13
+              child: song.coverImageUrl?.length == 13
                   ? Image.asset(
                       'assets/images/music_icon5.png',
                       height: 50,
@@ -37,7 +39,7 @@ class SongCard2 extends StatelessWidget {
                       fit: BoxFit.cover,
                     )
                   : Image.memory(
-                      song.coverImageUrl,
+                      song.coverImageUrl as Uint8List,
                       height: 50,
                       width: 50,
                       fit: BoxFit.cover,
@@ -66,7 +68,7 @@ class SongCard2 extends StatelessWidget {
                 onSelected: ((selectedValue) {
                   // this music player app is developed by master
                   if (selectedValue == 'Remove  from favorites') {
-                    favoritesController.removeFavorites(song);
+                    favoritesController.addOrRemoveFavorites(song);
                   }
                 }),
                 itemBuilder: (context) {

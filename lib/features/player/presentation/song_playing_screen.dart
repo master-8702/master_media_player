@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/components/music_seekbar_slider.dart';
 import 'package:mastermediaplayer/controllers/playlistsController.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_player_body.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_player_header.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
@@ -16,12 +17,12 @@ import '../../../components/PlaylistControlButtons.dart';
 class SongPlayingScreen extends StatelessWidget {
   SongPlayingScreen({Key? key}) : super(key: key);
 
-  late final SongPlayingScreenController controller =
+   final SongPlayingScreenController controller =
       Get.put(SongPlayingScreenController());
 
   final PlaylistsController playlistsController =
       Get.put(PlaylistsController());
-
+  final  favoritesController = Get.find<FavoritesController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +37,7 @@ class SongPlayingScreen extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.1,
                 width: MediaQuery.of(context).size.width,
+                // back button, Now playing text, option button for add to playlist, sleep timer and music info
                 child: SongPlayerHeader(
                     playlistsController: playlistsController,
                     song: controller.songList.first,
@@ -45,14 +47,17 @@ class SongPlayingScreen extends StatelessWidget {
                 height: 15,
               ),
 
-              // cover art, song name , artist name, album name
+              // cover art, song name , artist name
               SongPlayerBody(
-                  song: controller.songList.first, controller: controller),
+                  song: controller.songList.first,
+                  songPlayingScreenController: controller,
+                  favoritesController: favoritesController
+                  ),
               const SizedBox(
                 height: 10,
               ),
 
-              // start time , shuffle button, repeat button, end time
+              // start time , (if playlist) shuffle button, (if playlist) repeat button, end time
               PlaylistControlButtons(audioPlayer: controller.audioPlayer.value),
               const SizedBox(
                 height: 15,
@@ -71,7 +76,6 @@ class SongPlayingScreen extends StatelessWidget {
 
               PlayerButtons(audioPlayer: controller.audioPlayer.value),
 
-              // playing time indicator (progress bar)
             ],
           ),
         ),

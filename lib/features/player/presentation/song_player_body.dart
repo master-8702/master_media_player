@@ -1,10 +1,11 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/controllers/favoritesController.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
@@ -13,11 +14,13 @@ class SongPlayerBody extends StatelessWidget {
   const SongPlayerBody({
     super.key,
     required this.song,
-    required this.controller,
+    required this.songPlayingScreenController,
+    required this.favoritesController,
   });
 
   final Song song;
-  final SongPlayingScreenController controller;
+  final SongPlayingScreenController songPlayingScreenController;
+  final FavoritesController favoritesController;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,7 @@ class SongPlayerBody extends StatelessWidget {
               child: Stack(alignment: Alignment.topCenter, children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: song.coverImageUrl.length == 13
+                  child: song.coverImageUrl?.length == 13
                       ? Image.asset(
                           'assets/images/music_icon5.png',
                           fit: BoxFit.fill,
@@ -41,7 +44,7 @@ class SongPlayerBody extends StatelessWidget {
                           width: MediaQuery.of(context).size.width,
                         )
                       : Image.memory(
-                          song.coverImageUrl,
+                          song.coverImageUrl as Uint8List,
                           fit: BoxFit.fill,
                           height: MediaQuery.of(context).size.height * 0.3,
                         ),
@@ -52,7 +55,8 @@ class SongPlayerBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Obx(() {
-                        if (controller.timerController.value.duration.value >
+                        if (songPlayingScreenController
+                                .timerController.value.duration.value >
                             Duration.zero) {
                           return Container(
                             padding: const EdgeInsets.all(3),
@@ -63,7 +67,7 @@ class SongPlayerBody extends StatelessWidget {
                               color: Theme.of(context).backgroundColor,
                             ),
                             child: Text(
-                              '⏱ ${Utilities.formatDuration(controller.timerController.value.duration.value)}',
+                              '⏱ ${Utilities.formatDuration(songPlayingScreenController.timerController.value.duration.value)}',
                               style: const TextStyle(fontSize: 18),
                             ),
                           );
@@ -104,22 +108,17 @@ class SongPlayerBody extends StatelessWidget {
                                 .copyWith(fontSize: 16),
                           ),
                         ),
-                        GetBuilder<FavoritesController>(
-                            builder: (favoriteStateController) {
+                        Obx(() {
                           return Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: GestureDetector(
                               onTap: () {
-                                if (favoriteStateController.myFavorites
-                                    .contains(song.songUrl)) {
-                                  favoriteStateController.removeFavorites(song);
-                                } else {
-                                  favoriteStateController.addFavorites(song);
-                                }
+                                // here we will add or remove the current song on the favorites list
+                                favoritesController.addOrRemoveFavorites(song);
                               },
                               child: Icon(
-                                favoriteStateController.myFavorites
-                                        .contains(song.songUrl)
+                                favoritesController.myFavoritesSongs
+                                        .contains(song)
                                     ? Icons.favorite
                                     : Icons.favorite_border_outlined,
                                 color: Theme.of(context).colorScheme.secondary,
@@ -134,7 +133,7 @@ class SongPlayerBody extends StatelessWidget {
                               ),
                             ),
                           );
-                        })
+                        }),
                       ],
                     ),
                   ],

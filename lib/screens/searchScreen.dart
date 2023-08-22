@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/playlist_card.dart';
-import 'package:mastermediaplayer/components/song_card2.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/song_card2.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 
 import '../components/neumorphic_container.dart';
