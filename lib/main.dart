@@ -4,23 +4,25 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:mastermediaplayer/controllers/theme_controller.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favorites_screen.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/image_explorer_screen.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/music_explorer_screen.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen.dart';
 import 'package:mastermediaplayer/screens/create_playlist_screen.dart';
-import 'package:mastermediaplayer/screens/favorites_screen.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
 import 'package:mastermediaplayer/screens/playlists_screen.dart';
 import 'package:mastermediaplayer/screens/searchScreen.dart';
 import 'package:mastermediaplayer/screens/selectable_song_explorer_screen.dart';
+import 'package:mastermediaplayer/screens/settings_screen.dart';
 import 'package:mastermediaplayer/screens/single_playlist_screen.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
 import 'package:mastermediaplayer/utilities/configurations.dart';
 
 void main() async {
   await GetStorage.init();
-  // final ab = GetStorage();
-  // ab.remove(kthemeKey);
+  // final box = GetStorage();
+  // box.erase();
 
   // initialize local storages and inject it into MyApp
   await Get.putAsync(() => StorageService().init());
@@ -30,7 +32,9 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
+// Injecting dependencies
   final themeController = Get.put(ThemeController());
+  final favoritesController = Get.put(FavoritesController());
 
   // This widget is the root of our application. that will handle the route and everything.
   @override
@@ -64,7 +68,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/imageExplorer',
-          page: () =>  ImageExplorerScreen(),
+          page: () => ImageExplorerScreen(),
         ),
         GetPage(
           name: '/playlists',
@@ -76,7 +80,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/favorites',
-          page: () => const FavoritesScreen(),
+          page: () => FavoritesScreen(),
         ),
         GetPage(
           name: '/search',
@@ -85,7 +89,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/settings',
           // this is for testing purposes we will return the correct page
-          page: () => SongPlayingScreen(),
+          page: () => SettingsScreen(),
         ),
       ],
     );
