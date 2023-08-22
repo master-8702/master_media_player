@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:get/get.dart';
+
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 
-import '../models/song_model.dart';
+import '../../../models/song_model.dart';
 
 class SongCard extends StatelessWidget {
   const SongCard({
@@ -24,9 +27,10 @@ class SongCard extends StatelessWidget {
             color: Colors.transparent,
             borderRadius: BorderRadius.circular(15),
             image: DecorationImage(
-                image: song.coverImageUrl.length == 13
+                // length 13 means the music fie doesn't have an album art
+                image: song.coverImageUrl?.length == 13
                     ? Image.asset('assets/images/music_icon5.png').image
-                    : Image.memory(song.coverImageUrl).image,
+                    : Image.memory(song.coverImageUrl as Uint8List).image,
                 fit: BoxFit.fill),
           ),
         ),
@@ -49,7 +53,7 @@ class SongCard extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // this SizedBox is added in order to stop the texts from over flowing
-                // and to that we have to set the width for the text holder widget
+                // and to achieve that we have to set the width for the text holder widget
                 // this music player app is developed by master
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.4,
