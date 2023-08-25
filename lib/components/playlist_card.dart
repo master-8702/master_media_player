@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/controllers/playlistsController.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlistsController.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller2.dart';
 
-import '../models/playlist_model.dart';
+import '../features/playlists/domain/playlist_model.dart';
 
 class PlaylistCard extends StatelessWidget {
   PlaylistCard({
@@ -14,15 +15,18 @@ class PlaylistCard extends StatelessWidget {
   }) : super(key: key);
 
   final Playlist myPlaylist;
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
+  final playlistsController = Get.find<PlaylistsController2>();
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed('playlist',
-            arguments: {'playlist': myPlaylist, 'selectedIndex': 0});
+        playlistsController.selectedPlaylistToPlay.value =
+            playlistsController.myPlaylists.indexOf(myPlaylist);
+        Get.toNamed(
+          'playlist',
+          // arguments: {'playlist': myPlaylist, 'selectedIndex': 0}
+        );
       },
       child: NeumorphicContainer(
         padding: 10,
@@ -71,7 +75,7 @@ class PlaylistCard extends StatelessWidget {
                 position: PopupMenuPosition.under,
                 onSelected: ((selectedValue) {
                   if (selectedValue == 'Delete  Playlist') {
-                    playlistsController.removePlaylist(myPlaylist);
+                    playlistsController.addOrRemovePlaylists(myPlaylist);
                   }
                 }),
                 itemBuilder: (context) {
