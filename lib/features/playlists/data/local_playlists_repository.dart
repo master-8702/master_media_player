@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:mastermediaplayer/Constants/constants.dart';
 
 import 'package:mastermediaplayer/features/playlists/data/playlists_repository.dart';
-import 'package:mastermediaplayer/features/playlists/domain/playlist_model.dart';
+import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
 import 'package:path_provider/path_provider.dart';
