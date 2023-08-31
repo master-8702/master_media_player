@@ -1,22 +1,19 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/image_explorer_screen.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/selectable_song_explorer_screen.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
-import 'package:mastermediaplayer/models/playlist_model.dart';
-import 'package:path_provider/path_provider.dart';
-import '../components/neumorphic_container.dart';
-import '../controllers/playlistsController.dart';
+import '../../../components/neumorphic_container.dart';
 
 // this class will provide us with a screen(page) that will help us  in creating a new playlist
 class CreatePlaylistScreen extends StatelessWidget {
   CreatePlaylistScreen({Key? key}) : super(key: key);
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
-  final selectedCoverImage = ''.obs;
-  final selectedSongs = <String>[].obs;
+  final playlistsController = Get.find<PlaylistsController>();
+
   final TextEditingController textEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
@@ -81,12 +78,12 @@ class CreatePlaylistScreen extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () async {
-                    selectedSongs.value =
+                    playlistsController.selectedSongs.value =
                         await Get.to(const SelectableSongExplorerScreen());
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text('Add Musics'),
                       Icon(Icons.music_note),
                     ],
@@ -96,7 +93,7 @@ class CreatePlaylistScreen extends StatelessWidget {
                   () => ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: selectedSongs.length,
+                      itemCount: playlistsController.selectedSongs.length,
                       itemBuilder: (context, index) {
                         return Row(
                           children: [
@@ -107,8 +104,8 @@ class CreatePlaylistScreen extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    Utilities.basename(
-                                        File(selectedSongs[index])),
+                                    Utilities.basename(File(playlistsController
+                                        .selectedSongs[index])),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -122,12 +119,12 @@ class CreatePlaylistScreen extends StatelessWidget {
                 // this music player app is developed by master
                 TextButton(
                   onPressed: () async {
-                    selectedCoverImage.value =
+                    playlistsController.selectedCoverImage.value =
                         await Get.to(ImageExplorerScreen());
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text('Add playlist Cover'),
                       Icon(Icons.image),
                     ],
@@ -137,9 +134,10 @@ class CreatePlaylistScreen extends StatelessWidget {
                   () => SizedBox(
                     width: 200,
                     height: 200,
-                    child: selectedCoverImage.isEmpty
+                    child: playlistsController.selectedCoverImage.isEmpty
                         ? const Icon(Icons.image, size: 200)
-                        : Image.file(File(selectedCoverImage.value)),
+                        : Image.file(
+                            File(playlistsController.selectedCoverImage.value)),
                   ),
                 ),
                 const SizedBox(
@@ -148,37 +146,17 @@ class CreatePlaylistScreen extends StatelessWidget {
                 NeumorphicContainer(
                   child: TextButton(
                     onPressed: () async {
-                      //this will hold the new image path in the application document directory
-                      var newImagePath = File('');
                       // this will validate the form (actually the single field D:) on the clicking of the Save button.
                       final isTheFormValid = formKey.currentState!.validate();
                       if (isTheFormValid) {
-                        if (selectedSongs.isEmpty) {
+                        if (playlistsController.selectedSongs.isEmpty) {
                           Get.snackbar('Warning',
                               'You have to select at least one song ');
                         } else {
                           // here if the user selects an image we will copy that image to the application document directory
                           // otherwise if we take the original path and the file gets deleted , the app will break (in the image widgets)
-                          Directory applicationDirectory =
-                              await getApplicationDocumentsDirectory();
-                          if (selectedCoverImage.value != '') {
-                            final File coverImage =
-                                File(selectedCoverImage.value);
-                            String fileNameWithExtension =
-                                coverImage.path.split('/').last;
-                            newImagePath = await coverImage.copy(
-                                '${applicationDirectory.path}/$fileNameWithExtension');
-                          }
-                          // if everything is so good so far we will create a new playlist and save that data permanently
-                          // by calling addNewPlaylist from playlistController
-
-                          Playlist playlist = Playlist(
-                              title: textEditingController.text,
-                              songs: selectedSongs,
-                              coverImageUrl: selectedCoverImage.value == ''
-                                  ? 'assets/images/playlist.png'
-                                  : newImagePath.path);
-                          playlistsController.addNewPlaylist(playlist);
+                          playlistsController.createPlaylist(
+                              title: textEditingController.text);
                           Get.back();
                         }
                       }
