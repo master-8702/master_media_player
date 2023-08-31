@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen_controller.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 
-import '../controllers/playlistsController.dart';
-import '../models/playlist_model.dart';
+import '../features/playlists/domain/playlist.dart';
 
 class PlaylistSongs extends StatefulWidget {
   const PlaylistSongs({
@@ -16,21 +17,20 @@ class PlaylistSongs extends StatefulWidget {
     required this.playlist,
     required this.songUrl,
     required this.indexNumber,
-    required this.playingStatus,
   }) : super(key: key);
 
   final Playlist playlist;
   final String songUrl;
   final int indexNumber;
-  final bool playingStatus;
 
   @override
   State<PlaylistSongs> createState() => _PlaylistSongsState();
 }
 
 class _PlaylistSongsState extends State<PlaylistSongs> {
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
+  final playlistsController = Get.find<PlaylistsController>();
+  final singlePlaylistScreenController =
+      Get.find<PlaylistPlayingScreenController>();
 
   final favoritesController = Get.find<FavoritesController>();
 
@@ -97,8 +97,15 @@ class _PlaylistSongsState extends State<PlaylistSongs> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                if (widget.playingStatus)
-                                  const Icon(Icons.play_circle),
+                                Obx(() {
+                                  if (singlePlaylistScreenController
+                                          .currentAudioPlayerIndex.value ==
+                                      (widget.indexNumber - 1)) {
+                                    return const Icon(Icons.play_circle);
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                }),
                               ],
                             ),
                           ],
@@ -124,12 +131,15 @@ class _PlaylistSongsState extends State<PlaylistSongs> {
                 PopupMenuButton(
                     position: PopupMenuPosition.under,
                     itemBuilder: (context) {
-                      return const [
-                        PopupMenuItem(
-                          value: 'Remove from Playlist',
-                          child: Text('Remove from Playlist'),
-                        ),
-                        PopupMenuItem(
+                      return [
+                        if (singlePlaylistScreenController
+                                .currentAudioPlayerIndex.value !=
+                            (widget.indexNumber - 1))
+                          const PopupMenuItem(
+                            value: 'Remove from Playlist',
+                            child: Text('Remove from Playlist'),
+                          ),
+                        const PopupMenuItem(
                           value: 'Add to My Favorites',
                           child: Text('Add to My Favorites'),
                         ),
@@ -140,9 +150,8 @@ class _PlaylistSongsState extends State<PlaylistSongs> {
                       // or add it to the favorites list based on the user's selection
 
                       if (value == 'Remove from Playlist') {
-                        playlistsController.removeSongFromPlaylist(
-                            widget.playlist,
-                            await Utilities().getSong(widget.songUrl));
+                        playlistsController.addOrRemoveSongsFromPlaylist(
+                            widget.playlist, [widget.songUrl]);
                       }
                       if (value == 'Add to My Favorites') {
                         // favoritesController.addFavorites(

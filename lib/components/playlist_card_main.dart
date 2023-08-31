@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 
-import '../features/playlists/domain/playlist_model.dart';
+import '../features/playlists/domain/playlist.dart';
 
 class PlaylistCardMain extends StatelessWidget {
   const PlaylistCardMain({

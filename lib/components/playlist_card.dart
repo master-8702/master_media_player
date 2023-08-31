@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlistsController.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller2.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 
-import '../features/playlists/domain/playlist_model.dart';
+import '../features/playlists/domain/playlist.dart';
 
 class PlaylistCard extends StatelessWidget {
   PlaylistCard({
@@ -15,7 +14,7 @@ class PlaylistCard extends StatelessWidget {
   }) : super(key: key);
 
   final Playlist myPlaylist;
-  final playlistsController = Get.find<PlaylistsController2>();
+  final playlistsController = Get.find<PlaylistsController>();
 
   @override
   Widget build(BuildContext context) {
