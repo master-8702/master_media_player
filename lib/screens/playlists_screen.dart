@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import '../components/neumorphic_container.dart';
 import '../components/playlist_card.dart';
-import '../controllers/playlistsController.dart';
 
 // this class will build the UI for the playlists page to show us all the available Playlists
 // in our local storage
 class PlaylistsScreen extends StatelessWidget {
   PlaylistsScreen({Key? key}) : super(key: key);
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
+  final playlistsController = Get.find<PlaylistsController>();
   final TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -50,8 +49,8 @@ class PlaylistsScreen extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              GetBuilder<PlaylistsController>(builder: (playlistState) {
-                if (playlistState.myPlaylists.isEmpty) {
+              Obx(() {
+                if (playlistsController.myPlaylists.isEmpty) {
                   return Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -83,10 +82,11 @@ class PlaylistsScreen extends StatelessWidget {
                         child: ListView.builder(
                             shrinkWrap: true,
                             clipBehavior: Clip.antiAlias,
-                            itemCount: playlistState.myPlaylists.length,
+                            itemCount: playlistsController.myPlaylists.length,
                             itemBuilder: (context, index) {
                               return PlaylistCard(
-                                  myPlaylist: playlistState.myPlaylists[index]);
+                                  myPlaylist:
+                                      playlistsController.myPlaylists[index]);
                             }),
                       ),
                       const SizedBox(
@@ -107,6 +107,63 @@ class PlaylistsScreen extends StatelessWidget {
                   ),
                 );
               }),
+              // GetBuilder<playlistsController>(builder: (playlistState) {
+              //   if (playlistState.myPlaylists.isEmpty) {
+              //     return Expanded(
+              //       child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           const Text('No Playlists Yet!'),
+              //           const SizedBox(
+              //             height: 25,
+              //           ),
+              //           NeumorphicContainer(
+              //             child: TextButton(
+              //               onPressed: () {
+              //                 Get.toNamed('createPlaylist');
+              //               },
+              //               child: const Text(
+              //                 'Create New Playlist',
+              //                 style: TextStyle(fontSize: 20),
+              //               ),
+              //             ),
+              //           ),
+              //           // this music player app is developed by master
+              //         ],
+              //       ),
+              //     );
+              //   }
+              //   return Expanded(
+              //     child: Column(
+              //       children: [
+              //         Flexible(
+              //           child: ListView.builder(
+              //               shrinkWrap: true,
+              //               clipBehavior: Clip.antiAlias,
+              //               itemCount: playlistState.myPlaylists.length,
+              //               itemBuilder: (context, index) {
+              //                 return PlaylistCard(
+              //                     myPlaylist: playlistState.myPlaylists[index]);
+              //               }),
+              //         ),
+              //         const SizedBox(
+              //           height: 25,
+              //         ),
+              //         NeumorphicContainer(
+              //           child: TextButton(
+              //             onPressed: () {
+              //               Get.toNamed('createPlaylist');
+              //             },
+              //             child: const Text(
+              //               'Create New Playlist',
+              //               style: TextStyle(fontSize: 20),
+              //             ),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   );
+              // }),
             ],
           ),
         ),
