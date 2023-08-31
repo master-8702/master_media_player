@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
-import 'package:mastermediaplayer/controllers/playlistsController.dart';
 import '../features/favorites/presentation/my_favorites.dart';
 import '../components/playlists_search_bar.dart';
 import '../components/playlist_card.dart';
-import '../models/playlist_model.dart';
 
 // this class will be our landing screen (home page) for our app
 class HomeScreen extends StatefulWidget {
@@ -20,18 +21,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final favoritesController = Get.find<FavoritesController>();
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
-  late List<Playlist> myPlaylist;
+  final playlistsController = Get.find<PlaylistsController>();
 
   @override
   void initState() {
     // here we will request storage permission in case it was not allowed during installation
     Utilities().requestPermission();
-    // GetStorage().remove('myPlaylist');
-    // favoritesController.getFavoriteMusics();
-    playlistsController.getPlaylists();
-    myPlaylist = playlistsController.myPlaylists;
+   
     super.initState();
   }
 
@@ -112,10 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           Get.toNamed('playlists');
                         },
                         child: const SectionHeader(title: "Playlists")),
-                    GetBuilder<PlaylistsController>(builder: (playlistState) {
+                    Obx(() {
                       if (playlistsController.myPlaylists.isEmpty) {
-                        return Column(
-                          children: const [
+                        return const Column(
+                          children: [
                             SizedBox(
                               height: 15,
                             ),
@@ -127,12 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             shrinkWrap: true,
                             padding: const EdgeInsets.only(top: 20),
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: playlistState.myPlaylists.length <= 5
-                                ? playlistState.myPlaylists.length
-                                : 5,
+                            itemCount:
+                                playlistsController.myPlaylists.length <= 5
+                                    ? playlistsController.myPlaylists.length
+                                    : 5,
                             itemBuilder: (context, index) {
                               return PlaylistCard(
-                                  myPlaylist: playlistState.myPlaylists[index]);
+                                  myPlaylist:
+                                      playlistsController.myPlaylists[index]);
                             });
                       }
                     }),

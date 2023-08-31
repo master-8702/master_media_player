@@ -5,7 +5,7 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 

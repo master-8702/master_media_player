@@ -1,9 +1,6 @@
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:rxdart/rxdart.dart' as rxdart;
-import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
 
-import 'package:mastermediaplayer/features/playlists/domain/playlist_model.dart';
+import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/data/local_playlists_repository.dart';
 
 // this class is going to be used as state manager (controller) for playlists

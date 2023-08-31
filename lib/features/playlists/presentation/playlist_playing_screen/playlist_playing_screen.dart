@@ -5,15 +5,15 @@ import 'package:get/get.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
-import '../../../components/PlayerButtons.dart';
-import '../../../components/PlaylistControlButtons.dart';
-import '../../../components/music_seekbar_slider.dart';
-import '../../../components/neumorphic_container.dart';
-import '../../../components/playlist_songs.dart';
+import '../../../../components/PlayerButtons.dart';
+import '../../../../components/PlaylistControlButtons.dart';
+import '../../../../components/music_seekbar_slider.dart';
+import '../../../../components/neumorphic_container.dart';
+import '../../../../components/playlist_songs.dart';
 
-import '../../../controllers/timerController.dart';
+import '../../../../controllers/timerController.dart';
 
 // this class is going to be used for displaying a single playlist page UI with a list of songs from that playlist
 class PlaylistPlayingScreen extends StatefulWidget {

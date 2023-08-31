@@ -5,12 +5,12 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/playlist_card.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/song_card2.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 
 import '../components/neumorphic_container.dart';
 import '../utilities/utilities.dart';
-import '../controllers/playlistsController.dart';
-import '../models/playlist_model.dart';
+import '../features/playlists/domain/playlist.dart';
 import '../models/searchable_playlist_model.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -21,8 +21,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
+  final playlistsController = Get.find<PlaylistsController>();
   TextEditingController textEditingController = TextEditingController();
 
   // in the following two variables we will put the search results from musics and playlists respectively

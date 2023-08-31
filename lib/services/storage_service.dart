@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:mastermediaplayer/Constants/constants.dart';
-import 'package:mastermediaplayer/features/playlists/domain/playlist_model.dart';
+import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 
 class StorageService extends GetxService {
