@@ -1,86 +1,39 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
-import 'package:mastermediaplayer/models/playlist_model.dart';
-import 'package:text_scroll/text_scroll.dart';
-import '../components/PlayerButtons.dart';
-import '../components/PlaylistControlButtons.dart';
-import '../components/music_seekbar_slider.dart';
-import '../components/neumorphic_container.dart';
-import '../components/playlist_songs.dart';
-import '../controllers/playlistsController.dart';
-import 'package:rxdart/rxdart.dart' as rxdart;
 
-import '../controllers/timerController.dart';
+import 'package:get/get.dart';
+import 'package:text_scroll/text_scroll.dart';
+
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen_controller.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
+import '../../../components/PlayerButtons.dart';
+import '../../../components/PlaylistControlButtons.dart';
+import '../../../components/music_seekbar_slider.dart';
+import '../../../components/neumorphic_container.dart';
+import '../../../components/playlist_songs.dart';
+
+import '../../../controllers/timerController.dart';
 
 // this class is going to be used for displaying a single playlist page UI with a list of songs from that playlist
-class SinglePlaylistScreen extends StatefulWidget {
-  const SinglePlaylistScreen({Key? key}) : super(key: key);
+class PlaylistPlayingScreen extends StatefulWidget {
+  const PlaylistPlayingScreen({Key? key}) : super(key: key);
 
   @override
-  State<SinglePlaylistScreen> createState() => _SinglePlaylistScreenState();
+  State<PlaylistPlayingScreen> createState() => _PlaylistPlayingScreenState();
 }
 
-class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
-  Playlist myPlaylist = Get.arguments['playlist'];
-  // if the selected index is passed as an argument we will take that otherwise we will just initialize it to zero
-  int selectedSongIndex = Get.arguments['selectedIndex'] ?? 0;
-
-  AudioPlayer audioPlayer = AudioPlayer();
-  late var selectedSongs = <String>[].obs;
-
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
+class _PlaylistPlayingScreenState extends State<PlaylistPlayingScreen> {
+  final PlaylistPlayingScreenController singlePlaylistController =
+      Get.put(PlaylistPlayingScreenController());
+  final playlistsController = Get.find<PlaylistsController>();
 
   final TextEditingController timerTextEditingController =
       TextEditingController();
   TimerController timerController = TimerController();
 
   @override
-  void initState() {
-    // here we will initialize the index to zero cause the last playlist's index might not be found on the new one
-    // so we will avoid range error (index out of range error)
-    // on the other hand if we came from the search page the index might not be zero so using selectedSongIndex variable
-    // we will check if we came from the playlists page or search page (if we came from the search page probably it won't be a zero)
-    // and assign the initial index number for the playlist audio source.
-    playlistsController.currentAudioPlayerIndex.value = selectedSongIndex;
-    // here we will concatenate audio sources to the player from the playlist song's file
-    List<AudioSource> audioSources = [];
-    for (String songPath in myPlaylist.songs) {
-      audioSources.add(AudioSource.uri(Uri.file(songPath)));
-    }
-    final playlist = ConcatenatingAudioSource(
-        children: audioSources,
-        shuffleOrder: DefaultShuffleOrder(),
-        useLazyPreparation: true);
-    audioPlayer.setAudioSource(playlist,
-        initialIndex: selectedSongIndex, initialPosition: Duration.zero);
-
-    super.initState();
-  }
-
-  // here we are gonna use two different streams and we will combine them using rxdart package
-  Stream<MusicSliderPositionData> get _musicSliderDragPositionDataStream =>
-      rxdart.Rx.combineLatest2<Duration, Duration?, MusicSliderPositionData>(
-        audioPlayer.positionStream,
-        audioPlayer.durationStream,
-        (Duration position, Duration? duration) =>
-            MusicSliderPositionData(position, duration ?? Duration.zero),
-      );
-
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    audioPlayer.play();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -115,7 +68,7 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                           child: Text(
                             maxLines: 2,
                             textAlign: TextAlign.center,
-                            myPlaylist.title,
+                            singlePlaylistController.myPlaylist.value.title,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
@@ -133,10 +86,11 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                           position: PopupMenuPosition.under,
                           onSelected: (selectedValue) async {
                             if (selectedValue == 'Add Music(s)') {
-                              selectedSongs =
+                              playlistsController.selectedSongs =
                                   await Get.toNamed('selectableSongExplorer');
-                              playlistsController.addMusicToPlaylist(
-                                  myPlaylist, selectedSongs);
+                              playlistsController.addOrRemoveSongsFromPlaylist(
+                                  singlePlaylistController.myPlaylist.value,
+                                  playlistsController.selectedSongs);
                             } else if (selectedValue == 'Sleep Timer') {
                               return showDialog(
                                   context: context,
@@ -201,8 +155,9 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
 
                                               Get.back();
 
-                                              timerController
-                                                  .startTimer(audioPlayer);
+                                              timerController.startTimer(
+                                                  singlePlaylistController
+                                                      .audioPlayer);
                                             }
                                           },
                                           child: const Text('Start'),
@@ -257,24 +212,24 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: myPlaylist.coverImageUrl ==
+                            child: singlePlaylistController
+                                        .myPlaylist.value.coverImageUrl ==
                                     'assets/images/playlist.png'
                                 ? Image.asset(
-                                    myPlaylist.coverImageUrl,
+                                    singlePlaylistController
+                                        .myPlaylist.value.coverImageUrl,
                                     height: MediaQuery.of(context).size.height *
                                         0.3,
                                     width: MediaQuery.of(context).size.width,
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                   )
-                                : Expanded(
-                                    child: Image.file(
-                                      File(myPlaylist.coverImageUrl),
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.3,
-                                      width: MediaQuery.of(context).size.width,
-                                      fit: BoxFit.fill,
-                                    ),
+                                : Image.file(
+                                    File(singlePlaylistController
+                                        .myPlaylist.value.coverImageUrl),
+                                    height: MediaQuery.of(context).size.height *
+                                        0.3,
+                                    width: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.cover,
                                   ),
                           ),
                         ],
@@ -327,8 +282,10 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                         ),
                         TextScroll(
                           Utilities.basename(
-                            File(myPlaylist.songs[playlistsController
-                                .currentAudioPlayerIndex.value]),
+                            File(
+                                singlePlaylistController.myPlaylist.value.songs[
+                                    singlePlaylistController
+                                        .currentAudioPlayerIndex.value]),
                           ),
                           style: const TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
@@ -345,13 +302,15 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    PlaylistControlButtons(audioPlayer: audioPlayer),
+                    PlaylistControlButtons(
+                        audioPlayer: singlePlaylistController.audioPlayer),
                     const SizedBox(
                       height: 15,
                     ),
                     MusicSeekbarSlider(
-                      audioPlayer: audioPlayer,
-                      seekBarDataStream: _musicSliderDragPositionDataStream,
+                      audioPlayer: singlePlaylistController.audioPlayer,
+                      seekBarDataStream: singlePlaylistController
+                          .musicSliderDragPositionDataStream,
                     ),
 
                     const SizedBox(
@@ -359,38 +318,45 @@ class _SinglePlaylistScreenState extends State<SinglePlaylistScreen> {
                     ),
                     // previous song , ply/pause, next song buttons
 
-                    PlayerButtons(audioPlayer: audioPlayer),
+                    PlayerButtons(
+                      audioPlayer: singlePlaylistController.audioPlayer,
+                      singlePlaylistController: singlePlaylistController,
+                    ),
                   ],
                 ),
                 const Divider(),
                 const SizedBox(
                   height: 15,
                 ),
-                GetBuilder<PlaylistsController>(builder: (context) {
+                Obx(() {
                   return ListView.builder(
                       shrinkWrap: true,
                       primary: false,
                       physics: const NeverScrollableScrollPhysics(),
                       clipBehavior: Clip.none,
-                      itemCount: myPlaylist.songs.length,
+                      itemCount: singlePlaylistController
+                          .myPlaylist.value.songs.length,
                       itemBuilder: (context, index) {
                         return InkWell(
-                          onTap: () {
-                            audioPlayer.seek(Duration.zero, index: index);
-                            playlistsController.justRebuildTheUi(index);
+                          onTap: () async {
+                            await singlePlaylistController.audioPlayer
+                                .seek(Duration.zero, index: index);
+                            singlePlaylistController.currentAudioPlayerIndex
+                                .value = singlePlaylistController
+                                    .audioPlayer.currentIndex ??
+                                0;
                           },
-                          child: PlaylistSongs(
-                              playingStatus: playlistsController
-                                      .currentAudioPlayerIndex.value ==
-                                  index,
-                              playlist: myPlaylist,
-                              indexNumber: index + 1,
-                              songUrl: myPlaylist.songs[index]),
+                          child: Obx(
+                            () => PlaylistSongs(
+                                playlist:
+                                    singlePlaylistController.myPlaylist.value,
+                                indexNumber: index + 1,
+                                songUrl: singlePlaylistController
+                                    .myPlaylist.value.songs[index]),
+                          ),
                         );
                       });
                   // this music player app is developed by master
-
-                  //
                 }),
               ],
             ),
