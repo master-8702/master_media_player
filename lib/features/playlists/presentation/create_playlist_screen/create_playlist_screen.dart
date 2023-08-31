@@ -1,13 +1,11 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/add_playlist_cover.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/add_songs.dart';
 
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/features/file_explorer/presentation/image_explorer_screen.dart';
-import 'package:mastermediaplayer/features/file_explorer/presentation/selectable_song_explorer_screen.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
-import '../../../components/neumorphic_container.dart';
+import '../../../../components/neumorphic_container.dart';
 
 // this class will provide us with a screen(page) that will help us  in creating a new playlist
 class CreatePlaylistScreen extends StatelessWidget {
@@ -76,70 +74,11 @@ class CreatePlaylistScreen extends StatelessWidget {
                         const InputDecoration(hintText: 'playlist name'),
                   ),
                 ),
-                TextButton(
-                  onPressed: () async {
-                    playlistsController.selectedSongs.value =
-                        await Get.to(const SelectableSongExplorerScreen());
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Add Musics'),
-                      Icon(Icons.music_note),
-                    ],
-                  ),
-                ),
-                Obx(
-                  () => ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: playlistsController.selectedSongs.length,
-                      itemBuilder: (context, index) {
-                        return Row(
-                          children: [
-                            Text('${index + 1} '),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.75,
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    Utilities.basename(File(playlistsController
-                                        .selectedSongs[index])),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                ),
+                // add song to the new playlist
+                 AddSongs(playlistsController: playlistsController),
                 // this music player app is developed by master
-                TextButton(
-                  onPressed: () async {
-                    playlistsController.selectedCoverImage.value =
-                        await Get.to(ImageExplorerScreen());
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Add playlist Cover'),
-                      Icon(Icons.image),
-                    ],
-                  ),
-                ),
-                Obx(
-                  () => SizedBox(
-                    width: 200,
-                    height: 200,
-                    child: playlistsController.selectedCoverImage.isEmpty
-                        ? const Icon(Icons.image, size: 200)
-                        : Image.file(
-                            File(playlistsController.selectedCoverImage.value)),
-                  ),
-                ),
+                // add playlist cover image widget
+                AddPlaylistCover(playlistsController: playlistsController),
                 const SizedBox(
                   height: 15,
                 ),

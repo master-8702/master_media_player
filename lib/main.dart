@@ -9,7 +9,7 @@ import 'package:mastermediaplayer/features/favorites/presentation/favorites_scre
 import 'package:mastermediaplayer/features/file_explorer/presentation/image_explorer_screen.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/music_explorer_screen.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/create_playlist_screen.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_screen.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
