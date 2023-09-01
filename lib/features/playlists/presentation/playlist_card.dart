@@ -1,11 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 
-import '../features/playlists/domain/playlist.dart';
 
 class PlaylistCard extends StatelessWidget {
   PlaylistCard({
