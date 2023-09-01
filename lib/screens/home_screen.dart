@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
 import 'package:mastermediaplayer/components/section_header.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_card.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_search/playlists_search_bar.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import '../features/favorites/presentation/my_favorites.dart';
-import '../components/playlists_search_bar.dart';
-import '../components/playlist_card.dart';
 
 // this class will be our landing screen (home page) for our app
 class HomeScreen extends StatefulWidget {
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // here we will request storage permission in case it was not allowed during installation
     Utilities().requestPermission();
-   
+
     super.initState();
   }
 
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                const MusicSearchBar(),
+                const PlaylistSearchBar(),
                 const SizedBox(
                   height: 25,
                 ),
