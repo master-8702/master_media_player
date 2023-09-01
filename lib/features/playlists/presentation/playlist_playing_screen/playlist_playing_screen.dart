@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/Playlist_control_buttons.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_control_buttons.dart';
 
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/current_song_scrollable_title.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/list_of_playlist_songs.dart';

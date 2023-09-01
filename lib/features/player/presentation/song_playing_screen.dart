@@ -7,7 +7,7 @@ import 'package:mastermediaplayer/features/favorites/presentation/favoritesContr
 import 'package:mastermediaplayer/features/player/presentation/song_player_body.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_player_header.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/Playlist_control_buttons.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_control_buttons.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 
 import '../../../components/Player_buttons.dart';
