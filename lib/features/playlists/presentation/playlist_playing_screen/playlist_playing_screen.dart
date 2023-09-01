@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/Playlist_control_buttons.dart';
 
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/current_song_scrollable_title.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/list_of_playlist_songs.dart';
@@ -10,7 +11,6 @@ import 'package:mastermediaplayer/features/playlists/presentation/playlists_cont
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
 import '../../../../components/PlayerButtons.dart';
-import '../../../../components/PlaylistControlButtons.dart';
 import '../../../../components/music_seekbar_slider.dart';
 import '../../../../controllers/timerController.dart';
 
@@ -23,7 +23,7 @@ class PlaylistPlayingScreen extends StatefulWidget {
 }
 
 class _PlaylistPlayingScreenState extends State<PlaylistPlayingScreen> {
-  final PlaylistPlayingScreenController singlePlaylistController =
+  final PlaylistPlayingScreenController playlistPlayingScreenController =
       Get.put(PlaylistPlayingScreenController());
   final playlistsController = Get.find<PlaylistsController>();
 
@@ -43,7 +43,8 @@ class _PlaylistPlayingScreenState extends State<PlaylistPlayingScreen> {
               children: [
                 // playlist header, back button - playlist title - popup menu
                 PlaylistPlayingScreenHeader(
-                  singlePlaylistController: singlePlaylistController,
+                  playlistPlayingScreenController:
+                      playlistPlayingScreenController,
                   playlistsController: playlistsController,
                   timerTextEditingController: timerTextEditingController,
                   timerController: timerController,
@@ -52,12 +53,17 @@ class _PlaylistPlayingScreenState extends State<PlaylistPlayingScreen> {
                   height: 25,
                 ),
                 // playlist cover image and sleep timer display (with stack widget)
-                PlaylistCoverImage(singlePlaylistController: singlePlaylistController, timerController: timerController),
+                PlaylistCoverImage(
+                    playlistPlayingScreenController:
+                        playlistPlayingScreenController,
+                    timerController: timerController),
                 const SizedBox(
                   height: 15,
                 ),
                 // selected playlist title (scrollable text)
-                CurrentSongScrollableTitle(singlePlaylistController: singlePlaylistController),
+                CurrentSongScrollableTitle(
+                    playlistPlayingScreenController:
+                        playlistPlayingScreenController),
                 const SizedBox(
                   height: 15,
                 ),
@@ -66,14 +72,15 @@ class _PlaylistPlayingScreenState extends State<PlaylistPlayingScreen> {
                   children: [
                     // shuffle and loop buttons
                     PlaylistControlButtons(
-                        audioPlayer: singlePlaylistController.audioPlayer),
+                        audioPlayer:
+                            playlistPlayingScreenController.audioPlayer),
                     const SizedBox(
                       height: 15,
                     ),
                     // song duration and position display (slider)
                     MusicSeekbarSlider(
-                      audioPlayer: singlePlaylistController.audioPlayer,
-                      seekBarDataStream: singlePlaylistController
+                      audioPlayer: playlistPlayingScreenController.audioPlayer,
+                      seekBarDataStream: playlistPlayingScreenController
                           .musicSliderDragPositionDataStream,
                     ),
 
@@ -82,8 +89,9 @@ class _PlaylistPlayingScreenState extends State<PlaylistPlayingScreen> {
                     ),
                     // previous , ply/pause, next buttons
                     PlayerButtons(
-                      audioPlayer: singlePlaylistController.audioPlayer,
-                      singlePlaylistController: singlePlaylistController,
+                      audioPlayer: playlistPlayingScreenController.audioPlayer,
+                      playlistPlayingScreenController:
+                          playlistPlayingScreenController,
                     ),
                   ],
                 ),
@@ -92,7 +100,9 @@ class _PlaylistPlayingScreenState extends State<PlaylistPlayingScreen> {
                   height: 15,
                 ),
                 // list of songs from the the selected playlist
-                ListOfPlaylistSongs(singlePlaylistController: singlePlaylistController),
+                ListOfPlaylistSongs(
+                    playlistPlayingScreenController:
+                        playlistPlayingScreenController),
               ],
             ),
           ),
@@ -101,4 +111,3 @@ class _PlaylistPlayingScreenState extends State<PlaylistPlayingScreen> {
     );
   }
 }
-

@@ -9,11 +9,11 @@ import 'package:mastermediaplayer/features/playlists/presentation/playlist_playi
 class PlaylistCoverImage extends StatelessWidget {
   const PlaylistCoverImage({
     super.key,
-    required this.singlePlaylistController,
+    required this.playlistPlayingScreenController,
     required this.timerController,
   });
 
-  final PlaylistPlayingScreenController singlePlaylistController;
+  final PlaylistPlayingScreenController playlistPlayingScreenController;
   final TimerController timerController;
 
   @override
@@ -28,22 +28,20 @@ class PlaylistCoverImage extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: singlePlaylistController
+                child: playlistPlayingScreenController
                             .myPlaylist.value.coverImageUrl ==
                         'assets/images/playlist.png'
                     ? Image.asset(
-                        singlePlaylistController
+                        playlistPlayingScreenController
                             .myPlaylist.value.coverImageUrl,
-                        height: MediaQuery.of(context).size.height *
-                            0.3,
+                        height: MediaQuery.of(context).size.height * 0.3,
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
                       )
                     : Image.file(
-                        File(singlePlaylistController
+                        File(playlistPlayingScreenController
                             .myPlaylist.value.coverImageUrl),
-                        height: MediaQuery.of(context).size.height *
-                            0.3,
+                        height: MediaQuery.of(context).size.height * 0.3,
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
                       ),

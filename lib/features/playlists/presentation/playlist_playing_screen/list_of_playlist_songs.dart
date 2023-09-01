@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/components/playlist_songs.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_song_card/playlist_song_card.dart';
 
 class ListOfPlaylistSongs extends StatelessWidget {
   const ListOfPlaylistSongs({
     super.key,
-    required this.singlePlaylistController,
+    required this.playlistPlayingScreenController,
   });
 
-  final PlaylistPlayingScreenController singlePlaylistController;
+  final PlaylistPlayingScreenController playlistPlayingScreenController;
 
   @override
   Widget build(BuildContext context) {
@@ -21,24 +21,22 @@ class ListOfPlaylistSongs extends StatelessWidget {
           primary: false,
           physics: const NeverScrollableScrollPhysics(),
           clipBehavior: Clip.none,
-          itemCount: singlePlaylistController
-              .myPlaylist.value.songs.length,
+          itemCount:
+              playlistPlayingScreenController.myPlaylist.value.songs.length,
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () async {
-                await singlePlaylistController.audioPlayer
+                await playlistPlayingScreenController.audioPlayer
                     .seek(Duration.zero, index: index);
-                singlePlaylistController.currentAudioPlayerIndex
-                    .value = singlePlaylistController
-                        .audioPlayer.currentIndex ??
-                    0;
+                playlistPlayingScreenController.currentAudioPlayerIndex.value =
+                    playlistPlayingScreenController.audioPlayer.currentIndex ??
+                        0;
               },
               child: Obx(
-                () => PlaylistSongs(
-                    playlist:
-                        singlePlaylistController.myPlaylist.value,
+                () => PlaylistSongCard(
+                    playlist: playlistPlayingScreenController.myPlaylist.value,
                     indexNumber: index + 1,
-                    songUrl: singlePlaylistController
+                    songUrl: playlistPlayingScreenController
                         .myPlaylist.value.songs[index]),
               ),
             );
@@ -47,5 +45,3 @@ class ListOfPlaylistSongs extends StatelessWidget {
     });
   }
 }
-
-

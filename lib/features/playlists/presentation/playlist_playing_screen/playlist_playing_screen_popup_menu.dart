@@ -7,17 +7,17 @@ import 'package:mastermediaplayer/controllers/timerController.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
-class PlaylistPopUpMenu extends StatelessWidget {
-  const PlaylistPopUpMenu({
+class PlaylistPlayingScreenPopupMenu extends StatelessWidget {
+  const PlaylistPlayingScreenPopupMenu({
     super.key,
     required this.playlistsController,
-    required this.singlePlaylistController,
+    required this.playlistPlayingScreenController,
     required this.timerTextEditingController,
     required this.timerController,
   });
 
   final PlaylistsController playlistsController;
-  final PlaylistPlayingScreenController singlePlaylistController;
+  final PlaylistPlayingScreenController playlistPlayingScreenController;
   final TextEditingController timerTextEditingController;
   final TimerController timerController;
 
@@ -54,7 +54,7 @@ class PlaylistPopUpMenu extends StatelessWidget {
                   await Get.toNamed('selectableSongExplorer');
 
               playlistsController.addOrRemoveSongsFromPlaylist(
-                  singlePlaylistController.myPlaylist.value,
+                  playlistPlayingScreenController.myPlaylist.value,
                   playlistsController.selectedSongs);
             } else if (selectedValue == 'Sleep Timer') {
               return _sleepTimerAlertDialog(context);
@@ -64,6 +64,9 @@ class PlaylistPopUpMenu extends StatelessWidget {
       ),
     );
   }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
   Future<void> _sleepTimerAlertDialog(BuildContext context) {
@@ -120,8 +123,8 @@ class PlaylistPopUpMenu extends StatelessWidget {
 
                     Get.back();
 
-                    timerController
-                        .startTimer(singlePlaylistController.audioPlayer);
+                    timerController.startTimer(
+                        playlistPlayingScreenController.audioPlayer);
                   }
                 },
                 child: const Text('Start'),

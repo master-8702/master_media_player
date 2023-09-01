@@ -9,12 +9,16 @@ import 'package:mastermediaplayer/features/playlists/presentation/playlists_cont
 class PlaylistPlayingScreenController extends GetxController {
   static var playlistController = Get.find<PlaylistsController>();
 
-  Rx<Playlist> myPlaylist = playlistController
-      .myPlaylists[playlistController.selectedPlaylistToPlay.value]
-      .obs; // = Get.arguments['playlist'].obs;
+  Rx<Playlist> myPlaylist =
+      Rx(Playlist(title: '', songs: [], coverImageUrl: ''));
+
+  // = Get.arguments['playlist'].obs;
+
   // playing song index
-  var currentAudioPlayerIndex = 0.obs;
-  // last played song 
+  // here Get.arguments is used when the playlist screen is created by selecting a search result
+  RxInt currentAudioPlayerIndex =
+      RxInt(Get.arguments != null ? Get.arguments['selectedIndex'] : 0);
+  // last played song
   RxString lastSong = ''.obs;
 
   final AudioPlayer audioPlayer = AudioPlayer();
@@ -24,7 +28,10 @@ class PlaylistPlayingScreenController extends GetxController {
   late ConcatenatingAudioSource concatenatedAudioSources;
 
   // last played song index and position
-  int lastIndex = 0;
+  // here Get.arguments is used when the playlist screen is created by selecting a search result
+  // so that the selected index will be passed back from the search screen and
+  // we will get and play that specific playlist song index
+  int lastIndex = Get.arguments != null ? Get.arguments['selectedIndex'] : 0;
   Duration lastPosition = Duration.zero;
 
   @override
@@ -35,6 +42,18 @@ class PlaylistPlayingScreenController extends GetxController {
 
   @override
   void onInit() async {
+    // if playlist is passed from the previous screen,
+    // e.g: when clicking a playlist search result from homepage
+    if (Get.arguments != null) {
+      myPlaylist.value = Get.arguments['playlist'];
+      // to start playing the song automatically when the user presses a song from a search result
+      // in other cases the user needs to click the play button to start playing the song(s) 
+      audioPlayer.play();
+    } else {
+      // if not
+      myPlaylist.value = playlistController
+          .myPlaylists[playlistController.selectedPlaylistToPlay.value];
+    }
 
     // here we are listening to changes for the [playlistController.myPlaylists] variable
     // that is found inside the Playlist controller class.
@@ -77,7 +96,6 @@ class PlaylistPlayingScreenController extends GetxController {
 
     super.onInit();
   }
-
 
 // here we are updating audio source when a song is added or removed from the playlist
 // and we are forced to delete and recreate another ConcatenatingAudioSource instance

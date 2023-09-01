@@ -11,10 +11,10 @@ import 'package:mastermediaplayer/utilities/utilities.dart';
 class CurrentSongScrollableTitle extends StatelessWidget {
   const CurrentSongScrollableTitle({
     super.key,
-    required this.singlePlaylistController,
+    required this.playlistPlayingScreenController,
   });
 
-  final PlaylistPlayingScreenController singlePlaylistController;
+  final PlaylistPlayingScreenController playlistPlayingScreenController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +29,12 @@ class CurrentSongScrollableTitle extends StatelessWidget {
             ),
             TextScroll(
               Utilities.basename(
-                File(
-                    singlePlaylistController.myPlaylist.value.songs[
-                        singlePlaylistController
-                            .currentAudioPlayerIndex.value]),
+                File(playlistPlayingScreenController.myPlaylist.value.songs[
+                    playlistPlayingScreenController
+                        .currentAudioPlayerIndex.value]),
               ),
-              style: const TextStyle(
-                  fontSize: 22, fontWeight: FontWeight.bold),
-              velocity:
-                  const Velocity(pixelsPerSecond: Offset(30, 30)),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              velocity: const Velocity(pixelsPerSecond: Offset(30, 30)),
             ),
           ],
         ),
