@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
-import '../controllers/playlistsController.dart';
 import 'neumorphic_container.dart';
 
 class PlayerButtons extends StatelessWidget {
-  PlayerButtons({
+  const PlayerButtons({
     Key? key,
     required this.audioPlayer,
+    // required this.playlistsController,
+    this.playlistPlayingScreenController,
   }) : super(key: key);
 
   final AudioPlayer audioPlayer;
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
+  // final PlaylistsController2? playlistsController;
+  final PlaylistPlayingScreenController? playlistPlayingScreenController;
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +51,13 @@ class PlayerButtons extends StatelessWidget {
                 flex: 2,
                 child: NeumorphicContainer(
                   child: TextButton(
-                    onPressed: () {
-                      // this will rebuild the ui in order to add the play icon on currently playing music list
-                      playlistsController
-                          .justRebuildTheUi(audioPlayer.previousIndex!);
-// this will set the audio player to play the previous song in the playlist if there is any
+                    onPressed: () async {
+                      // this will set the audio player to play the previous song in the playlist if there is any
                       audioPlayer.hasPrevious
-                          ? audioPlayer.seekToPrevious()
+                          ? await audioPlayer.seekToPrevious()
                           : null;
+                      playlistPlayingScreenController!.currentAudioPlayerIndex
+                          .value = audioPlayer.currentIndex ?? 0;
                     },
                     child: const Icon(Icons.skip_previous, size: 22),
                   ),
@@ -75,9 +75,9 @@ class PlayerButtons extends StatelessWidget {
                   // we need to cast it to PlayerState object
                   final processingState = playerState!.processingState;
                   if (processingState == ProcessingState.loading) {
-                    return Expanded(
+                    return const Expanded(
                       child: Column(
-                        children: const [
+                        children: [
                           CircularProgressIndicator(),
                           Text(
                             "Loading ...",
@@ -87,9 +87,9 @@ class PlayerButtons extends StatelessWidget {
                       ),
                     );
                   } else if (processingState == ProcessingState.buffering) {
-                    return Expanded(
+                    return const Expanded(
                       child: Column(
-                        children: const [
+                        children: [
                           CircularProgressIndicator(),
                           Text(
                             "Buffering ...",
@@ -158,13 +158,14 @@ class PlayerButtons extends StatelessWidget {
                 flex: 2,
                 child: NeumorphicContainer(
                   child: TextButton(
-                    onPressed: () {
-                      // this will rebuild the ui in order to add the play icon on currently playing music list
-                      playlistsController
-                          .justRebuildTheUi(audioPlayer.nextIndex!);
+                    onPressed: () async {
                       // this will set the audio player to play the next song in the playlist if there is any
 
-                      audioPlayer.hasNext ? audioPlayer.seekToNext() : null;
+                      audioPlayer.hasNext
+                          ? await audioPlayer.seekToNext()
+                          : null;
+                      playlistPlayingScreenController!.currentAudioPlayerIndex
+                          .value = audioPlayer.currentIndex ?? 0;
                     },
                     child: const Icon(Icons.skip_next, size: 22),
                   ),

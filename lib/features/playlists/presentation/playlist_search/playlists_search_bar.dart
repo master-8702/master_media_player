@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/utilities/utilities.dart';
 
-import '../utilities/utilities.dart';
-
-class MusicSearchBar extends StatelessWidget {
-  const MusicSearchBar({
+class PlaylistSearchBar extends StatelessWidget {
+  const PlaylistSearchBar({
     Key? key,
   }) : super(key: key);
 

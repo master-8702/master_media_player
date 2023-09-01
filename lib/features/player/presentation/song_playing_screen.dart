@@ -3,26 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/components/music_seekbar_slider.dart';
-import 'package:mastermediaplayer/controllers/playlistsController.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_player_body.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_player_header.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/Playlist_control_buttons.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 
-import '../../../components/PlayerButtons.dart';
-import '../../../components/PlaylistControlButtons.dart';
+import '../../../components/Player_buttons.dart';
 
 // this class is going to build the UI for a SOngPlayingScreen that is going to open when we select
 // a single music using the music explorer option
 class SongPlayingScreen extends StatelessWidget {
   SongPlayingScreen({Key? key}) : super(key: key);
 
-   final SongPlayingScreenController controller =
+  final SongPlayingScreenController controller =
       Get.put(SongPlayingScreenController());
 
-  final PlaylistsController playlistsController =
-      Get.put(PlaylistsController());
-  final  favoritesController = Get.find<FavoritesController>();
+  final playlistsController = Get.find<PlaylistsController>();
+  final favoritesController = Get.find<FavoritesController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +50,7 @@ class SongPlayingScreen extends StatelessWidget {
               SongPlayerBody(
                   song: controller.songList.first,
                   songPlayingScreenController: controller,
-                  favoritesController: favoritesController
-                  ),
+                  favoritesController: favoritesController),
               const SizedBox(
                 height: 10,
               ),
@@ -74,8 +72,9 @@ class SongPlayingScreen extends StatelessWidget {
               // previous song , ply/pause, next song buttons
               // this music player app is developed by master
 
-              PlayerButtons(audioPlayer: controller.audioPlayer.value),
-
+              PlayerButtons(
+                audioPlayer: controller.audioPlayer.value,
+              ),
             ],
           ),
         ),

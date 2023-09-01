@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:mastermediaplayer/Constants/constants.dart';
+import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/models/song_model.dart';
 
 class StorageService extends GetxService {
@@ -12,7 +13,7 @@ class StorageService extends GetxService {
   Future<StorageService> init() async {
     _localStorage = GetStorage();
     await _localStorage.writeIfNull(kthemeKey, false);
-    await _localStorage.writeIfNull(kplaylistsKey, []);
+    await _localStorage.writeIfNull(kplaylistsKey, <Playlist>[]);
     await _localStorage.writeIfNull(kfavoritesKey, <Song>[]);
 
     // returning the current GetStorage instance

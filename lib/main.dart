@@ -9,13 +9,14 @@ import 'package:mastermediaplayer/features/favorites/presentation/favorites_scre
 import 'package:mastermediaplayer/features/file_explorer/presentation/image_explorer_screen.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/music_explorer_screen.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen.dart';
-import 'package:mastermediaplayer/screens/create_playlist_screen.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/create_playlist_screen.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_screen.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
-import 'package:mastermediaplayer/screens/playlists_screen.dart';
-import 'package:mastermediaplayer/screens/searchScreen.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_search/playlist_search_screen.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/selectable_song_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/settings_screen.dart';
-import 'package:mastermediaplayer/screens/single_playlist_screen.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
 import 'package:mastermediaplayer/utilities/configurations.dart';
 
@@ -24,17 +25,20 @@ void main() async {
   // final box = GetStorage();
   // box.erase();
 
+  // Injecting dependencies
   // initialize local storages and inject it into MyApp
   await Get.putAsync(() => StorageService().init());
+  Get.put(FavoritesController());
+  Get.put(PlaylistsController());
+  Get.put(ThemeController());
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-// Injecting dependencies
-  final themeController = Get.put(ThemeController());
-  final favoritesController = Get.put(FavoritesController());
+  final themeController = Get.find<ThemeController>();
 
   // This widget is the root of our application. that will handle the route and everything.
   @override
@@ -56,7 +60,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/playlist',
-          page: () => const SinglePlaylistScreen(),
+          page: () => const PlaylistPlayingScreen(),
         ),
         GetPage(
           name: '/fileExplorer',
@@ -84,7 +88,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/search',
-          page: () => const SearchScreen(),
+          page: () =>  PlaylistSearchScreen(),
         ),
         GetPage(
           name: '/settings',
