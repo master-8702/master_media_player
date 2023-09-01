@@ -13,7 +13,7 @@ import 'package:mastermediaplayer/features/playlists/presentation/create_playlis
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_screen.dart';
 import 'package:mastermediaplayer/screens/home_screen.dart';
-import 'package:mastermediaplayer/screens/searchScreen.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_search/playlist_search_screen.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/selectable_song_explorer_screen.dart';
 import 'package:mastermediaplayer/screens/settings_screen.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen.dart';
@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/search',
-          page: () => const SearchScreen(),
+          page: () =>  PlaylistSearchScreen(),
         ),
         GetPage(
           name: '/settings',

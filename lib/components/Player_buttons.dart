@@ -9,12 +9,12 @@ class PlayerButtons extends StatelessWidget {
     Key? key,
     required this.audioPlayer,
     // required this.playlistsController,
-    this.singlePlaylistController,
+    this.playlistPlayingScreenController,
   }) : super(key: key);
 
   final AudioPlayer audioPlayer;
   // final PlaylistsController2? playlistsController;
-  final PlaylistPlayingScreenController? singlePlaylistController;
+  final PlaylistPlayingScreenController? playlistPlayingScreenController;
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +56,8 @@ class PlayerButtons extends StatelessWidget {
                       audioPlayer.hasPrevious
                           ? await audioPlayer.seekToPrevious()
                           : null;
-                      singlePlaylistController!.currentAudioPlayerIndex.value =
-                          audioPlayer.currentIndex ?? 0;
+                      playlistPlayingScreenController!.currentAudioPlayerIndex
+                          .value = audioPlayer.currentIndex ?? 0;
                     },
                     child: const Icon(Icons.skip_previous, size: 22),
                   ),
@@ -164,8 +164,8 @@ class PlayerButtons extends StatelessWidget {
                       audioPlayer.hasNext
                           ? await audioPlayer.seekToNext()
                           : null;
-                      singlePlaylistController!.currentAudioPlayerIndex.value =
-                          audioPlayer.currentIndex ?? 0;
+                      playlistPlayingScreenController!.currentAudioPlayerIndex
+                          .value = audioPlayer.currentIndex ?? 0;
                     },
                     child: const Icon(Icons.skip_next, size: 22),
                   ),

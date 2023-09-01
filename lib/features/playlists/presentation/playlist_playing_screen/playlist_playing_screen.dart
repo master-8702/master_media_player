@@ -10,7 +10,7 @@ import 'package:mastermediaplayer/features/playlists/presentation/playlist_playi
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
-import '../../../../components/PlayerButtons.dart';
+import '../../../../components/Player_buttons.dart';
 import '../../../../components/music_seekbar_slider.dart';
 import '../../../../controllers/timerController.dart';
 

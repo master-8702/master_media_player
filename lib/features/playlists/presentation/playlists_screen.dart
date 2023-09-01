@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/components/playlist_card.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_card.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 
 // this class will build the UI for the playlists page to show us all the saved Playlists
