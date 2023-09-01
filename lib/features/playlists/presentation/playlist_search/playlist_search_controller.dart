@@ -4,7 +4,7 @@ import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/models/searchable_playlist_model.dart';
+import 'package:mastermediaplayer/features/playlists/domain/searchable_playlist.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class PlaylistSearchController extends GetxController {
