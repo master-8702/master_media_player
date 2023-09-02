@@ -1,18 +1,12 @@
-// constant values for local storage name (keys)
-const kfavoritesKey = 'favorites';
-const kplaylistsKey = 'playlists';
-const kthemeKey = 'isDarkMode';
 
-
-
-// file extension types
-
+/// supported file(image) extension types
 const List<String> kSupportedImageFormats = [
     'jpg',
     'jpeg',
     'png',
   ];
 
+/// supported file(audio) extension types
   const List<String> kSupportedAudioFormats = [
     'm4a',
     'fmp4',
@@ -22,4 +16,3 @@ const List<String> kSupportedImageFormats = [
     'wav',
     'aac'
   ];
-
