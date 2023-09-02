@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'package:mastermediaplayer/controllers/theme_controller.dart';
+import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favorites_screen.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/image_explorer_screen.dart';
@@ -12,10 +12,10 @@ import 'package:mastermediaplayer/features/player/presentation/song_playing_scre
 import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/create_playlist_screen.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_screen.dart';
-import 'package:mastermediaplayer/screens/home_screen.dart';
+import 'package:mastermediaplayer/common/screens/home_screen.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_search/playlist_search_screen.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/selectable_song_explorer_screen.dart';
-import 'package:mastermediaplayer/screens/settings_screen.dart';
+import 'package:mastermediaplayer/common/screens/settings_screen.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
 import 'package:mastermediaplayer/utilities/configurations.dart';

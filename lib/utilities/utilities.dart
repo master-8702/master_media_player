@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
-import 'package:mastermediaplayer/models/song_model.dart';
+import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 

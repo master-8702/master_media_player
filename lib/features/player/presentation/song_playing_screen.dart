@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/components/music_seekbar_slider.dart';
+import 'package:mastermediaplayer/common/widgets/music_seekbar_slider.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_player_body.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_player_header.dart';
@@ -10,7 +10,7 @@ import 'package:mastermediaplayer/features/player/presentation/song_playing_scre
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_control_buttons.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 
-import '../../../components/Player_buttons.dart';
+import '../../../common/widgets/Player_buttons.dart';
 
 // this class is going to build the UI for a SOngPlayingScreen that is going to open when we select
 // a single music using the music explorer option

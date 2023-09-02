@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/controllers/theme_controller.dart';
+import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
 
 class NeumorphicContainer extends StatelessWidget {
   final Widget child;

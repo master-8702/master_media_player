@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/player/presentation/add_to_playlist.dart';
 import 'package:mastermediaplayer/features/player/presentation/get_music_info.dart';
 import 'package:mastermediaplayer/features/player/presentation/set_sleep_timer.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/models/song_model.dart';
+import 'package:mastermediaplayer/common/models/song_model.dart';
 
 class SongPlayerHeader extends StatelessWidget {
   const SongPlayerHeader({

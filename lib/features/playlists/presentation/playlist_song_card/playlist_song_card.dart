@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_song_card/playlist_song_card_detail.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_song_card/playlist_song_card_popup_menu_button.dart';

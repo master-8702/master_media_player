@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 
 class FavoritesHeader extends StatelessWidget {
   const FavoritesHeader({

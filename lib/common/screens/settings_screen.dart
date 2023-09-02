@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
-import 'package:mastermediaplayer/controllers/theme_controller.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
 
 // this class will build our settings page screen
 

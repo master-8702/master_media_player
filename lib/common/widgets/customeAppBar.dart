@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 
 class CustomeAppBar extends StatelessWidget {
   const CustomeAppBar({Key? key}) : super(key: key);

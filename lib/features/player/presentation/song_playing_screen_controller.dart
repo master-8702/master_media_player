@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 
-import 'package:mastermediaplayer/controllers/timerController.dart';
+import 'package:mastermediaplayer/common/controllers/timerController.dart';
 import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
-import 'package:mastermediaplayer/models/song_model.dart';
+import 'package:mastermediaplayer/common/models/song_model.dart';
 
 class SongPlayingScreenController extends GetxController {
 

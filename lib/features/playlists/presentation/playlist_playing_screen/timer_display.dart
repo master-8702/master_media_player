@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/controllers/timerController.dart';
+import 'package:mastermediaplayer/common/controllers/timerController.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class TimerDisplay extends StatelessWidget {

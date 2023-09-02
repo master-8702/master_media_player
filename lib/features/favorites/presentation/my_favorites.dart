@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/components/section_header.dart';
+import 'package:mastermediaplayer/common/widgets/section_header.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/song_card.dart';
 
-import '../../../models/song_model.dart';
+import '../../../common/models/song_model.dart';
 
 class MyFavorites extends StatelessWidget {
   const MyFavorites({

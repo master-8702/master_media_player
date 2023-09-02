@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/features/favorites/data/local_favorites_repository.dart';
 
-import '../../../models/song_model.dart';
+import '../../../common/models/song_model.dart';
 
 class FavoritesController extends GetxController {
   /// This class is going to be used as state manager (controller) for favorite musics

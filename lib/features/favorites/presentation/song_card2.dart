@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 
-import '../../../models/song_model.dart';
+import '../../../common/models/song_model.dart';
 
 class SongCard2 extends StatelessWidget {
   SongCard2({

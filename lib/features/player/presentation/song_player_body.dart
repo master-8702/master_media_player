@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:text_scroll/text_scroll.dart';
 
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
-import 'package:mastermediaplayer/models/song_model.dart';
+import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class SongPlayerBody extends StatelessWidget {

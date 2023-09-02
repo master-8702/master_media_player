@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/models/song_model.dart';
+import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/song_card2.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_card.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';

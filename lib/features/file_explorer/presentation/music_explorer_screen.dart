@@ -11,7 +11,7 @@ import 'package:mastermediaplayer/features/file_explorer/common/loading_data.dar
 import 'package:mastermediaplayer/features/file_explorer/common/no_files_in_this_folder.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
 import 'package:mastermediaplayer/utilities/utilities.dart';
-import 'package:mastermediaplayer/models/song_model.dart';
+import 'package:mastermediaplayer/common/models/song_model.dart';
 
 class MusicExplorerScreen extends StatefulWidget {
   /// This class is going to help us in basic file(music) exploring from the available storage devices in the phone

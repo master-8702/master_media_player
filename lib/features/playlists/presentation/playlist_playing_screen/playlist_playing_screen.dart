@@ -10,9 +10,9 @@ import 'package:mastermediaplayer/features/playlists/presentation/playlist_playi
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
-import '../../../../components/Player_buttons.dart';
-import '../../../../components/music_seekbar_slider.dart';
-import '../../../../controllers/timerController.dart';
+import '../../../../common/widgets/Player_buttons.dart';
+import '../../../../common/widgets/music_seekbar_slider.dart';
+import '../../../../common/controllers/timerController.dart';
 
 // this class is going to be used for displaying a single playlist page UI with a list of songs from that playlist
 class PlaylistPlayingScreen extends StatefulWidget {

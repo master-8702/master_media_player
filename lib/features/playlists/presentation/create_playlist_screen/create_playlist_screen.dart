@@ -5,7 +5,7 @@ import 'package:mastermediaplayer/features/playlists/presentation/create_playlis
 import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/add_songs.dart';
 
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import '../../../../components/neumorphic_container.dart';
+import '../../../../common/widgets/neumorphic_container.dart';
 
 // this class will provide us with a screen(page) that will help us  in creating a new playlist
 class CreatePlaylistScreen extends StatelessWidget {

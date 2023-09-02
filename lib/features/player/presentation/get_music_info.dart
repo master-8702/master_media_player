@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
-import 'package:mastermediaplayer/models/song_model.dart';
+import 'package:mastermediaplayer/common/models/song_model.dart';
 
 // TODO: change the song model proper location
 Future<void> getMusicInfo(BuildContext context, Song song) async{

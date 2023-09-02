@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/components/neumorphic_container.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 
-import '../../../models/song_model.dart';
+import '../../../common/models/song_model.dart';
 
 class SongCard extends StatelessWidget {
   const SongCard({
