@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'package:mastermediaplayer/Constants/constants.dart';
+import 'package:mastermediaplayer/Constants/local_storage_keys.dart';
 
 class ThemeController extends GetxController {
   final _localStorage = GetStorage();
