@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/domain/searchable_playlist.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 
 class PlaylistSearchController extends GetxController {
   final playlistsController = Get.find<PlaylistsController>();
@@ -29,7 +29,7 @@ class PlaylistSearchController extends GetxController {
                 : 'Unknown Artist',
             playlistIndex: i,
             songIndex: j,
-            songTitle: Utilities.basename(File(myPlaylist2[i].songs[j])));
+            songTitle: FileAndDirectoryUtilities.basename(File(myPlaylist2[i].songs[j])));
         searchablePlaylists.add(searchablePlaylist);
       }
     }

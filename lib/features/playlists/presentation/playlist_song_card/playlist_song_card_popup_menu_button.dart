@@ -4,7 +4,7 @@ import 'package:mastermediaplayer/features/favorites/presentation/favoritesContr
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/file_metadata.dart';
 
 class PlaylistSongCardPopupMenuButton extends StatelessWidget {
   const PlaylistSongCardPopupMenuButton({
@@ -52,7 +52,7 @@ class PlaylistSongCardPopupMenuButton extends StatelessWidget {
           }
           if (value == 'Add to My Favorites') {
             favoritesController
-                .addOrRemoveFavorites(await Utilities().getSong(songUrl));
+                .addOrRemoveFavorites(await FileMetadata().getSong(songUrl));
           }
         });
   }

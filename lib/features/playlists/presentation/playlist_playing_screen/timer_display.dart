@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/common/controllers/timerController.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/format_duration.dart';
 
 class TimerDisplay extends StatelessWidget {
   const TimerDisplay({
@@ -19,8 +19,7 @@ class TimerDisplay extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Obx(() {
-          if (timerController.duration.value >
-              Duration.zero) {
+          if (timerController.duration.value > Duration.zero) {
             return Container(
               padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
@@ -32,7 +31,7 @@ class TimerDisplay extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
-                  '⏱ ${Utilities.formatDuration(timerController.duration.value)}',
+                  '⏱ ${formatDuration(timerController.duration.value)}',
                   style: const TextStyle(fontSize: 18),
                 ),
               ),

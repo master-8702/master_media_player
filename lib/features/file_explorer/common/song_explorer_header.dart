@@ -5,8 +5,8 @@ import 'package:text_scroll/text_scroll.dart';
 
 import 'package:mastermediaplayer/features/file_explorer/common/select_storage.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class SongExplorerHeader extends StatelessWidget {
   const SongExplorerHeader({
@@ -47,10 +47,9 @@ class SongExplorerHeader extends StatelessWidget {
         child: Obx(
           () {
             return TextScroll(
-                velocity:
-                    const Velocity(pixelsPerSecond: Offset(30, 30)),
-                Utilities.basename(controller.currentDir.value) != '0'
-                    ? Utilities.basename(controller.currentDir.value)
+                velocity: const Velocity(pixelsPerSecond: Offset(30, 30)),
+                FileAndDirectoryUtilities.basename(controller.currentDir.value) != '0'
+                    ? FileAndDirectoryUtilities.basename(controller.currentDir.value)
                     : 'Internal Storage',
                 style: Theme.of(context)
                     .textTheme
@@ -83,11 +82,9 @@ class SongExplorerHeader extends StatelessWidget {
               itemBuilder: (context) {
                 return const [
                   PopupMenuItem(
-                      value: 'Select Songs',
-                      child: Text('Select Songs')),
+                      value: 'Select Songs', child: Text('Select Songs')),
                   PopupMenuItem(
-                      value: 'Change Storage',
-                      child: Text('Change Storage'))
+                      value: 'Change Storage', child: Text('Change Storage'))
                 ];
               }),
         ),

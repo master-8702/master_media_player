@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/format_duration.dart';
 
 class PlaylistControlButtons extends StatefulWidget {
   const PlaylistControlButtons({Key? key, required this.audioPlayer})
@@ -43,7 +43,7 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
                 initialData: Duration.zero,
                 stream: position,
                 builder: (context, snapshot) {
-                  return Text(Utilities.formatDuration(snapshot.data));
+                  return Text(formatDuration(snapshot.data));
                 }),
             if (widget.audioPlayer.sequence!.length > 1)
               SizedBox(
@@ -72,7 +72,7 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
                 initialData: Duration.zero,
                 stream: duration,
                 builder: (context, snapshot) {
-                  return Text(Utilities.formatDuration(snapshot.data));
+                  return Text(formatDuration(snapshot.data));
                 }),
           ],
         ),
@@ -119,4 +119,3 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
     );
   }
 }
-

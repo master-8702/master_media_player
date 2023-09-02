@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 
+import 'package:mastermediaplayer/utilities/file_metadata.dart';
+import 'package:mastermediaplayer/utilities/format_duration.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class PlaylistSongCardDetail extends StatelessWidget {
   const PlaylistSongCardDetail({
@@ -24,7 +26,7 @@ class PlaylistSongCardDetail extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       child: FutureBuilder<Metadata>(
-        future: Utilities.getMetadata(songUrl),
+        future: FileMetadata.getMetadata(songUrl),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             Metadata? musicMetadata = snapshot.data;
@@ -32,7 +34,7 @@ class PlaylistSongCardDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  Utilities.basename(File(songUrl)),
+                  FileAndDirectoryUtilities.basename(File(songUrl)),
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context)
                       .textTheme
@@ -55,7 +57,7 @@ class PlaylistSongCardDetail extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: Text(
-                        Utilities.formatDuration(
+                        formatDuration(
                           Duration(
                               milliseconds:
                                   musicMetadata.trackDuration ?? 0000),

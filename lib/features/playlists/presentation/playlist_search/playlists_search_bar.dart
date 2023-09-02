@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 
 class PlaylistSearchBar extends StatelessWidget {
   const PlaylistSearchBar({
@@ -36,7 +36,7 @@ class PlaylistSearchBar extends StatelessWidget {
               NeumorphicContainer(
                 child: TextButton(
                   onPressed: () async {
-                    Utilities().requestPermission();
+                    FileAndDirectoryUtilities().requestPermission();
 
                     Get.toNamed('fileExplorer');
                   },
