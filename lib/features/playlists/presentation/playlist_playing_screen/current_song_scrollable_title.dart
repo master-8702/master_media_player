@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class CurrentSongScrollableTitle extends StatelessWidget {
   const CurrentSongScrollableTitle({
@@ -28,7 +28,7 @@ class CurrentSongScrollableTitle extends StatelessWidget {
               height: 10,
             ),
             TextScroll(
-              Utilities.basename(
+              FileAndDirectoryUtilities.basename(
                 File(playlistPlayingScreenController.myPlaylist.value.songs[
                     playlistPlayingScreenController
                         .currentAudioPlayerIndex.value]),

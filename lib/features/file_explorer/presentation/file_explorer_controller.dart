@@ -6,7 +6,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
+
 
 class FileExplorerController extends GetxController {
   FileExplorerController({required this.fileTypes});
@@ -109,10 +110,10 @@ class FileExplorerController extends GetxController {
 
     // filter folders and files that has no name and starts with '.'
     final filteredFiles = allFiles.where((element) {
-      if (Utilities.basename(element).startsWith('.') ||
-          (Utilities.basename(element) == "") ||
+      if (FileAndDirectoryUtilities.basename(element).startsWith('.') ||
+          (FileAndDirectoryUtilities.basename(element) == "") ||
           (element is File &&
-              !filetypes.contains(Utilities.getFileExtension(element)))) {
+              !filetypes.contains(FileAndDirectoryUtilities.getFileExtension(element)))) {
         return false;
       } else {
         return true;
@@ -157,7 +158,7 @@ class FileExplorerController extends GetxController {
     } else {
       // if there is a search query return the search result
       var searchResult = _organizedFiles
-          .where((file) => Utilities.basename(file).toLowerCase().contains(
+          .where((file) => FileAndDirectoryUtilities.basename(file).toLowerCase().contains(
                 query.toLowerCase(),
               ))
           .toList();

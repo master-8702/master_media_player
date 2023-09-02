@@ -5,8 +5,8 @@ import 'package:text_scroll/text_scroll.dart';
 
 import 'package:mastermediaplayer/features/file_explorer/common/select_storage.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
 
 class FileExplorerHeader extends StatelessWidget {
   /// This custom widget will be used as a header for all types of file explorer pages,
@@ -44,8 +44,8 @@ class FileExplorerHeader extends StatelessWidget {
           () {
             return TextScroll(
                 velocity: const Velocity(pixelsPerSecond: Offset(30, 30)),
-                Utilities.basename(controller.currentDir.value) != '0'
-                    ? Utilities.basename(controller.currentDir.value)
+                FileAndDirectoryUtilities .basename(controller.currentDir.value) != '0'
+                    ? FileAndDirectoryUtilities.basename(controller.currentDir.value)
                     : 'Internal Storage',
                 style: Theme.of(context)
                     .textTheme

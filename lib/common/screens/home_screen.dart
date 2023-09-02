@@ -7,7 +7,7 @@ import 'package:mastermediaplayer/common/widgets/section_header.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_card.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_search/playlists_search_bar.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import '../../features/favorites/presentation/my_favorites.dart';
 
@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     // here we will request storage permission in case it was not allowed during installation
-    Utilities().requestPermission();
+    FileAndDirectoryUtilities(). requestPermission;
 
     super.initState();
   }

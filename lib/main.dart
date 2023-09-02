@@ -18,7 +18,7 @@ import 'package:mastermediaplayer/features/file_explorer/presentation/selectable
 import 'package:mastermediaplayer/common/screens/settings_screen.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
-import 'package:mastermediaplayer/utilities/configurations.dart';
+import 'package:mastermediaplayer/utilities/theme_configurations.dart';
 
 void main() async {
   await GetStorage.init();

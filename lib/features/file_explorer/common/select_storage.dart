@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 
 void selectStorage(BuildContext context, FileExplorerController controller) {
   /// This custom method will show a dialog with a list of available storage devices (secondary memories)
@@ -36,9 +36,9 @@ void selectStorage(BuildContext context, FileExplorerController controller) {
                               child: Card(
                                 child: TextButton(
                                   child: Text(
-                                    Utilities.basename(e) == '0'
+                                    FileAndDirectoryUtilities.basename(e) == '0'
                                         ? 'Internal Storage'
-                                        : Utilities.basename(e),
+                                        : FileAndDirectoryUtilities.basename(e),
                                   ),
                                   onPressed: () {
                                     controller.currentDir.value =

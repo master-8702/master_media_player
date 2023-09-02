@@ -10,7 +10,8 @@ import 'package:mastermediaplayer/features/file_explorer/common/file_search_text
 import 'package:mastermediaplayer/features/file_explorer/common/loading_data.dart';
 import 'package:mastermediaplayer/features/file_explorer/common/no_files_in_this_folder.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
+import 'package:mastermediaplayer/utilities/file_metadata.dart';
 import 'package:mastermediaplayer/common/models/song_model.dart';
 
 class MusicExplorerScreen extends StatefulWidget {
@@ -68,7 +69,7 @@ class _MusicExplorerScreenState extends State<MusicExplorerScreen> {
                                     ? const Icon(Icons.music_note)
                                     : const Icon(Icons.folder),
                                 title: Text(
-                                    Utilities.basename(
+                                    FileAndDirectoryUtilities.basename(
                                         controller.foundFiles[index]),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis),
@@ -84,7 +85,7 @@ class _MusicExplorerScreenState extends State<MusicExplorerScreen> {
                                         controller.foundFiles[index].path));
                                   } else {
                                     // when tap on audio files we will pass the audio to the SongPlaying Screen
-                                    Song song = await Utilities().getSong(
+                                    Song song = await FileMetadata().getSong(
                                         controller.foundFiles[index].path);
 
                                     Get.toNamed('songPlaying', arguments: song);

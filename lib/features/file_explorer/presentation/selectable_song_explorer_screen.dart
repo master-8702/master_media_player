@@ -12,7 +12,8 @@ import 'package:mastermediaplayer/features/file_explorer/common/no_files_in_this
 import 'package:mastermediaplayer/features/file_explorer/common/song_explorer_header.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
 import 'package:mastermediaplayer/common/models/song_model.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
+import 'package:mastermediaplayer/utilities/file_metadata.dart';
 
 // this class is going to help us in basic file(music) exploring from the available storage devices in the phone
 // and it will be used to select single and/or multiple audio files from the storage in order to add them to our playlists.
@@ -89,7 +90,7 @@ class _SelectableSongExplorerScreenState
                                           ? const Icon(Icons.music_note)
                                           : const Icon(Icons.folder),
                                       title: Text(
-                                          Utilities.basename(currentFile),
+                                          FileAndDirectoryUtilities.basename(currentFile),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis),
                                       onLongPress: () {
@@ -124,7 +125,7 @@ class _SelectableSongExplorerScreenState
                                                 currentFile.path);
                                           } else {
                                             // getting song instance from the selected file
-                                            Song song = await Utilities()
+                                            Song song = await FileMetadata()
                                                 .getSong(currentFile.path);
 
                                             // when tap on audio files we will pass the audio to the SongPlaying Screen

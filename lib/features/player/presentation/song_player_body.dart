@@ -8,7 +8,7 @@ import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
 import 'package:mastermediaplayer/common/models/song_model.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/format_duration.dart';
 
 class SongPlayerBody extends StatelessWidget {
   const SongPlayerBody({
@@ -67,7 +67,7 @@ class SongPlayerBody extends StatelessWidget {
                               color: Theme.of(context).backgroundColor,
                             ),
                             child: Text(
-                              '⏱ ${Utilities.formatDuration(songPlayingScreenController.timerController.value.duration.value)}',
+                              '⏱ ${formatDuration(songPlayingScreenController.timerController.value.duration.value)}',
                               style: const TextStyle(fontSize: 18),
                             ),
                           );

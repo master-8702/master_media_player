@@ -11,7 +11,7 @@ import 'package:mastermediaplayer/features/file_explorer/common/file_search_text
 import 'package:mastermediaplayer/features/file_explorer/common/loading_data.dart';
 import 'package:mastermediaplayer/features/file_explorer/common/no_files_in_this_folder.dart';
 import 'package:mastermediaplayer/features/file_explorer/presentation/file_explorer_controller.dart';
-import 'package:mastermediaplayer/utilities/utilities.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 
 // this class is going to help us in basic file(Picture) exploring from the available storage devices in the phone
 // and it will be used to select singe image file from the storage in order to assign it as a cover image for our playlists.
@@ -71,7 +71,7 @@ class ImageExplorerScreen extends StatelessWidget {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                           ),
-                                          // this one [Image.file] is a little bit faster than a [FileImage] when scrolling inside  a page 
+                                          // this one [Image.file] is a little bit faster than a [FileImage] when scrolling inside  a page
                                           // that has too many images. we might return to this implementation.
                                           // child: Image.file(
                                           //   cacheHeight: 100,
@@ -81,7 +81,8 @@ class ImageExplorerScreen extends StatelessWidget {
                                           // ),
                                         )
                                       : const Icon(Icons.folder),
-                                  title: Text(Utilities.basename(currentFile),
+                                  title: Text(
+                                      FileAndDirectoryUtilities.basename(currentFile),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis),
                                   onTap: () async {
