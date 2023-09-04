@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mastermediaplayer/utilities/format_duration.dart';
 
@@ -45,29 +46,26 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
                 builder: (context, snapshot) {
                   return Text(formatDuration(snapshot.data));
                 }),
-            if (widget.audioPlayer.sequence!.length > 1)
-              SizedBox(
-                height: 50,
-                width: 40,
-                child: StreamBuilder<bool>(
-                  stream: shuffleMode,
-                  builder: (context, snapshot) {
-                    return _shuffleButton(context, snapshot.data ?? false);
-                  },
-                ),
+            SizedBox(
+              height: 50,
+              width: 40,
+              child: StreamBuilder<bool>(
+                stream: shuffleMode,
+                builder: (context, snapshot) {
+                  return _shuffleButton(context, snapshot.data ?? false);
+                },
               ),
-            if (widget.audioPlayer.sequence!.length > 1)
-              SizedBox(
-                height: 50,
-                width: 40,
-                child: StreamBuilder<LoopMode>(
-                  stream: loopMode,
-                  builder: (context, snapshot) {
-                    return _repeatButton(
-                        context, snapshot.data ?? LoopMode.off);
-                  },
-                ),
+            ),
+            SizedBox(
+              height: 50,
+              width: 40,
+              child: StreamBuilder<LoopMode>(
+                stream: loopMode,
+                builder: (context, snapshot) {
+                  return _repeatButton(context, snapshot.data ?? LoopMode.off);
+                },
               ),
+            ),
             StreamBuilder<Duration?>(
                 initialData: Duration.zero,
                 stream: duration,
@@ -81,21 +79,40 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
   }
 
   Widget _shuffleButton(BuildContext context, bool isEnabled) {
-    return IconButton(
-      icon: isEnabled
-          ? Icon(
-              Icons.shuffle,
-              color: Theme.of(context).colorScheme.secondary,
-            )
-          : const Icon(Icons.shuffle),
-      onPressed: () async {
-        final enable = !isEnabled;
-        if (enable) {
-          await widget.audioPlayer.shuffle();
+    // here we are listening the sequenceStream of the audioPlayer to detect the changes
+    // in the number of songs(audio sources). so that if there are more than one song it means
+    // we are playing a playlist and we need to enable playlist related buttons like, next, previous
+    // shuffle.
+    Rx<bool> isPlaylist = false.obs;
+    widget.audioPlayer.sequenceStream.listen((event) {
+      if (event != null) {
+        if (event.length > 1) {
+          isPlaylist.value = true;
+        } else {
+          isPlaylist.value = false;
         }
-        await widget.audioPlayer.setShuffleModeEnabled(enable);
-      },
-    );
+      }
+    });
+
+    return Obx(() {
+      return IconButton(
+        icon: isEnabled
+            ? Icon(
+                Icons.shuffle,
+                color: Theme.of(context).colorScheme.secondary,
+              )
+            : const Icon(Icons.shuffle),
+        onPressed: isPlaylist.value
+            ? () async {
+                final enable = !isEnabled;
+                if (enable) {
+                  await widget.audioPlayer.shuffle();
+                }
+                await widget.audioPlayer.setShuffleModeEnabled(enable);
+              }
+            : null,
+      );
+    });
   }
 
   Widget _repeatButton(BuildContext context, LoopMode loopMode) {
