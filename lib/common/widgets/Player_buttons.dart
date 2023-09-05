@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
@@ -13,11 +14,25 @@ class PlayerButtons extends StatelessWidget {
   }) : super(key: key);
 
   final AudioPlayer audioPlayer;
-  // final PlaylistsController2? playlistsController;
   final PlaylistPlayingScreenController? playlistPlayingScreenController;
 
   @override
   Widget build(BuildContext context) {
+    // here we are listening the sequenceStream of the audioPlayer to detect the changes
+    // in the number of songs(audio sources). so that if there are more than one song it means
+    // we are playing a playlist and we need to enable playlist related buttons like, next, previous
+    // shuffle.
+    Rx<bool> isPlaylist = false.obs;
+    audioPlayer.sequenceStream.listen((event) {
+      if (event != null) {
+        if (event.length > 1) {
+          isPlaylist.value = true;
+        } else {
+          isPlaylist.value = false;
+        }
+      }
+    });
+
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.1,
       width: MediaQuery.of(context).size.width,
@@ -45,25 +60,27 @@ class PlayerButtons extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          if (audioPlayer.sequence!.length > 1)
-            StreamBuilder<SequenceState>(builder: (context, index) {
-              return Expanded(
-                flex: 2,
-                child: NeumorphicContainer(
-                  child: TextButton(
-                    onPressed: () async {
-                      // this will set the audio player to play the previous song in the playlist if there is any
-                      audioPlayer.hasPrevious
-                          ? await audioPlayer.seekToPrevious()
-                          : null;
-                      playlistPlayingScreenController!.currentAudioPlayerIndex
-                          .value = audioPlayer.currentIndex ?? 0;
-                    },
-                    child: const Icon(Icons.skip_previous, size: 22),
-                  ),
+          Obx(() {
+            return Expanded(
+              flex: 2,
+              child: NeumorphicContainer(
+                child: TextButton(
+                  onPressed: isPlaylist.value
+                      ? () async {
+                          // this will set the audio player to play the previous song in the playlist if there is any
+                          audioPlayer.hasPrevious
+                              ? await audioPlayer.seekToPrevious()
+                              : null;
+                          playlistPlayingScreenController!
+                              .currentAudioPlayerIndex
+                              .value = audioPlayer.currentIndex ?? 0;
+                        }
+                      : null,
+                  child: const Icon(Icons.skip_previous, size: 22),
                 ),
-              );
-            }),
+              ),
+            );
+          }),
           const SizedBox(
             width: 10,
           ),
@@ -152,26 +169,31 @@ class PlayerButtons extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          if (audioPlayer.sequence!.length > 1)
-            StreamBuilder<SequenceState>(builder: (context, index) {
-              return Expanded(
-                flex: 2,
-                child: NeumorphicContainer(
-                  child: TextButton(
-                    onPressed: () async {
-                      // this will set the audio player to play the next song in the playlist if there is any
-
-                      audioPlayer.hasNext
-                          ? await audioPlayer.seekToNext()
-                          : null;
-                      playlistPlayingScreenController!.currentAudioPlayerIndex
-                          .value = audioPlayer.currentIndex ?? 0;
-                    },
-                    child: const Icon(Icons.skip_next, size: 22),
-                  ),
+          Obx(() {
+            return Expanded(
+              flex: 2,
+              child: NeumorphicContainer(
+                child: TextButton(
+                  // here we are assigning onPressed a callback or a null value depending on the
+                  // number of songs available in the audioSources of the audioPlayer. if there is only
+                  // one song(not a playlist) we will disable the next button since there are no any songs to
+                  // next by returning null. (note: if a buttons callback is null the button will be disabled).
+                  onPressed: isPlaylist.value
+                      ? () async {
+                          // this will set the audio player to play the next song in the playlist if there is any
+                          audioPlayer.hasNext
+                              ? await audioPlayer.seekToNext()
+                              : null;
+                          playlistPlayingScreenController!
+                              .currentAudioPlayerIndex
+                              .value = audioPlayer.currentIndex ?? 0;
+                        }
+                      : null,
+                  child: const Icon(Icons.skip_next, size: 22),
                 ),
-              );
-            }),
+              ),
+            );
+          }),
           const SizedBox(
             width: 10,
           ),

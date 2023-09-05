@@ -18,28 +18,31 @@ Future<dynamic> addToPlaylist(
               ? const Center(
                   child: Text('No Playlists Yet!'),
                 )
-              : GetBuilder<PlaylistsController>(builder: (context) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: playlistsController.myPlaylists.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          // here we will add the music to a playlist
-                          playlistsController.addSongsToPlaylist(
-                              playlistsController.myPlaylists[index],
-                              [song.songUrl]);
-                        },
-                        trailing: const Icon(
-                          Icons.add_circle,
-                          size: 34,
-                        ),
-                        title:
-                            Text(playlistsController.myPlaylists[index].title),
-                        subtitle: Text(
-                            '${playlistsController.myPlaylists[index].songs.length} songs'),
-                      );
-                    },
+              : Obx(() {
+                  return SizedBox(
+                    width: double.maxFinite,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: playlistsController.myPlaylists.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          onTap: () {
+                            // here we will add the music to a playlist
+                            playlistsController.addSongsToPlaylist(
+                                playlistsController.myPlaylists[index],
+                                [song.songUrl]);
+                          },
+                          trailing: const Icon(
+                            Icons.add_circle,
+                            size: 34,
+                          ),
+                          title: Text(
+                              playlistsController.myPlaylists[index].title),
+                          subtitle: Text(
+                              '${playlistsController.myPlaylists[index].songs.length} songs'),
+                        );
+                      },
+                    ),
                   );
                 }),
           actions: [
@@ -48,8 +51,14 @@ Future<dynamic> addToPlaylist(
               child: NeumorphicContainer(
                 padding: 5,
                 child: TextButton(
-                    onPressed: () {
-                      Get.toNamed('createPlaylist');
+                    onPressed: () async {
+                      // here the adding of [preventDuplicates: false] flag is to avoid
+                      // being ignored by Getx when going to the same page multiple times from
+                      // Alert Dialog or Modal Sheet.
+                      // by default Getx will ignore all successive requests  made by the user after the first one,
+                      // assuming it was made by mistake or the user presses the button to many times.
+                      await Get.toNamed('createPlaylist',
+                          preventDuplicates: false);
                     },
                     child: const Text(
                       'Create New Playlist',
