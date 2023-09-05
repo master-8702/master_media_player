@@ -53,7 +53,7 @@ class PlaylistPlayingScreenPopupMenu extends StatelessWidget {
               playlistsController.selectedSongs =
                   await Get.toNamed('selectableSongExplorer');
 
-              playlistsController.addOrRemoveSongsFromPlaylist(
+              playlistsController.addSongsToPlaylist(
                   playlistPlayingScreenController.myPlaylist.value,
                   playlistsController.selectedSongs);
             } else if (selectedValue == 'Sleep Timer') {
@@ -65,9 +65,7 @@ class PlaylistPlayingScreenPopupMenu extends StatelessWidget {
     );
   }
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
   Future<void> _sleepTimerAlertDialog(BuildContext context) {
     return showDialog(

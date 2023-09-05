@@ -26,7 +26,7 @@ Future<dynamic> addToPlaylist(
                       return ListTile(
                         onTap: () {
                           // here we will add the music to a playlist
-                          playlistsController.addOrRemoveSongsFromPlaylist(
+                          playlistsController.addSongsToPlaylist(
                               playlistsController.myPlaylists[index],
                               [song.songUrl]);
                         },

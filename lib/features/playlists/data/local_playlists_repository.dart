@@ -46,13 +46,29 @@ class LocalPlaylistsRepository extends PlaylistsRepository {
   }
 
   @override
-  List<Playlist> addOrRemoveSongsFromPlaylist(
+  List<Playlist> addSongsToPlaylist(
+      Playlist playlist, List<String> songUrls) {
+    for (var songUrl in songUrls) {
+      if (!playlist.songs.contains(songUrl)) {
+        playlist.songs.add(songUrl);
+      }
+    }
+    // here before we set (before updating the existing playlist) we will take it's index and
+    // we will put the new (updated playlist) in the old playlist's index
+    int index = myPlaylists.indexOf(playlist);
+    playlistsJson[index] = playlist.toJson();
+    // writing to the storage
+    ss.write(kplaylistsKey, playlistsJson);
+
+    return myPlaylists;
+  }
+
+  @override
+  List<Playlist> removeSongsFromPlaylist(
       Playlist playlist, List<String> songUrls) {
     for (var songUrl in songUrls) {
       if (playlist.songs.contains(songUrl)) {
         playlist.songs.remove(songUrl);
-      } else {
-        playlist.songs.add(songUrl);
       }
     }
     // here before we set (before updating the existing playlist) we will take it's index and

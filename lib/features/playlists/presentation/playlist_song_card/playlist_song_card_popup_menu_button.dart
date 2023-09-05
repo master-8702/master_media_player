@@ -48,7 +48,7 @@ class PlaylistSongCardPopupMenuButton extends StatelessWidget {
 
           if (value == 'Remove from Playlist') {
             playlistsController
-                .addOrRemoveSongsFromPlaylist(playlist, [songUrl]);
+                .removeSongsFromPlaylist(playlist, [songUrl]);
           }
           if (value == 'Add to My Favorites') {
             favoritesController

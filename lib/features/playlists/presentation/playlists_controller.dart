@@ -44,9 +44,14 @@ class PlaylistsController extends GetxController {
     myPlaylists.assignAll(playlistsRepository.addOrRemovePlaylist(playlist));
   }
 
-  void addOrRemoveSongsFromPlaylist(Playlist playlist, List<String> songUrls) {
+  void addSongsToPlaylist(Playlist playlist, List<String> songUrls) {
+    myPlaylists
+        .assignAll(playlistsRepository.addSongsToPlaylist(playlist, songUrls));
+  }
+
+  void removeSongsFromPlaylist(Playlist playlist, List<String> songUrls) {
     myPlaylists.assignAll(
-        playlistsRepository.addOrRemoveSongsFromPlaylist(playlist, songUrls));
+        playlistsRepository.removeSongsFromPlaylist(playlist, songUrls));
   }
 
   void createPlaylist({required String title}) async {
@@ -62,6 +67,4 @@ class PlaylistsController extends GetxController {
     selectedSongs = <String>[].obs;
     selectedCoverImage = ''.obs;
   }
-
-
 }

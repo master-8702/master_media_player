@@ -5,7 +5,8 @@ abstract class PlaylistsRepository {
 
   List<Playlist> getPlaylistsList();
   List<Playlist> addOrRemovePlaylist(Playlist playlist);
-  List<Playlist> addOrRemoveSongsFromPlaylist(
+  List<Playlist> addSongsToPlaylist(Playlist playlist, List<String> songUrls);
+  List<Playlist> removeSongsFromPlaylist(
       Playlist playlist, List<String> songUrls);
   Future<List<Playlist>> createPlaylist(
       {required String title,
