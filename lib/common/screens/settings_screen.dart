@@ -91,7 +91,9 @@ class SettingsScreen extends StatelessWidget {
                                 TextButton(
                                     onPressed: () {
                                       GetStorage().erase();
+                                      Get.reset();
                                       Get.back();
+                                      
                                     },
                                     child: const Text('Confirm')),
                                 TextButton(
