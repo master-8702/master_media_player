@@ -29,4 +29,10 @@ class StorageService extends GetxService {
   void write(String key, dynamic value) async {
     await _localStorage.write(key, value);
   }
+
+  // erasing and re-initializing storages to reset the app
+  Future<void> reset() async {
+    await _localStorage.erase();
+    await init();
+  }
 }

@@ -14,21 +14,25 @@ class FavoritesController extends GetxController {
 
   @override
   void onInit() {
-    // This will initialize favorites list when the controller (dependency) is first 
-    // injected in the main.dart file 
+    // This will initialize favorites list when the controller (dependency) is first
+    // injected in the main.dart file
     myFavoritesSongs.assignAll(favoritesRepository.getFavoritesList());
 
     super.onInit();
   }
 
-// Getting a list of favorite musics 
+  // Getting a list of favorite musics
   void getFavoriteMusics() async {
     myFavoritesSongs.assignAll(favoritesRepository.getFavoritesList());
   }
 
-// Add or remove favorite musics 
+  // Add or remove favorite musics
   void addOrRemoveFavorites(Song song) async {
-    myFavoritesSongs
-        .assignAll( favoritesRepository.addOrRemoveFavorites(song));
+    myFavoritesSongs.assignAll(favoritesRepository.addOrRemoveFavorites(song));
+  }
+
+  // reset favorites
+  void resetFavorites() {
+    myFavoritesSongs.assignAll(favoritesRepository.clearFavorites());
   }
 }

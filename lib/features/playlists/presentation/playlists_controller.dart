@@ -67,4 +67,10 @@ class PlaylistsController extends GetxController {
     selectedSongs = <String>[].obs;
     selectedCoverImage = ''.obs;
   }
+
+  // reset playlists list
+  void resetPlaylists() {
+    myPlaylists.assignAll(playlistsRepository.clearPlaylists());
+    selectedPlaylistToPlay = 0.obs;
+  }
 }

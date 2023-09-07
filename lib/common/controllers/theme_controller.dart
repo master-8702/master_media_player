@@ -28,4 +28,8 @@ class ThemeController extends GetxController {
       _localStorage.write(_key, false);
     }
   }
+
+  void resetTheme() {
+    changeThemeMode(ThemeMode.light);
+  }
 }

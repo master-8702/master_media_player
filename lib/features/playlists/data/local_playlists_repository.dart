@@ -46,8 +46,7 @@ class LocalPlaylistsRepository extends PlaylistsRepository {
   }
 
   @override
-  List<Playlist> addSongsToPlaylist(
-      Playlist playlist, List<String> songUrls) {
+  List<Playlist> addSongsToPlaylist(Playlist playlist, List<String> songUrls) {
     for (var songUrl in songUrls) {
       if (!playlist.songs.contains(songUrl)) {
         playlist.songs.add(songUrl);
@@ -110,6 +109,12 @@ class LocalPlaylistsRepository extends PlaylistsRepository {
 // updating playlists list and store it to the local storage
     addOrRemovePlaylist(playlist);
 
+    return myPlaylists;
+  }
+
+// clear playlist repository
+  List<Playlist> clearPlaylists() {
+    myPlaylists.clear();
     return myPlaylists;
   }
 }
