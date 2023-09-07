@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
+import 'package:mastermediaplayer/services/storage_service.dart';
+import 'package:mastermediaplayer/utilities/reset_app.dart';
 
 // this class will build our settings page screen
 
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({Key? key}) : super(key: key);
   final themeController = Get.find<ThemeController>();
+  final storageService = Get.find<StorageService>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,19 +81,22 @@ class SettingsScreen extends StatelessWidget {
                 child: FractionallySizedBox(
                   widthFactor: 1,
                   child: TextButton(
-                    onPressed: () {
-                      showDialog(
+                    onPressed: () async {
+                      await showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text('Warning'),
+                              title: const Text(
+                                  'Are You Sure You Want To Reset The App?',
+                                  textAlign: TextAlign.center),
                               content: const Text(
-                                  'Are You Sure You Want To Delete All Your Playlist and Favorite Musics List From The Local Storage'),
+                                  '\nResetting will erase all the saved Playlists, Favorite Musics and app theme-mode.'),
                               actions: [
                                 TextButton(
-                                    onPressed: () {
-                                      GetStorage().erase();
-                                      Get.back();
+                                    onPressed: () async {
+                                      Get.offAllNamed('/');
+                                      await resetApp();
+                                      // To cancel all previous routes and going back to home
                                     },
                                     child: const Text('Confirm')),
                                 TextButton(
@@ -104,7 +109,7 @@ class SettingsScreen extends StatelessWidget {
                           });
                     },
                     child: const Text(
-                      'Delete All Playlists & Favorites',
+                      'Reset App',
                       style: TextStyle(fontSize: 15),
                     ),
                   ),

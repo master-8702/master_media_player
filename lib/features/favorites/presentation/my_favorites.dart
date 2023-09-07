@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/common/widgets/section_header.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/song_card.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 import '../../../common/models/song_model.dart';
 
@@ -19,7 +20,7 @@ class MyFavorites extends StatelessWidget {
     return Column(children: [
       InkWell(
           onTap: () {
-            Get.toNamed('favorites');
+            Get.toNamed(AppRoute.favorites.path);
           },
           child: const SectionHeader(title: "My Favorites")),
       const SizedBox(

@@ -8,7 +8,7 @@ import 'package:mastermediaplayer/features/favorites/presentation/song_card2.dar
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_card.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_search/playlist_search_controller.dart';
-
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 class PlaylistSearchResultList extends StatelessWidget {
   const PlaylistSearchResultList({
@@ -34,12 +34,12 @@ class PlaylistSearchResultList extends StatelessWidget {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    Get.toNamed('playlist', arguments: {
-                      'playlist':
-                          playlistsController.myPlaylists[
-                              playlistSearchController.foundSongs[index].playlistIndex],
+                    Get.toNamed(AppRoute.playlists.path, arguments: {
+                      'playlist': playlistsController.myPlaylists[
+                          playlistSearchController
+                              .foundSongs[index].playlistIndex],
                       'selectedIndex':
-                         playlistSearchController. foundSongs[index].songIndex
+                          playlistSearchController.foundSongs[index].songIndex
                     });
                   },
                   child: IgnorePointer(
@@ -59,8 +59,7 @@ class PlaylistSearchResultList extends StatelessWidget {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   children: playlistSearchController.foundPlaylist
-                      .map((element) =>
-                          PlaylistCard(myPlaylist: element))
+                      .map((element) => PlaylistCard(myPlaylist: element))
                       .toList(),
                 ),
               ],
@@ -76,10 +75,11 @@ class PlaylistSearchResultList extends StatelessWidget {
             // without worrying about any Gesture Handling from the child widget
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              Get.toNamed('playlist', arguments: {
+              Get.toNamed(AppRoute.playlists.path, arguments: {
                 'playlist': playlistsController.myPlaylists[
-                   playlistSearchController. foundSongs[index].playlistIndex],
-                'selectedIndex': playlistSearchController.foundSongs[index].songIndex
+                    playlistSearchController.foundSongs[index].playlistIndex],
+                'selectedIndex':
+                    playlistSearchController.foundSongs[index].songIndex
               });
             },
             child: IgnorePointer(

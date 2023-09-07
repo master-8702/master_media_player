@@ -10,6 +10,7 @@ import 'package:mastermediaplayer/features/playlists/presentation/playlist_searc
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import '../../features/favorites/presentation/my_favorites.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 // this class will be our landing screen (home page) for our app
 class HomeScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     // here we will request storage permission in case it was not allowed during installation
-    FileAndDirectoryUtilities(). requestPermission;
+    FileAndDirectoryUtilities().requestPermission;
 
     super.initState();
   }
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: NeumorphicContainer(
                         child: TextButton(
                           onPressed: () async {
-                            Get.toNamed('settings');
+                            Get.toNamed(AppRoute.settings.path);
                           },
                           child: const Icon(
                             Icons.settings,
@@ -81,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         InkWell(
                             onTap: () {
-                              Get.toNamed('favorites');
+                              Get.toNamed(AppRoute.favorites.path);
                             },
                             child: const SectionHeader(title: 'Favorites')),
                         const SizedBox(
@@ -105,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     InkWell(
                         onTap: () {
-                          Get.toNamed('playlists');
+                          Get.toNamed(AppRoute.playlists.path);
                         },
                         child: const SectionHeader(title: "Playlists")),
                     Obx(() {
@@ -141,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: 5,
                         child: TextButton(
                           onPressed: () {
-                            Get.toNamed('createPlaylist');
+                            Get.toNamed(AppRoute.createPlaylist.path);
                           },
                           child: const Text(
                             'Create New Playlist',

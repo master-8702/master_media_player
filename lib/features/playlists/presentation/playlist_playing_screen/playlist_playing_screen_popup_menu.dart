@@ -6,6 +6,7 @@ import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/common/controllers/timerController.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 class PlaylistPlayingScreenPopupMenu extends StatelessWidget {
   const PlaylistPlayingScreenPopupMenu({
@@ -51,7 +52,7 @@ class PlaylistPlayingScreenPopupMenu extends StatelessWidget {
           onSelected: (selectedValue) async {
             if (selectedValue == 'Add Music(s)') {
               playlistsController.selectedSongs =
-                  await Get.toNamed('selectableSongExplorer');
+                  await Get.toNamed(AppRoute.selectableSongExplorer.path);
 
               playlistsController.addSongsToPlaylist(
                   playlistPlayingScreenController.myPlaylist.value,

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 class PlaylistCard extends StatelessWidget {
   PlaylistCard({
@@ -24,7 +24,7 @@ class PlaylistCard extends StatelessWidget {
         playlistsController.selectedPlaylistToPlay.value =
             playlistsController.myPlaylists.indexOf(myPlaylist);
         Get.toNamed(
-          'playlist',
+          AppRoute.playlistPlayingScreen.path,
           // arguments: {'playlist': myPlaylist, 'selectedIndex': 0}
         );
       },

@@ -14,6 +14,7 @@ import 'package:mastermediaplayer/features/file_explorer/presentation/file_explo
 import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/utilities/file_metadata.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 // this class is going to help us in basic file(music) exploring from the available storage devices in the phone
 // and it will be used to select single and/or multiple audio files from the storage in order to add them to our playlists.
@@ -90,7 +91,8 @@ class _SelectableSongExplorerScreenState
                                           ? const Icon(Icons.music_note)
                                           : const Icon(Icons.folder),
                                       title: Text(
-                                          FileAndDirectoryUtilities.basename(currentFile),
+                                          FileAndDirectoryUtilities.basename(
+                                              currentFile),
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis),
                                       onLongPress: () {
@@ -129,7 +131,8 @@ class _SelectableSongExplorerScreenState
                                                 .getSong(currentFile.path);
 
                                             // when tap on audio files we will pass the audio to the SongPlaying Screen
-                                            Get.toNamed('songPlaying',
+                                            Get.toNamed(
+                                                AppRoute.songPlayingScreen.path,
                                                 arguments: song);
                                           }
                                         }

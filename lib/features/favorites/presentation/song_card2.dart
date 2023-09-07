@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 import '../../../common/models/song_model.dart';
 
@@ -21,7 +22,7 @@ class SongCard2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed('songPlaying', arguments: song);
+        Get.toNamed(AppRoute.songPlayingScreen.path, arguments: song);
       },
       child: NeumorphicContainer(
         padding: 10,
