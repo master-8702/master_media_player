@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 
 class PlaylistSearchBar extends StatelessWidget {
@@ -38,7 +39,7 @@ class PlaylistSearchBar extends StatelessWidget {
                   onPressed: () async {
                     FileAndDirectoryUtilities().requestPermission();
 
-                    Get.toNamed('fileExplorer');
+                    Get.toNamed(AppRoute.fileExplorer.path);
                   },
                   child: const Icon(
                     Icons.folder,
@@ -56,7 +57,7 @@ class PlaylistSearchBar extends StatelessWidget {
             padding: 5,
             child: TextButton(
               onPressed: () {
-                Get.toNamed('search');
+                Get.toNamed(AppRoute.search.path);
               },
               child: Row(
                 children: [

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 import '../../../common/models/song_model.dart';
 
@@ -36,7 +37,7 @@ class SongCard extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            Get.toNamed('songPlaying', arguments: song);
+            Get.toNamed(AppRoute.songPlayingScreen.path, arguments: song);
           },
           child: Container(
             margin: const EdgeInsets.only(

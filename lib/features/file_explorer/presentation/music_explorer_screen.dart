@@ -13,6 +13,7 @@ import 'package:mastermediaplayer/features/file_explorer/presentation/file_explo
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/utilities/file_metadata.dart';
 import 'package:mastermediaplayer/common/models/song_model.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 class MusicExplorerScreen extends StatefulWidget {
   /// This class is going to help us in basic file(music) exploring from the available storage devices in the phone
@@ -88,7 +89,8 @@ class _MusicExplorerScreenState extends State<MusicExplorerScreen> {
                                     Song song = await FileMetadata().getSong(
                                         controller.foundFiles[index].path);
 
-                                    Get.toNamed('songPlaying', arguments: song);
+                                    Get.toNamed(AppRoute.songPlayingScreen.path,
+                                        arguments: song);
                                   }
                                 }),
                           );

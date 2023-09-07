@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/common/models/song_model.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 
 Future<dynamic> addToPlaylist(
     BuildContext context, PlaylistsController playlistsController, Song song) {
@@ -57,7 +58,7 @@ Future<dynamic> addToPlaylist(
                       // Alert Dialog or Modal Sheet.
                       // by default Getx will ignore all successive requests  made by the user after the first one,
                       // assuming it was made by mistake or the user presses the button to many times.
-                      await Get.toNamed('createPlaylist',
+                      await Get.toNamed(AppRoute.createPlaylist.path,
                           preventDuplicates: false);
                     },
                     child: const Text(
