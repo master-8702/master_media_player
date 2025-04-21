@@ -64,7 +64,7 @@ class SongPlayerBody extends StatelessWidget {
                               borderRadius: const BorderRadius.only(
                                   bottomRight: Radius.circular(12),
                                   topRight: Radius.circular(12)),
-                              color: Theme.of(context).backgroundColor,
+                              color: Theme.of(context).dialogBackgroundColor,
                             ),
                             child: Text(
                               '⏱ ${formatDuration(songPlayingScreenController.timerController.value.duration.value)}',
