@@ -1,6 +1,7 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /// File and Directory related utilities
@@ -8,14 +9,37 @@ class FileAndDirectoryUtilities {
   static List<Directory> storageList = [];
   static late List<FileSystemEntity> folderList;
   
-  
-/// To request storage access permission
-void requestPermission() async {
-    var status = await Permission.storage.status;
-    if (status.isDenied) {
-      Permission.storage.request();
-    }
+  /// To request storage (audio and photo permission) for all platforms 
+Future<bool> requestMediaPermissions() async {
+  if (kIsWeb) {
+    // Web: No permissions needed for local storage (use IndexedDB/demo mode)
+    return true;
   }
+
+  if (Platform.isAndroid) {
+    // Android logic (as before)
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    final sdkInt = androidInfo.version.sdkInt;
+
+    if (sdkInt >= 33) {
+      final statuses = await [Permission.audio, Permission.photos].request();
+      return statuses[Permission.audio]!.isGranted &&
+             statuses[Permission.photos]!.isGranted;
+    } else if (sdkInt >= 29) {
+      return await Permission.mediaLibrary.request().isGranted;
+    } else {
+      return await Permission.storage.request().isGranted;
+    }
+  } else if (Platform.isIOS) {
+    // iOS: Request access to media library (audio) and photos (covers)
+    final mediaStatus = await Permission.mediaLibrary.request();
+    final photosStatus = await Permission.photos.request();
+    return mediaStatus.isGranted && photosStatus.isGranted;
+  } else {
+    // macOS/Windows/Linux: Use app-specific storage (no permissions needed)
+    return true;
+  }
+}
 
 /// To get directory lists
    static List<FileSystemEntity> getDirectories(

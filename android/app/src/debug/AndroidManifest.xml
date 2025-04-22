@@ -1,7 +1,31 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.mastermediaplayer">
     <!-- The INTERNET permission is required for development. Specifically,
          the Flutter tool needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
+
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- added for audio and photo permission for different versions of android -->
+       <!-- Permissions options for the `storage` group -->
+    <!-- Read storage permission for Android 10 to 12 (API 29 to 32) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+     tools:remove="android:maxSdkVersion"/>
+    <!-- Read storage permission for Android 9 and below (API <=28) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+     tools:remove="android:maxSdkVersion"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+     tools:remove="android:maxSdkVersion"/>
+
+     <!--
+      Granular media permissions for Android 13 and newer.(API 33 and above)
+    -->
+    
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /> 
+
+    <!-- up to this -->
+      
 </manifest>

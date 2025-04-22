@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     // here we will request storage permission in case it was not allowed during installation
-    FileAndDirectoryUtilities().requestPermission;
+    FileAndDirectoryUtilities().requestMediaPermissions();
 
     super.initState();
   }

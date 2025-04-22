@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 
 
@@ -52,11 +50,7 @@ class FileExplorerController extends GetxController {
 
   Future<void> initializeFileExplorer() async {
     // here we will ask permission in case it is not already given while starting the app
-    // Utilities().requestPermission();
-    var status = await Permission.storage.status;
-    if (status.isDenied) {
-      Permission.storage.request();
-    }
+    FileAndDirectoryUtilities().requestMediaPermissions();
     // getting storage lists
     storageList = await getStorageList();
 

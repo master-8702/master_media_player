@@ -37,7 +37,7 @@ class PlaylistSearchBar extends StatelessWidget {
               NeumorphicContainer(
                 child: TextButton(
                   onPressed: () async {
-                    FileAndDirectoryUtilities().requestPermission();
+                    FileAndDirectoryUtilities().requestMediaPermissions();
 
                     Get.toNamed(AppRoute.fileExplorer.path);
                   },
