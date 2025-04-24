@@ -1,6 +1,8 @@
 import 'dart:io';
 
-import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+// import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+// import 'package:audio_metadata_extractor/audio_metadata_extractor.dart';
 import 'package:get/get.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
@@ -20,12 +22,14 @@ class PlaylistSearchController extends GetxController {
     List<SearchablePlaylist> searchablePlaylists = [];
     for (int i = 0; i < myPlaylist2.length; i++) {
       for (int j = 0; j < myPlaylist2[i].songs.length; j++) {
-        Metadata metaData =
-            await MetadataRetriever.fromFile(File(myPlaylist2[i].songs[j]));
+        AudioMetadata? metaData =
+             readMetadata(File(myPlaylist2[i].songs[j]), getImage: true);
         SearchablePlaylist searchablePlaylist = SearchablePlaylist(
-            albumTitle: metaData.albumName ?? 'Unknown Album',
-            artistName: metaData.trackArtistNames != null
-                ? metaData.trackArtistNames!.toList().toString()
+            albumTitle: metaData!.album ?? 'Unknown Album',
+            // artistName: metaData.firstArtists != null
+            //     ? metaData.firstArtists.toString()
+               artistName: metaData.artist != null
+                ? metaData.artist.toString()
                 : 'Unknown Artist',
             playlistIndex: i,
             songIndex: j,

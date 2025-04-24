@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+// import 'package:audio_metadata_extractor/audio_metadata_extractor.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+// import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 
-import 'package:mastermediaplayer/utilities/file_metadata.dart';
+// import 'package:mastermediaplayer/utilities/file_metadata.dart';
 import 'package:mastermediaplayer/utilities/format_duration.dart';
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
@@ -25,11 +27,12 @@ class PlaylistSongCardDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
-      child: FutureBuilder<Metadata>(
-        future: FileMetadata.getMetadata(songUrl),
+      child: FutureBuilder<AudioMetadata?>(
+        // future: Future (() =>  AudioMetadata.extract(File(songUrl))),
+        future: Future (() =>  readMetadata (File(songUrl),getImage: true) ),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            Metadata? musicMetadata = snapshot.data;
+            AudioMetadata? musicMetadata = snapshot.data;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -50,7 +53,7 @@ class PlaylistSongCardDetail extends StatelessWidget {
                     Expanded(
                       flex: 4,
                       child: Text(
-                        musicMetadata!.albumName ?? 'Unknown album',
+                        musicMetadata!.album ?? 'Unknown album',
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -60,7 +63,7 @@ class PlaylistSongCardDetail extends StatelessWidget {
                         formatDuration(
                           Duration(
                               milliseconds:
-                                  musicMetadata.trackDuration ?? 0000),
+                                  musicMetadata.duration?.inMilliseconds ?? 0000),
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
