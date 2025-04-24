@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
@@ -15,6 +16,16 @@ void main() async {
   await GetStorage.init();
   // final box = GetStorage();
   // box.erase();
+
+  // for running the app in the background (initialize just audio background)
+  // it is also  used for playing audio in the background and for displaying
+  // the notification when the app is in the background
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+    androidNotificationIcon: 'mipmap/ic_launcher',
+  );
 
   // Injecting dependencies
   // initialize local storages and inject it into MyApp

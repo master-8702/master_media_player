@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 
 import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
@@ -107,8 +108,21 @@ class PlaylistPlayingScreenController extends GetxController {
     audioSources.clear();
     // create the new audio source from the playlist
     for (String songUrl in myPlaylist.value.songs) {
-      audioSources.addIf(!audioSources.contains(AudioSource.file(songUrl)),
-          AudioSource.file(songUrl));
+      audioSources.addIf(!audioSources.contains(AudioSource.file(songUrl, 
+           tag: MediaItem(
+              id: songUrl,
+              title: songUrl.split('/').last,
+              artist: 'Unknown Artist',
+              artUri: Uri.file(myPlaylist .value .coverImageUrl),
+            ))),
+            AudioSource.file(songUrl,
+                tag: MediaItem(
+                  id: songUrl,
+                  title: songUrl.split('/').last,
+                  artist: 'Unknown Artist',
+                  artUri: Uri.file(myPlaylist.value.coverImageUrl),
+                )  
+      ));
     }
     // assign the new created AudioSource instance to the the ConcatenatingAudioSource instance
     concatenatedAudioSources = ConcatenatingAudioSource(

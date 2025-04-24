@@ -14,14 +14,38 @@ import '../../../common/widgets/Player_buttons.dart';
 
 // this class is going to build the UI for a SOngPlayingScreen that is going to open when we select
 // a single music using the music explorer option
-class SongPlayingScreen extends StatelessWidget {
+class SongPlayingScreen extends StatefulWidget {
   SongPlayingScreen({Key? key}) : super(key: key);
 
-  final SongPlayingScreenController controller =
-      Get.put(SongPlayingScreenController());
+  @override
+  State<SongPlayingScreen> createState() => _SongPlayingScreenState();
+}
 
-  final playlistsController = Get.find<PlaylistsController>();
-  final favoritesController = Get.find<FavoritesController>();
+class _SongPlayingScreenState extends State<SongPlayingScreen> {
+  late final SongPlayingScreenController controller;
+
+  late final playlistsController;
+
+  late final favoritesController;
+  @override
+  void initState() {
+    controller = Get.put(SongPlayingScreenController());
+
+    playlistsController = Get.find<PlaylistsController>();
+
+    favoritesController = Get.find<FavoritesController>();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Dispose the controller when the widget is removed from the widget tree
+    // This is important to avoid memory leaks
+    // and to ensure that the controller is properly cleaned up.
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
