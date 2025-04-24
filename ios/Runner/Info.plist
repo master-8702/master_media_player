@@ -34,6 +34,13 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To select playlist cover art</string>
 	<!-- up to this  -->
+
+	<!-- added to support audio background services -->
+	<key>UIBackgroundModes</key>
+	<array>
+	<string>audio</string>
+	</array>
+	<!-- up to this -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

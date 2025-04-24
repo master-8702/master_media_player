@@ -25,7 +25,8 @@ dependencies:
   get_storage: 2.1.1
   text_scroll: 0.2.0
   permission_handler: 12.0.0
-  device_info_plus: ^11.3.0
+  device_info_plus: 11.3.0      #  for getting device info so that we can request storage permission accordingly
+  just_audio_background: 0.0.1-beta.16    # for background audio playback
 
 dev_dependencies:
   flutter_test:
