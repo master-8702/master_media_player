@@ -34,7 +34,9 @@
         android:requestLegacyExternalStorage="true"
         android:label="Master Player"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true"> <!-- this line is added to support handling back button for sdk version 33 and 33+ -->
+        
         <!-- here the android:name is added (changed) to support background audio services -->
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
