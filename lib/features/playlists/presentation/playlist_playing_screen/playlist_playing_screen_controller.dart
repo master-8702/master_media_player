@@ -3,6 +3,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 
+import 'package:mastermediaplayer/utilities/generate_artwork_Uri.dart';
 import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
@@ -48,7 +49,7 @@ class PlaylistPlayingScreenController extends GetxController {
     if (Get.arguments != null) {
       myPlaylist.value = Get.arguments['playlist'];
       // to start playing the song automatically when the user presses a song from a search result
-      // in other cases the user needs to click the play button to start playing the song(s) 
+      // in other cases the user needs to click the play button to start playing the song(s)
       audioPlayer.play();
     } else {
       // if not
@@ -106,23 +107,30 @@ class PlaylistPlayingScreenController extends GetxController {
   Future<void> updateAudioSource() async {
     // clear the previous audio source
     audioSources.clear();
+    Uri playlistCoverUri;
+
+    playlistCoverUri = await generateArtworkUri(
+      customCoverImagePath: myPlaylist.value.coverImageUrl,
+      fallbackAssetPath: 'assets/images/playlist.png',
+    );
+
     // create the new audio source from the playlist
     for (String songUrl in myPlaylist.value.songs) {
-      audioSources.addIf(!audioSources.contains(AudioSource.file(songUrl, 
-           tag: MediaItem(
-              id: songUrl,
-              title: songUrl.split('/').last,
-              artist: 'Unknown Artist',
-              artUri: Uri.file(myPlaylist .value .coverImageUrl),
-            ))),
-            AudioSource.file(songUrl,
-                tag: MediaItem(
-                  id: songUrl,
-                  title: songUrl.split('/').last,
-                  artist: 'Unknown Artist',
-                  artUri: Uri.file(myPlaylist.value.coverImageUrl),
-                )  
-      ));
+      audioSources.addIf(
+          !audioSources.contains(AudioSource.file(songUrl,
+              tag: MediaItem(
+                id: songUrl,
+                title: songUrl.split('/').last,
+                artist: 'Unknown Artist',
+                artUri: playlistCoverUri,
+              ))),
+          AudioSource.file(songUrl,
+              tag: MediaItem(
+                id: songUrl,
+                title: songUrl.split('/').last,
+                artist: 'Unknown Artist',
+                artUri: playlistCoverUri,
+              )));
     }
     // assign the new created AudioSource instance to the the ConcatenatingAudioSource instance
     concatenatedAudioSources = ConcatenatingAudioSource(
