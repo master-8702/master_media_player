@@ -1,19 +1,19 @@
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/Constants/local_storage_keys.dart';
-import 'package:mastermediaplayer/features/favorites/data/favorites_repository.dart';
 import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
+import 'package:mastermediaplayer/Constants/local_storage_keys.dart';
+import 'package:mastermediaplayer/features/favorites/data/favorites_repository.dart';
 
+/// This is a local repository for our favorites list
 class LocalFavoritesRepository extends FavoritesRepository {
-  /// This is a local repository for our favorites list
 
   List<Song> myFavoriteSongs = [];
   final ss = Get.find<StorageService>();
 
   @override
   List<Song> getFavoritesList() {
-    final favoritesJson = ss.read(kfavoritesKey);
+    final favoritesJson = ss.read(favoritesKey);
 
     if (favoritesJson != null && favoritesJson.isNotEmpty) {
       for (var s in favoritesJson) {
@@ -39,11 +39,11 @@ class LocalFavoritesRepository extends FavoritesRepository {
     for (Song s in myFavoriteSongs) {
       jsonSongs.add(s.toJson());
     }
-    ss.write(kfavoritesKey, jsonSongs);
+    ss.write(favoritesKey, jsonSongs);
     return myFavoriteSongs;
   }
 
-// clear fvorites repository
+// clear favorites repository
   List<Song> clearFavorites() {
     myFavoriteSongs.clear();
     return myFavoriteSongs;

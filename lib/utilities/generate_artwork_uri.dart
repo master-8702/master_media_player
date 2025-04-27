@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 
 import 'package:path_provider/path_provider.dart';
 
-// This function is used to generate the artwork uri for the songs and playlists
-// so that it will be used to display the albumArt in the notification bar
-// and lock screen. (the MediaItem object of the AudioSource requires the uri
-// of the image file)
+/// This function is used to generate the artwork uri for the songs and playlists
+/// so that it will be used to display the albumArt in the notification bar
+/// and lock screen. (the MediaItem object of the AudioSource requires the uri
+/// of the image file)
 Future<Uri> generateArtworkUri({
   required String fallbackAssetPath,
   String? customCoverImagePath,

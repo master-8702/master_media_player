@@ -1,7 +1,7 @@
 /// local storage names (keys)
-const kfavoritesKey = 'favorites';
-const kplaylistsKey = 'playlists';
-const kthemeKey = 'isDarkMode';
+const favoritesKey = 'favorites';
+const playlistsKey = 'playlists';
+const themeKey = 'isDarkMode';
 
 
 

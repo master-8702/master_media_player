@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import 'package:mastermediaplayer/common/widgets/player_buttons.dart';
 import 'package:mastermediaplayer/common/widgets/music_seekbar_slider.dart';
-import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_player_body.dart';
 import 'package:mastermediaplayer/features/player/presentation/song_player_header.dart';
-import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_control_buttons.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favorites_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-
-import '../../../common/widgets/Player_buttons.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_control_buttons.dart';
+import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
 
 // this class is going to build the UI for a SOngPlayingScreen that is going to open when we select
 // a single music using the music explorer option
 class SongPlayingScreen extends StatefulWidget {
-  SongPlayingScreen({Key? key}) : super(key: key);
+  const SongPlayingScreen({Key? key}) : super(key: key);
 
   @override
   State<SongPlayingScreen> createState() => _SongPlayingScreenState();
@@ -24,9 +23,9 @@ class SongPlayingScreen extends StatefulWidget {
 class _SongPlayingScreenState extends State<SongPlayingScreen> {
   late final SongPlayingScreenController controller;
 
-  late final playlistsController;
+  late final PlaylistsController playlistsController;
 
-  late final favoritesController;
+  late final FavoritesController favoritesController;
   @override
   void initState() {
     controller = Get.put(SongPlayingScreenController());
@@ -85,7 +84,7 @@ class _SongPlayingScreenState extends State<SongPlayingScreen> {
                 height: 15,
               ),
               // music duration slider
-              MusicSeekbarSlider(
+              MusicSeekBarSlider(
                 audioPlayer: controller.audioPlayer.value,
                 seekBarDataStream: controller.musicSliderDragPositionDataStream,
               ),

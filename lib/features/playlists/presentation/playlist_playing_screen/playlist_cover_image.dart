@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
-import 'package:mastermediaplayer/common/controllers/timerController.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
+import 'package:mastermediaplayer/common/controllers/timer_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/timer_display.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
+// this widget will show the cover image of the playlist
+// inside a playlist playing screen
 class PlaylistCoverImage extends StatelessWidget {
   const PlaylistCoverImage({
     super.key,

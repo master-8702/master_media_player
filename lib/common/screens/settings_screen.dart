@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
-import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
-import 'package:mastermediaplayer/services/storage_service.dart';
+
 import 'package:mastermediaplayer/utilities/reset_app.dart';
+import 'package:mastermediaplayer/services/storage_service.dart';
+import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 
 // this class will build our settings page screen
-
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({Key? key}) : super(key: key);
   final themeController = Get.find<ThemeController>();

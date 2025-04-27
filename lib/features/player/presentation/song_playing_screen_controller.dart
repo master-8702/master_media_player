@@ -9,9 +9,9 @@ import 'package:rxdart/rxdart.dart' as rxdart;
 import 'package:just_audio_background/just_audio_background.dart';
 
 import 'package:mastermediaplayer/common/models/song_model.dart';
-import 'package:mastermediaplayer/utilities/generate_artwork_Uri.dart';
+import 'package:mastermediaplayer/utilities/generate_artwork_uri.dart';
 import 'package:mastermediaplayer/utilities/extract_embedded_artwork.dart';
-import 'package:mastermediaplayer/common/controllers/timerController.dart';
+import 'package:mastermediaplayer/common/controllers/timer_controller.dart';
 import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
 
 // this class is going to be used for controlling the single song player page UI

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+
 import 'package:mastermediaplayer/routing/app_routes.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 
 class PlaylistSearchBar extends StatelessWidget {

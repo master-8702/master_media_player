@@ -1,13 +1,15 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
+import 'package:just_audio_background/just_audio_background.dart';
 
-import 'package:mastermediaplayer/utilities/generate_artwork_Uri.dart';
-import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
+import 'package:mastermediaplayer/utilities/generate_artwork_uri.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
+import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 
+// this controller is used to control the audio player and the playlist in the
+// playlist playing screen
 class PlaylistPlayingScreenController extends GetxController {
   static var playlistController = Get.find<PlaylistsController>();
 
@@ -27,7 +29,7 @@ class PlaylistPlayingScreenController extends GetxController {
 
   var audioSources = <AudioSource>[];
   // multiple audio sources for the playlist
-  late ConcatenatingAudioSource concatenatedAudioSources;
+  // late ConcatenatingAudioSource concatenatedAudioSources;
 
   // last played song index and position
   // here Get.arguments is used when the playlist screen is created by selecting a search result
@@ -105,7 +107,7 @@ class PlaylistPlayingScreenController extends GetxController {
 // instance, the library is giving us 'can not modify list during iteration' kind of error
 // whenever we try to modify that list using concatenatedAudioSources.addAll() method.
   Future<void> updateAudioSource() async {
-    // clear the previous audio source
+    // clear the previous audio sources
     audioSources.clear();
     Uri playlistCoverUri;
 
@@ -114,7 +116,7 @@ class PlaylistPlayingScreenController extends GetxController {
       fallbackAssetPath: 'assets/images/playlist.png',
     );
 
-    // create the new audio source from the playlist
+    // create the new audio sources from the playlist
     for (String songUrl in myPlaylist.value.songs) {
       audioSources.addIf(
           !audioSources.contains(AudioSource.file(songUrl,
@@ -132,13 +134,8 @@ class PlaylistPlayingScreenController extends GetxController {
                 artUri: playlistCoverUri,
               )));
     }
-    // assign the new created AudioSource instance to the the ConcatenatingAudioSource instance
-    concatenatedAudioSources = ConcatenatingAudioSource(
-        children: audioSources,
-        shuffleOrder: DefaultShuffleOrder(),
-        useLazyPreparation: true);
-    // set the ConcatenatingAudioSource to the AudioPlayer instance
-    await audioPlayer.setAudioSource(concatenatedAudioSources,
+    // set the AudioSources to the AudioPlayer instance
+    await audioPlayer.setAudioSources(audioSources,
         initialIndex: lastIndex, initialPosition: lastPosition);
   }
 

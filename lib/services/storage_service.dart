@@ -5,6 +5,9 @@ import 'package:mastermediaplayer/Constants/local_storage_keys.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/common/models/song_model.dart';
 
+/// This is a local repository for our storage service
+/// it will be used to store and retrieve data from local storage
+/// using the GetStorage package
 class StorageService extends GetxService {
   late GetStorage _localStorage = GetStorage();
 
@@ -12,9 +15,9 @@ class StorageService extends GetxService {
 // or has been cleared
   Future<StorageService> init() async {
     _localStorage = GetStorage();
-    await _localStorage.writeIfNull(kthemeKey, false);
-    await _localStorage.writeIfNull(kplaylistsKey, <Playlist>[]);
-    await _localStorage.writeIfNull(kfavoritesKey, <Song>[]);
+    await _localStorage.writeIfNull(themeKey, false);
+    await _localStorage.writeIfNull(playlistsKey, <Playlist>[]);
+    await _localStorage.writeIfNull(favoritesKey, <Song>[]);
 
     // returning the current GetStorage instance
     return this;

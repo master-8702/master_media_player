@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 
-// this function is used to extract the embedded artwork from the audio file
-// and return it as a Uint8List. and if there isn't any embedded artwork
-// then we will return the default artwork from assets.
+/// this function is used to extract the embedded artwork from the audio file
+/// and return it as a Uint8List. and if there isn't any embedded artwork
+/// then we will return the default artwork from assets.
 Future<Uint8List> extractEmbeddedArtwork(File audioFile) async {
   try {
     // Use audio_metadata_reader package [[2]]

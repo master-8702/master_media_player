@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_control_buttons.dart';
 
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/current_song_scrollable_title.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/list_of_playlist_songs.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_cover_image.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_header.dart';
+import 'package:mastermediaplayer/common/widgets/player_buttons.dart';
+import 'package:mastermediaplayer/common/controllers/timer_controller.dart';
+import 'package:mastermediaplayer/common/widgets/music_seekbar_slider.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_control_buttons.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_cover_image.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/list_of_playlist_songs.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/current_song_scrollable_title.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_header.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
-
-import '../../../../common/widgets/Player_buttons.dart';
-import '../../../../common/widgets/music_seekbar_slider.dart';
-import '../../../../common/controllers/timerController.dart';
 
 // this class is going to be used for displaying a single playlist page UI with a list of songs from that playlist
 class PlaylistPlayingScreen extends StatefulWidget {
@@ -78,7 +77,7 @@ class _PlaylistPlayingScreenState extends State<PlaylistPlayingScreen> {
                       height: 15,
                     ),
                     // song duration and position display (slider)
-                    MusicSeekbarSlider(
+                    MusicSeekBarSlider(
                       audioPlayer: playlistPlayingScreenController.audioPlayer,
                       seekBarDataStream: playlistPlayingScreenController
                           .musicSliderDragPositionDataStream,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
-import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/utilities/file_metadata.dart';
+import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favorites_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
 class PlaylistSongCardPopupMenuButton extends StatelessWidget {
   const PlaylistSongCardPopupMenuButton({
@@ -47,8 +47,7 @@ class PlaylistSongCardPopupMenuButton extends StatelessWidget {
           // or add it to the favorites list based on the user's selection
 
           if (value == 'Remove from Playlist') {
-            playlistsController
-                .removeSongsFromPlaylist(playlist, [songUrl]);
+            playlistsController.removeSongsFromPlaylist(playlist, [songUrl]);
           }
           if (value == 'Add to My Favorites') {
             favoritesController

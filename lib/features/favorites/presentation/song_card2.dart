@@ -1,13 +1,13 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
-import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 import 'package:mastermediaplayer/routing/app_routes.dart';
-
-import '../../../common/models/song_model.dart';
+import 'package:mastermediaplayer/common/models/song_model.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favorites_controller.dart';
 
 class SongCard2 extends StatelessWidget {
   SongCard2({

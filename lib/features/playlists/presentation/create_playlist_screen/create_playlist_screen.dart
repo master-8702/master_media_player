@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/add_playlist_cover.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/add_songs.dart';
 
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import '../../../../common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/add_songs.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/create_playlist_screen/add_playlist_cover.dart';
 
 // this class will provide us with a screen(page) that will help us  in creating a new playlist
 class CreatePlaylistScreen extends StatelessWidget {

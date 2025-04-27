@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import 'package:mastermediaplayer/routing/app_routes.dart';
+import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/common/models/song_model.dart';
-import 'package:mastermediaplayer/routing/app_routes.dart';
 
+// this function will show a dialog to add a song to a playlist
+// it will show all the playlists that the user has created
+// and the user can select one of them to add the song to it
+// if the user has no playlists, it will show a button to create a new playlist
 Future<dynamic> addToPlaylist(
     BuildContext context, PlaylistsController playlistsController, Song song) {
   return showDialog(

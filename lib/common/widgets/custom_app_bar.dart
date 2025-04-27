@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 
-class CustomeAppBar extends StatelessWidget {
-  const CustomeAppBar({Key? key}) : super(key: key);
+// this class will build our custom app bar
+class CustomAppBar extends StatelessWidget {
+  const CustomAppBar({Key? key, required this.title}) : super(key: key);
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class CustomeAppBar extends StatelessWidget {
             ),
           ),
         ),
-        const Text("PLAYLIST"),
+        Text(title),
         SizedBox(
           height: 60,
           width: 60,

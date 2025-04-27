@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 
 class PlayOrShuffleSwitch extends StatefulWidget {
