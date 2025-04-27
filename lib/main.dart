@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
-import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
-import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/common/screens/home_screen.dart';
 import 'package:mastermediaplayer/routing/app_routes.dart';
 import 'package:mastermediaplayer/services/storage_service.dart';
+import 'package:mastermediaplayer/common/screens/home_screen.dart';
 import 'package:mastermediaplayer/utilities/theme_configurations.dart';
+import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favorites_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 
 void main() async {
   await GetStorage.init();

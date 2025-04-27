@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -20,8 +21,15 @@ class AddPlaylistCover extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () async {
-            playlistsController.selectedCoverImage.value =
-                await Get.to(ImageExplorerScreen());
+            // opening the file explorer and receiving selected images when closed
+            String? selectedCoverImage =
+                await Get.to(() => const ImageExplorerScreen());
+
+            if (selectedCoverImage != null) {
+              // assigning the selected image to the selectedCoverImage in the
+              // controller if they are selected and not empty
+              playlistsController.selectedCoverImage.value = selectedCoverImage;
+            }
           },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,6 +48,17 @@ class AddPlaylistCover extends StatelessWidget {
                 : Image.file(
                     File(playlistsController.selectedCoverImage.value)),
           ),
+        ),
+        // this button will clear the selected cover image
+        Obx(
+          () => playlistsController.selectedCoverImage.isEmpty
+              ? const SizedBox()
+              : TextButton(
+                  onPressed: () {
+                    playlistsController.selectedCoverImage.value = '';
+                  },
+                  child: const Text('Clear Cover Image'),
+                ),
         ),
       ],
     );

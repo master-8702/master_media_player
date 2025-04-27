@@ -7,7 +7,7 @@ import 'package:mastermediaplayer/Constants/local_storage_keys.dart';
 
 class ThemeController extends GetxController {
   final _localStorage = GetStorage();
-  final _key = kthemeKey;
+  final _key = themeKey;
 
   /// getter for the current theme mode
   ThemeMode get currentThemeMode =>

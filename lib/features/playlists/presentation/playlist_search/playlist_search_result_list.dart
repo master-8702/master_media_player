@@ -1,14 +1,15 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import 'package:mastermediaplayer/routing/app_routes.dart';
 import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:mastermediaplayer/features/favorites/presentation/song_card2.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_card.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_search/playlist_search_controller.dart';
-import 'package:mastermediaplayer/routing/app_routes.dart';
 
 class PlaylistSearchResultList extends StatelessWidget {
   const PlaylistSearchResultList({

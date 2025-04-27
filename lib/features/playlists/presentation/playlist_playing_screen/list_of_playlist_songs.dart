@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_song_card/playlist_song_card.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
 class ListOfPlaylistSongs extends StatelessWidget {
   const ListOfPlaylistSongs({

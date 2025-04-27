@@ -1,12 +1,10 @@
 import 'dart:io';
-import 'package:audio_metadata_reader/audio_metadata_reader.dart';
-// import 'package:audio_metadata_extractor/audio_metadata_extractor.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-// import 'package:flutter_media_metadata/flutter_media_metadata.dart';
+import 'package:audio_metadata_reader/audio_metadata_reader.dart';
 
-// import 'package:mastermediaplayer/utilities/file_metadata.dart';
 import 'package:mastermediaplayer/utilities/format_duration.dart';
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
@@ -28,10 +26,12 @@ class PlaylistSongCardDetail extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       child: FutureBuilder<AudioMetadata?>(
-        // future: Future (() =>  AudioMetadata.extract(File(songUrl))),
-        future: Future (() =>  readMetadata (File(songUrl),getImage: true) ),
+        future: Future(() => readMetadata(File(songUrl), getImage: true)),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          // here we are entering the condition if hasData or hasError is returned
+          // because the metadata can not be read and we also handled the situation
+          // with default values like "Unknown album".
+          if (snapshot.hasData || snapshot.hasError) {
             AudioMetadata? musicMetadata = snapshot.data;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +53,7 @@ class PlaylistSongCardDetail extends StatelessWidget {
                     Expanded(
                       flex: 4,
                       child: Text(
-                        musicMetadata!.album ?? 'Unknown album',
+                        musicMetadata?.album ?? 'Unknown album',
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -63,7 +63,8 @@ class PlaylistSongCardDetail extends StatelessWidget {
                         formatDuration(
                           Duration(
                               milliseconds:
-                                  musicMetadata.duration?.inMilliseconds ?? 0000),
+                                  musicMetadata?.duration?.inMilliseconds ??
+                                      0000),
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -81,10 +82,10 @@ class PlaylistSongCardDetail extends StatelessWidget {
                 ),
               ],
             );
-          } else if (snapshot.hasError) {
-            return const Center(
-              child: Text('Error Happened while Fetching Data!'),
-            );
+            // } else if (snapshot.hasError) {
+            //   return const Center(
+            //     child: Text('Error Happened while Fetching Info!'),
+            //   );
           } else {
             return Center(
               child: Column(

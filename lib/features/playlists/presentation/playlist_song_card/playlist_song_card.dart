@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favorites_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_song_card/playlist_song_card_detail.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_song_card/playlist_song_card_popup_menu_button.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
-import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
 
 class PlaylistSongCard extends StatelessWidget {
   PlaylistSongCard({

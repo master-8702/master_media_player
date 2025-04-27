@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
 import 'neumorphic_container.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlist_playing_screen/playlist_playing_screen_controller.dart';
 
 class PlayerButtons extends StatelessWidget {
   const PlayerButtons({
@@ -24,12 +25,10 @@ class PlayerButtons extends StatelessWidget {
     // shuffle.
     Rx<bool> isPlaylist = false.obs;
     audioPlayer.sequenceStream.listen((event) {
-      if (event != null) {
-        if (event.length > 1) {
-          isPlaylist.value = true;
-        } else {
-          isPlaylist.value = false;
-        }
+      if (event.length > 1) {
+        isPlaylist.value = true;
+      } else {
+        isPlaylist.value = false;
       }
     });
 
@@ -152,7 +151,7 @@ class PlayerButtons extends StatelessWidget {
                         child: TextButton(
                           onPressed: () {
                             audioPlayer.seek(Duration.zero,
-                                index: audioPlayer.effectiveIndices!.first);
+                                index: audioPlayer.effectiveIndices.first);
                           },
                           child: const Icon(
                             Icons.replay,

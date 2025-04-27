@@ -1,11 +1,13 @@
 import 'dart:io';
+
 import 'dart:typed_data';
 
-import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:audio_metadata_reader/audio_metadata_reader.dart';
+
+import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 
-// a utility class for metadata related operations
+/// a utility class for metadata related operations
 class FileMetadata {
   static List<Directory> storageList = [];
   static late List<FileSystemEntity> folderList;

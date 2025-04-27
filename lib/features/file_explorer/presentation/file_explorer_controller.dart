@@ -6,7 +6,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
 
-
 class FileExplorerController extends GetxController {
   FileExplorerController({required this.fileTypes});
 
@@ -107,7 +106,8 @@ class FileExplorerController extends GetxController {
       if (FileAndDirectoryUtilities.basename(element).startsWith('.') ||
           (FileAndDirectoryUtilities.basename(element) == "") ||
           (element is File &&
-              !filetypes.contains(FileAndDirectoryUtilities.getFileExtension(element)))) {
+              !filetypes.contains(
+                  FileAndDirectoryUtilities.getFileExtension(element)))) {
         return false;
       } else {
         return true;
@@ -152,27 +152,31 @@ class FileExplorerController extends GetxController {
     } else {
       // if there is a search query return the search result
       var searchResult = _organizedFiles
-          .where((file) => FileAndDirectoryUtilities.basename(file).toLowerCase().contains(
-                query.toLowerCase(),
-              ))
+          .where((file) =>
+              FileAndDirectoryUtilities.basename(file).toLowerCase().contains(
+                    query.toLowerCase(),
+                  ))
           .toList();
       foundFiles.value = List.from(searchResult);
       return Future(() => foundFiles);
     }
   }
 
-  Future<bool> onWillPopCallBack() async {
-    // Here while pressing back if we didn't reach the root folder we will block the back button handler from
-    // popping the page from the stack  by returning "Future false", and return the user to the parent directory.
-    // But if we reach the root folder we will allow the handler to pop the page and take us back to the
-    // previous page by returning "Future true";
-
-    if (currentDir.value.path != rootDirectory.value.path) {
-      changeCurrentDirectory(currentDir.value.parent);
-      // changeCurrentDirectory(currentDir.value.parent);
-      return Future.value(false);
-    } else {
-      return Future.value(true);
+  // this method will be called when the user press back button in the file explorers
+  Future<void> onPopInvokedWithResultCallBack(
+      bool didPop, BuildContext context, Object? result) async {
+    if (!didPop) {
+      // Here while pressing back if we didn't reach the root folder we will block the back button handler from
+      // popping the page from the stack and go to the previous folder until the user reach the parent directory.
+      // But if we reach the root folder we will allow the handler to pop the page and take us back to the
+      // previous page.
+      if (currentDir.value.path != rootDirectory.value.path) {
+        // if the user is not in the root folder, we will change the current directory to the parent directory
+        changeCurrentDirectory(currentDir.value.parent);
+      } else {
+        // the user is in the root folder, so we will allow the back button to pop the page
+        Navigator.of(context).pop();
+      }
     }
   }
 

@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
-import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
-import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
-import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
+
 import 'package:mastermediaplayer/services/storage_service.dart';
+import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favorites_controller.dart';
+import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 
 /// This method will be used to reset all app settings and locally saved items
 Future<void> resetApp() async {

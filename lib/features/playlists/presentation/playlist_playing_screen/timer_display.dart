@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/common/controllers/timerController.dart';
 import 'package:mastermediaplayer/utilities/format_duration.dart';
+import 'package:mastermediaplayer/common/controllers/timer_controller.dart';
 
+// this class will build the timer display
+// it will show the timer in the top left corner of the player screen
 class TimerDisplay extends StatelessWidget {
   const TimerDisplay({
     super.key,

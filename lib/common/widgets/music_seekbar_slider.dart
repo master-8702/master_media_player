@@ -1,23 +1,25 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+
 import 'package:just_audio/just_audio.dart';
+
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/player/domain/music_slider_position_data.dart';
 
-class MusicSeekbarSlider extends StatefulWidget {
+class MusicSeekBarSlider extends StatefulWidget {
   final AudioPlayer audioPlayer;
   final Stream<MusicSliderPositionData> seekBarDataStream;
 
-  const MusicSeekbarSlider(
+  const MusicSeekBarSlider(
       {Key? key, required this.audioPlayer, required this.seekBarDataStream})
       : super(key: key);
 
   @override
-  State<MusicSeekbarSlider> createState() => _MusicSeekbarSliderState();
+  State<MusicSeekBarSlider> createState() => _MusicSeekBarSliderState();
 }
 
-class _MusicSeekbarSliderState extends State<MusicSeekbarSlider> {
+class _MusicSeekBarSliderState extends State<MusicSeekBarSlider> {
   double? _dragValue;
 
   @override

@@ -3,9 +3,8 @@ import 'package:get/get.dart';
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 import 'package:mastermediaplayer/features/playlists/data/local_playlists_repository.dart';
 
-// this class is going to be used as state manager (controller) for playlists
-// it will be used mainly on homepage and myPlaylistsPage
-
+/// this class is going to be used as state manager (controller) for playlists
+/// it will be used mainly on homepage and myPlaylistsPage
 class PlaylistsController extends GetxController {
 // for managing the single playlist screen
 

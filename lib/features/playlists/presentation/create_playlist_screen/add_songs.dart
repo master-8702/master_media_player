@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -18,8 +19,17 @@ class AddSongs extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () async {
-            playlistsController.selectedSongs.value =
-                await Get.to(const SelectableSongExplorerScreen());
+            // opening the file explorer and receiving selected images when closed
+            List<String>? selectedSongs =
+                await Get.to(() => const SelectableSongExplorerScreen());
+
+            // assigning the selected songs to the selectedSongs in the
+            // controller, if they are not empty and already selected
+            if (selectedSongs != null) {
+              playlistsController.selectedSongs.addAllIf(
+                  !playlistsController.selectedSongs.contains(selectedSongs),
+                  selectedSongs);
+            }
           },
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,6 +65,17 @@ class AddSongs extends StatelessWidget {
                   ],
                 );
               }),
+        ),
+        // this button will clear all the selected songs
+        Obx(
+          () => playlistsController.selectedSongs.isEmpty
+              ? const SizedBox()
+              : TextButton(
+                  onPressed: () {
+                    playlistsController.selectedSongs.value = [];
+                  },
+                  child: const Text('Clear All'),
+                ),
         ),
       ],
     );

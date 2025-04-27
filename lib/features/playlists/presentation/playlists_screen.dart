@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import 'package:mastermediaplayer/routing/app_routes.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_card.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/routing/app_routes.dart';
 
-// this class will build the UI for the playlists page to show us all the saved Playlists
-// from our local storage
+/// this class will build the UI for the playlists page to show us all the saved Playlists
+/// from our local storage
 class PlaylistsScreen extends StatelessWidget {
   PlaylistsScreen({Key? key}) : super(key: key);
   final playlistsController = Get.find<PlaylistsController>();

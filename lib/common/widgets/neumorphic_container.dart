@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+
 import 'package:mastermediaplayer/common/controllers/theme_controller.dart';
 
 class NeumorphicContainer extends StatelessWidget {
@@ -21,7 +23,7 @@ class NeumorphicContainer extends StatelessWidget {
       padding: EdgeInsets.all(padding),
       margin: EdgeInsets.all(margin),
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           boxShadow: themeController.isDarkModeOn()
               ? [

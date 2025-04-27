@@ -1,8 +1,7 @@
 import 'package:mastermediaplayer/features/playlists/domain/playlist.dart';
 
+/// This is an abstract class for our playlists list repository
 abstract class PlaylistsRepository {
-  /// This is an abstract class for our playlists list repository
-
   List<Playlist> getPlaylistsList();
   List<Playlist> addOrRemovePlaylist(Playlist playlist);
   List<Playlist> addSongsToPlaylist(Playlist playlist, List<String> songUrls);

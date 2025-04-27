@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/routing/app_routes.dart';
 import 'package:mastermediaplayer/common/widgets/section_header.dart';
+import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
+import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/my_favorites.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_card.dart';
+import 'package:mastermediaplayer/features/favorites/presentation/favorites_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlist_search/playlists_search_bar.dart';
-import 'package:mastermediaplayer/utilities/file_and_directory_utilities.dart';
-import 'package:mastermediaplayer/features/favorites/presentation/favoritesController.dart';
-import '../../features/favorites/presentation/my_favorites.dart';
-import 'package:mastermediaplayer/routing/app_routes.dart';
 
 // this class will be our landing screen (home page) for our app
 class HomeScreen extends StatefulWidget {

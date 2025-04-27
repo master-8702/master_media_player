@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// section header widget for the home screen
 class SectionHeader extends StatelessWidget {
   final String title;
   final String action;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+
 import 'package:mastermediaplayer/utilities/format_duration.dart';
 
 class PlaylistControlButtons extends StatefulWidget {
@@ -85,14 +87,12 @@ class _PlaylistControlButtonsState extends State<PlaylistControlButtons> {
     // shuffle.
     Rx<bool> isPlaylist = false.obs;
     widget.audioPlayer.sequenceStream.listen((event) {
-      if (event != null) {
-        if (event.length > 1) {
-          isPlaylist.value = true;
-        } else {
-          isPlaylist.value = false;
-        }
+      if (event.length > 1) {
+        isPlaylist.value = true;
+      } else {
+        isPlaylist.value = false;
       }
-    });
+        });
 
     return Obx(() {
       return IconButton(

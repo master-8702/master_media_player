@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// this class will hold the configuration files for this app like Theme Data
+/// this file will hold the configuration files for this app like Theme Data
 
 ThemeData lightTheme = ThemeData(
   dialogBackgroundColor: Colors.grey.shade300, // for timer

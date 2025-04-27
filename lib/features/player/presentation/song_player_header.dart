@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import 'package:mastermediaplayer/common/models/song_model.dart';
 import 'package:mastermediaplayer/common/widgets/neumorphic_container.dart';
 import 'package:mastermediaplayer/features/player/presentation/add_to_playlist.dart';
 import 'package:mastermediaplayer/features/player/presentation/set_sleep_timer.dart';
-import 'package:mastermediaplayer/features/player/presentation/show_audio_metadat.dart';
-import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
+import 'package:mastermediaplayer/features/player/presentation/show_audio_metadata.dart';
 import 'package:mastermediaplayer/features/playlists/presentation/playlists_controller.dart';
-import 'package:mastermediaplayer/common/models/song_model.dart';
+import 'package:mastermediaplayer/features/player/presentation/song_playing_screen_controller.dart';
 
+// this class will build our single song player header
 class SongPlayerHeader extends StatelessWidget {
   const SongPlayerHeader({
     super.key,
