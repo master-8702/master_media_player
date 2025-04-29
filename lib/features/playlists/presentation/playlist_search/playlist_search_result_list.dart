@@ -35,13 +35,14 @@ class PlaylistSearchResultList extends StatelessWidget {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    Get.toNamed(AppRoute.playlists.path, arguments: {
-                      'playlist': playlistsController.myPlaylists[
-                          playlistSearchController
-                              .foundSongs[index].playlistIndex],
-                      'selectedIndex':
-                          playlistSearchController.foundSongs[index].songIndex
-                    });
+                    Get.toNamed(AppRoute.playlistPlayingScreen.path,
+                        arguments: {
+                          'playlist': playlistsController.myPlaylists[
+                              playlistSearchController
+                                  .foundSongs[index].playlistIndex],
+                          'selectedIndex': playlistSearchController
+                              .foundSongs[index].songIndex
+                        });
                   },
                   child: IgnorePointer(
                     child: SongCard2(
@@ -76,7 +77,7 @@ class PlaylistSearchResultList extends StatelessWidget {
             // without worrying about any Gesture Handling from the child widget
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              Get.toNamed(AppRoute.playlists.path, arguments: {
+              Get.toNamed(AppRoute.playlistPlayingScreen.path, arguments: {
                 'playlist': playlistsController.myPlaylists[
                     playlistSearchController.foundSongs[index].playlistIndex],
                 'selectedIndex':
