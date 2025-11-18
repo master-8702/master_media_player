@@ -47,8 +47,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Master Media Player',
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
       themeMode: themeController.currentThemeMode,
       home: const HomeScreen(),
       getPages: getPageRoutes(),

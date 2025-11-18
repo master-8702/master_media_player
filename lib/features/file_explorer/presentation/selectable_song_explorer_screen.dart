@@ -59,6 +59,52 @@ class _SelectableSongExplorerScreenState
                       height: 20,
                     ),
 
+                    // Widget for "Select All" checkbox
+                    Obx(() {
+                      // Only show if in selection mode
+                      if (!controller.isSelectionMode.value) {
+                        return const SizedBox.shrink();
+                      }
+
+                      // Filter for actual files (audio files) in the current view
+                      final audioFilesInView =
+                          controller.foundFiles.whereType<File>().toList();
+
+                      // If no audio files are in the current view, don't show the checkbox
+                      if (audioFilesInView.isEmpty) {
+                        return const SizedBox.shrink();
+                      }
+
+                      // Determine if all currently visible audio files are selected
+                      final allCurrentlyDisplayedAudioFilesSelected =
+                          audioFilesInView.every((file) =>
+                              controller.selectedSongs.contains(file.path));
+
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 8.0,
+                            right: 4.0), // Added right padding for alignment
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text("Select All",
+                                style: Theme.of(context).textTheme.bodyMedium),
+                            const SizedBox(width: 8),
+                            Checkbox(
+                              value: allCurrentlyDisplayedAudioFilesSelected,
+                              onChanged: (bool? shouldSelectAll) {
+                                if (shouldSelectAll != null) {
+                                  // This method needs to be implemented in FileExplorerController
+                                  controller.toggleSelectAllAudioFilesInFolder(
+                                      shouldSelectAll);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+
                     // here by listening to the changes from currentDirectory value notifier we will make a new list of
                     // files and folder from the selected folder and update the UI accordingly
                     Expanded(
