@@ -197,4 +197,39 @@ class FileExplorerController extends GetxController {
       selectedSongs.add(songUrl);
     }
   }
+
+
+// Selects or deselects all audio files currently displayed in the folder
+// when adding songs to a playlist.
+  void toggleSelectAllAudioFilesInFolder(bool select) {
+    // Get paths of all FileSystemEntity objects that are Files in the current folder
+    final audioFilePathsInFolder = foundFiles
+        .whereType<File>() // Filters out directories
+        .map((file) => file.path)
+        .toList();
+
+    if (select) {
+      // Add all audio files from the current folder to selectedSongs
+      for (final path in audioFilePathsInFolder) {
+        if (!selectedSongs.contains(path)) {
+          selectedSongs.add(path);
+        }
+      }
+      // If we selected any files, ensure selection mode is on
+      if (audioFilePathsInFolder.isNotEmpty) {
+        isSelectionMode.value = true;
+      }
+    } else {
+      // Remove all audio files from the current view from selectedSongs
+      selectedSongs.removeWhere((path) => audioFilePathsInFolder.contains(path));
+      setIsSelectionMode = selectedSongs.isNotEmpty;
+      // The existing logic in our ListTile's onTap for handling empty selectedSongs
+      // (if (controller.selectedSongs.isEmpty) { controller.setIsSelectionMode = false; })
+      // should take care of turning off selection mode if all songs are deselected.
+    }
+    // RxList updates should automatically trigger Obx widgets to rebuild.
+  }
+
+
+
 }
