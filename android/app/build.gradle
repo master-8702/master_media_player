@@ -28,8 +28,12 @@ android {
         minSdk = 24
         // targetSdk = flutter.targetSdkVersion
         targetSdk = 33
-        versionCode = flutter.versionCode
+        versionCode = 1.3
         versionName = flutter.versionName
+
+         ndk {
+        abiFilters "armeabi-v7a", "arm64-v8a"
+    }
     }
 
     buildTypes {
